@@ -29,20 +29,23 @@ SOURCES += \
         mainwindow.cpp \
     seconddialog.cpp \
     usersdialog.cpp \
-    myimagesdialog.cpp
+    myimagesdialog.cpp \
+    userimagesdialog.cpp
 
 HEADERS += \
         mainwindow.h \
     seconddialog.h \
     usersdialog.h \
     myimagesdialog.h \
-    Peer.h
+    Peer.h \
+    userimagesdialog.h
 
 FORMS += \
         mainwindow.ui \
     seconddialog.ui \
     usersdialog.ui \
-    myimagesdialog.ui
+    myimagesdialog.ui \
+    userimagesdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

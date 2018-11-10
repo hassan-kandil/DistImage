@@ -1,5 +1,8 @@
 #include "ui_usersdialog.h"
 #include "usersdialog.h"
+#include "userimagesdialog.h"
+
+string selected;
 
 UsersDialog::UsersDialog(QWidget *parent, Peer * peer)
     : QDialog(parent), ui(new Ui::UsersDialog), peer(peer) {
@@ -30,9 +33,14 @@ UsersDialog::UsersDialog(QWidget *parent, Peer * peer)
 
 UsersDialog::~UsersDialog() { delete ui; }
 
-void UsersDialog::on_push_view_clicked() {}
+void UsersDialog::on_push_view_clicked() {
+    const QString& s = ui->listWidget->currentItem()->text();
+    secdia = new userimagesdialog(this, peer, s); // if want to distroy secdia with the main,
+                                 // put (this)
+    secdia->show();
+}
 
 void UsersDialog::on_push_refresh_clicked() {
-  // ui->listWidget->currentItem()->setText("User 1");
-  ui->listWidget->currentItem()->setTextColor(Qt::green);
+
+
 }

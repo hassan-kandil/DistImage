@@ -1,7 +1,7 @@
 #ifndef USERSDIALOG_H
 #define USERSDIALOG_H
 #include "Peer.h"
-
+#include "userimagesdialog.h"
 #include <QDialog>
 
 namespace Ui {
@@ -22,6 +22,8 @@ private slots:
 
 private:
   Ui::UsersDialog *ui;
+  userimagesdialog *secdia;
+
   Peer *peer;
 
 };
