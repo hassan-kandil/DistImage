@@ -134,39 +134,43 @@ public:
       }
 
     } break; // end of sign_up
-             /*
-                 case 1002: // login
-                 {
-                   int cc = 4;
-                   string username = "", password = "";
-                   while (buffer[cc] != '*') {
-                     username.append(1, buffer[cc]);
-                     cc++;
-                   }
-                   cc++;
-                   while (buffer[cc] != 0) {
-                     password.append(1, buffer[cc]);
-                     cc++;
-                   }
-                   cout << "User: " << username << endl;
-                   cout << "Pass: " << password << endl;
-                   bool didlogin = login(username, password);
-       
-                   cout << "Logged in?" << didlogin << endl;
-                   // Sign Up reply
-                   memset(little_buffer, 0, sizeof(little_buffer));
-                   if (didlogin)
-                     little_buffer[0] = '1';
-                   else
-                     little_buffer[0] = '0';
-                   little_buffer[1] = 0;
-                   if (sendto(sv->s, little_buffer, strlen((const char
-                *)little_buffer), 0,        (struct sockaddr *)&recievedAddr, addresslength) <
-                0) {        perror("Sign up reply sendto        failed");
-                   }
-       
-                 } break; // end of login
-             */
+
+    case 1002: // login
+    {
+      int cc = 4;
+      string username = "", password = "";
+      while (buffer[cc] != '*') {
+        username.append(1, buffer[cc]);
+        cc++;
+      }
+      cc++;
+      while (buffer[cc] != 0) {
+        password.append(1, buffer[cc]);
+        cc++;
+      }
+      cout << "User: " << username << endl;
+      cout << "Pass: " << password << endl;
+      int didlogin = login(username, password);
+
+      cout << "Logged in? " << didlogin << endl;
+      // Sign Up reply
+      memset(little_buffer, 0, sizeof(little_buffer));
+      if (didlogin == 1)
+        little_buffer[0] = '1';
+      else if (didlogin == 0)
+        little_buffer[0] = '0';
+      else if (didlogin == 5)
+        little_buffer[0] = '5';
+      else
+        little_buffer[0] = '4';
+      little_buffer[1] = 0;
+      if (sendto(sv->s, little_buffer, strlen((const char *)little_buffer), 0,
+                 (struct sockaddr *)&recievedAddr, addresslength) < 0) {
+        perror("Sign up reply sendto failed");
+      }
+
+    } break; // end of login
+
     case 2001:
 
       break; // upload image
@@ -368,10 +372,11 @@ public:
       return false; // cout << "Username already exists\n";
   }
 
-  bool login(string username, string password) {
+  int login(string username, string password) {
     // checks of the username and password are correct, if so -> update the
     // user_map of this user
     bool flag = false;
+    bool flag2 = false;
     auth.seekp(0);
     while (!auth.eof()) {
       string line;
@@ -384,23 +389,33 @@ public:
         int pass_len = line.find(" ");
         string pass = line.substr(0, pass_len);
         line = line.erase(0, pass_len + 1);
-        if (name == username && pass == password) {
+        if (name == username)
           flag = true;
+        if (pass == password)
+          flag2 = true;
+        if (flag & flag2)
           break;
-        }
       }
     }
     auth.clear();
     if (!flag)
-      return false;
-    // refaay cont
-    users_map[username].online = true;
+      return 0;
+    if (!flag2)
+      return 5;
+    if (users_map[username].online == true) { // already in
+      return 4;
+    } else { // successfully in
 
-    string current_ip, port_num;
+      users_map[username].online = true;
 
-    users_map[username].currentIP = current_ip;
-    users_map[username].port = port_num;
-    return true;
+      string current_ip, port_num;
+
+      char little_buffer22[LITTLE_BUFFER_SIZE];
+      sprintf((char *)(little_buffer22), "%u", sender_port);
+      users_map[username].currentIP = string(sender_ip);
+      users_map[username].port = string(little_buffer22);
+      return 1;
+    }
   }
 
   void logout(string username) {

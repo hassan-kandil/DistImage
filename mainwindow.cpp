@@ -32,34 +32,47 @@ void MainWindow::on_push_login_clicked() {
     ui->lbl_dos_error->setVisible(true);
   } else {
     ui->lbl_dos_error->setVisible(false);
+    string username = ui->line_login_usr->text().toStdString();
+    string password = ui->line_login_pass->text().toStdString();
+    if (username == "" || password == "") {
+      ui->lbl_login_wrong->setVisible(true);
+      ui->lbl_login_wrong->setText(QString("Fill all info!"));
+      ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
+    } else {
 
-    string username = ui->line_signup_usr->text().toStdString();
-    string password = ui->line_signup_pass->text().toStdString();
-    int sign_result = peer->login(username, password);
-    if (sign_result == 1) { // Logged in correctly
-      ui->lbl_login_wrong->setVisible(true);
-      ui->lbl_login_wrong->setText(QString("Welcome!"));
-      ui->lbl_login_wrong->setStyleSheet("QLabel { color : green; }");
-    } else if (sign_result == 3) {
-      ui->lbl_login_wrong->setVisible(true);
-      ui->lbl_login_wrong->setText(QString("No Special Characters!"));
-      ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
-    } else if (sign_result == 5) {
-      ui->lbl_login_wrong->setVisible(true);
-      ui->lbl_login_wrong->setText(QString("You are already a member!"));
-      ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
-    } else { // Timeout
-      ui->lbl_login_wrong->setVisible(true);
-      ui->lbl_login_wrong->setText(QString("DoS Offline!"));
-      ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
+      int sign_result = peer->login(username, password);
+      if (sign_result == 1) { // Logged in correctly
+        ui->lbl_login_wrong->setVisible(true);
+        ui->lbl_login_wrong->setText(QString("Welcome!"));
+        ui->lbl_login_wrong->setStyleSheet("QLabel { color : green; }");
+        // Open the next window
+        secdia = new SecondDialog(); // if want to distroy secdia with the main,
+                                     // put (this)
+        secdia->show();
+        this->close();
+      } else if (sign_result == 3) {
+        ui->lbl_login_wrong->setVisible(true);
+        ui->lbl_login_wrong->setText(QString("No Special Characters!"));
+        ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
+      } else if (sign_result == 0) {
+        ui->lbl_login_wrong->setVisible(true);
+        ui->lbl_login_wrong->setText(QString("You are not register!"));
+        ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
+      } else if (sign_result == 5) {
+        ui->lbl_login_wrong->setVisible(true);
+        ui->lbl_login_wrong->setText(QString("Wrong Password!"));
+        ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
+      } else if (sign_result == 4) {
+        ui->lbl_login_wrong->setVisible(true);
+        ui->lbl_login_wrong->setText(QString("Username already logged in!"));
+        ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
+      } else { // Timeout
+        ui->lbl_login_wrong->setVisible(true);
+        ui->lbl_login_wrong->setText(QString("DoS Offline!"));
+        ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
+      }
     }
   }
-
-  // Open the next window
-  secdia =
-      new SecondDialog(); // if want to distroy secdia with the main, put (this)
-  secdia->show();
-  this->close();
 }
 
 void MainWindow::on_push_signup_clicked() {

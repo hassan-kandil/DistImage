@@ -407,21 +407,15 @@ public:
         if (little_buffer[0] == '1')
           return 1;
         else if (little_buffer[0] == '0')
+          return 0;
+        else if (little_buffer[0] == '5')
           return 5;
+        else if (little_buffer[0] == '4')
+          return 4;
         else
           return 8;
       }
-
-      /*
-            // Change to unsigned long
-            for (int i = 0; i < 10 && little_buffer[i] != '\0'; i++) {
-              received_length *= 10;
-              received_length += little_buffer[i] - '0';
-            }
-          }
-      */
     }
-    // cout << "End of sign_up.\n";
   }
 };
 
