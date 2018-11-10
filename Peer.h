@@ -309,37 +309,34 @@ public:
                       sizeof(struct sockaddr_in))) < 0)
         perror("Send failed\n");
 
-
       // Receive Timeout
-          peerAddrlen = sizeof(peerSocketAddress);
+      peerAddrlen = sizeof(peerSocketAddress);
 
-          int n;
+      int n;
 
-          struct pollfd ss;
-          ss.fd = sc->s;
-          ss.events = POLLIN;
-          n = poll(&ss, 1, 1);
-          if(n == 0 || n == -1)		{
-                  //printf("Timeout!!\n");
-                  return 2;
-          }
+      struct pollfd ss;
+      ss.fd = sc->s;
+      ss.events = POLLIN;
+      n = poll(&ss, 1, 1);
+      if (n == 0 || n == -1) {
+        // printf("Timeout!!\n");
+        return 2;
+      }
 
-          else
-          {
-              unsigned char little_buffer[10];
-              memset(little_buffer, 0, sizeof(little_buffer));
-              if ((r = recvfrom(sc->s, little_buffer, 10, 0,
-                                (struct sockaddr *)&peerSocketAddress, &peerAddrlen)) <
-                  0)
-                perror("Receive Failed");
-              if (little_buffer[0] == '1')
-                return 1;
-              else if (little_buffer[0] == '0')
-                return 5;
-              else return 8;
-
-          }
-
+      else {
+        unsigned char little_buffer[10];
+        memset(little_buffer, 0, sizeof(little_buffer));
+        if ((r = recvfrom(sc->s, little_buffer, 10, 0,
+                          (struct sockaddr *)&peerSocketAddress,
+                          &peerAddrlen)) < 0)
+          perror("Receive Failed");
+        if (little_buffer[0] == '1')
+          return 1;
+        else if (little_buffer[0] == '0')
+          return 5;
+        else
+          return 8;
+      }
 
       /*
             // Change to unsigned long
@@ -349,7 +346,80 @@ public:
             }
           }
       */
+    }
+    // cout << "End of sign_up.\n";
+  }
 
+  int login(string username, string password) {
+    bool nospecial = true;
+    for (int i = 0; i < username.length() && nospecial; i++) {
+      nospecial = isalnum(username[i]);
+      if (!nospecial)
+        cout << username[i] << endl;
+    }
+    for (int i = 0; i < password.length() && nospecial; i++) {
+      nospecial = isalnum(password[i]);
+      if (!nospecial)
+        cout << password[i] << endl;
+    }
+    if (!nospecial) { // special chars
+      return 3;       // error code for special chars as they are delimiters
+    } else {
+      struct sockaddr_in yourSocketAddress, peerSocketAddress;
+      socklen_t peerAddrlen;
+      makeDestSA(&yourSocketAddress, dos_ip, dos_port);
+
+      char marshalled_massage[BUFFER_SIZE];
+      memset(marshalled_massage, 0, sizeof(marshalled_massage));
+      string marshalled_massage_s = "1002" + username + "*" + password;
+      for (int j = 0; j < marshalled_massage_s.length(); j++) {
+        marshalled_massage[j] = marshalled_massage_s[j];
+      }
+      marshalled_massage[marshalled_massage_s.length()] = 0;
+
+      int r = 1;
+
+      if ((n = sendto(sc->s, marshalled_massage,
+                      strlen((const char *)marshalled_massage), 0,
+                      (struct sockaddr *)&yourSocketAddress,
+                      sizeof(struct sockaddr_in))) < 0)
+        perror("Send failed\n");
+
+      // Receive Timeout
+      peerAddrlen = sizeof(peerSocketAddress);
+
+      int n;
+
+      struct pollfd ss;
+      ss.fd = sc->s;
+      ss.events = POLLIN;
+      n = poll(&ss, 1, 1);
+      if (n == 0 || n == -1) {
+        // printf("Timeout!!\n");
+        return 2;
+      } else {
+        unsigned char little_buffer[10];
+        memset(little_buffer, 0, sizeof(little_buffer));
+        if ((r = recvfrom(sc->s, little_buffer, 10, 0,
+                          (struct sockaddr *)&peerSocketAddress,
+                          &peerAddrlen)) < 0)
+          perror("Receive Failed");
+        if (little_buffer[0] == '1')
+          return 1;
+        else if (little_buffer[0] == '0')
+          return 5;
+        else
+          return 8;
+      }
+
+      /*
+            // Change to unsigned long
+            for (int i = 0; i < 10 && little_buffer[i] != '\0'; i++) {
+              received_length *= 10;
+              received_length += little_buffer[i] - '0';
+            }
+          }
+      */
     }
     // cout << "End of sign_up.\n";
   }

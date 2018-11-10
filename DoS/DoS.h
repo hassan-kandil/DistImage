@@ -11,6 +11,8 @@
 using namespace std;
 
 #include "UDPSocketServer.h"
+#include "base64.h"
+#include <arpa/inet.h>
 #include <cstring>
 #include <netdb.h>
 #include <netinet/in.h>
@@ -19,8 +21,6 @@ using namespace std;
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-
-#include "base64.h"
 
 static const std::string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                         "abcdefghijklmnopqrstuvwxyz"
@@ -45,6 +45,8 @@ private:
   map<string, data> users_map;
   bool con;
   int port;
+  char sender_ip[INET_ADDRSTRLEN];
+  uint16_t sender_port;
 
 public:
   int r;
@@ -84,6 +86,12 @@ public:
                  (struct sockaddr *)&recievedAddr, &addresslength);
 
     printf("Received Message = %s.\n", buffer);
+
+    inet_ntop(AF_INET, &(recievedAddr.sin_addr), sender_ip, INET_ADDRSTRLEN);
+
+    sender_port = htons((&recievedAddr)->sin_port);
+
+    printf("Sign up IP:%s & port: %d\n", sender_ip, sender_port);
 
     // Get operation ID as unsigned long
     unsigned long op_id = 0;
@@ -126,11 +134,41 @@ public:
       }
 
     } break; // end of sign_up
-    case 1002:
-      // 1 = 1;
-      break; // login
+             /*
+                 case 1002: // login
+                 {
+                   int cc = 4;
+                   string username = "", password = "";
+                   while (buffer[cc] != '*') {
+                     username.append(1, buffer[cc]);
+                     cc++;
+                   }
+                   cc++;
+                   while (buffer[cc] != 0) {
+                     password.append(1, buffer[cc]);
+                     cc++;
+                   }
+                   cout << "User: " << username << endl;
+                   cout << "Pass: " << password << endl;
+                   bool didlogin = login(username, password);
+       
+                   cout << "Logged in?" << didlogin << endl;
+                   // Sign Up reply
+                   memset(little_buffer, 0, sizeof(little_buffer));
+                   if (didlogin)
+                     little_buffer[0] = '1';
+                   else
+                     little_buffer[0] = '0';
+                   little_buffer[1] = 0;
+                   if (sendto(sv->s, little_buffer, strlen((const char
+                *)little_buffer), 0,        (struct sockaddr *)&recievedAddr, addresslength) <
+                0) {        perror("Sign up reply sendto        failed");
+                   }
+       
+                 } break; // end of login
+             */
     case 2001:
-      // 1 = 1;
+
       break; // upload image
     default:
       break;
@@ -330,8 +368,7 @@ public:
       return false; // cout << "Username already exists\n";
   }
 
-  bool login(string username, string password, string current_ip,
-             string port_num, fstream &auth) {
+  bool login(string username, string password) {
     // checks of the username and password are correct, if so -> update the
     // user_map of this user
     bool flag = false;
@@ -356,7 +393,11 @@ public:
     auth.clear();
     if (!flag)
       return false;
+    // refaay cont
     users_map[username].online = true;
+
+    string current_ip, port_num;
+
     users_map[username].currentIP = current_ip;
     users_map[username].port = port_num;
     return true;
