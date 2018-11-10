@@ -1,5 +1,6 @@
 #ifndef USERSDIALOG_H
 #define USERSDIALOG_H
+#include "Peer.h"
 
 #include <QDialog>
 
@@ -21,6 +22,8 @@ private slots:
 
 private:
   Ui::UsersDialog *ui;
+  Peer *peer;
+
 };
 
 #endif // USERSDIALOG_H

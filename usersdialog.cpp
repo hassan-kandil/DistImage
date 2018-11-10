@@ -4,9 +4,19 @@
 UsersDialog::UsersDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::UsersDialog) {
   ui->setupUi(this);
+  map <string, vector<string>> users;
+  map<string, vector<string>>::iterator it;
+  users = peer->getUsers();
+  for ( it = users.begin(); it != users.end(); it++ )
+  {
+      ui->listWidget->addItem(QString::fromStdString(it->first));
+
+  }
+  /*
   ui->listWidget->addItem("User 1");
   ui->listWidget->addItem("User 2");
   ui->listWidget->addItem("User 3");
+  */
 }
 
 UsersDialog::~UsersDialog() { delete ui; }
