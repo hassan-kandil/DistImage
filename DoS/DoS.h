@@ -171,6 +171,25 @@ public:
 
     } break; // end of login
 
+    case 1100: // view
+    {
+
+      string res = view();
+
+      cout << "View All. Text: " << res << endl;
+
+      // Sign Up reply
+      memset(little_buffer, 0, sizeof(little_buffer));
+
+      sprintf((char *)(little_buffer), "%s", res.c_str());
+
+      if (sendto(sv->s, little_buffer, strlen((const char *)little_buffer), 0,
+                 (struct sockaddr *)&recievedAddr, addresslength) < 0) {
+        perror("Sign up reply sendto failed");
+      }
+
+    } break; // end of view
+
     case 2001:
 
       break; // upload image
@@ -424,16 +443,33 @@ public:
     users_map[username].port = "";
   }
 
-  void view() {
-    cout << "USERNAME:   Images:" << endl;
+  string view() {
+
+    string ret = "";
+
+    // cout << "USERNAME:   Images:" << endl;
+
     for (auto const &x : users_map) {
-      cout << x.first << " ";
+
+      // cout << x.first << " ";
+
+      ret += x.first + "*";
+
       for (int i = 0; i < x.second.img.size(); i++) {
-        cout << x.second.img[i] << " ";
+
+        // cout << x.second.img[i] << " ";
+
+        ret += x.second.img[i] + "#";
       }
-      cout << endl;
+
+      // cout << endl;
+
+      ret += "@";
     }
-    cout << "************" << endl;
+
+    // cout << "************" << endl;
+
+    return ret;
   }
 
   ~DoS() {}
