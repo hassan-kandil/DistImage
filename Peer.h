@@ -17,12 +17,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <vector>
+#include <map>
 using namespace std;
 
 #define BUFFER_SIZE 50000
 
 #ifndef PEER_H
 #define PEER_H
+#define LITTLE_BUFFER_SIZE 50000
 using namespace std;
 
 static const std::string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -417,6 +420,91 @@ public:
       }
     }
   }
+
+
+
+map<string, vector<string>> getUsers() {
+
+
+      struct sockaddr_in yourSocketAddress, peerSocketAddress;
+      socklen_t peerAddrlen;
+      makeDestSA(&yourSocketAddress, dos_ip, dos_port);
+
+      char marshalled_massage[BUFFER_SIZE];
+      memset(marshalled_massage, 0, sizeof(marshalled_massage));
+      string marshalled_massage_s = "1100";
+      for (int j = 0; j < marshalled_massage_s.length(); j++) {
+        marshalled_massage[j] = marshalled_massage_s[j];
+      }
+      marshalled_massage[marshalled_massage_s.length()] = 0;
+
+      int r = 1;
+
+      if ((n = sendto(sc->s, marshalled_massage,
+                      strlen((const char *)marshalled_massage), 0,
+                      (struct sockaddr *)&yourSocketAddress,
+                      sizeof(struct sockaddr_in))) < 0)
+        perror("Send failed\n");
+
+      // Receive Timeout
+      peerAddrlen = sizeof(peerSocketAddress);
+
+      int n;
+
+      struct pollfd ss;
+      ss.fd = sc->s;
+      ss.events = POLLIN;
+      n = poll(&ss, 1, 1);
+
+
+        unsigned char little_buffer[LITTLE_BUFFER_SIZE];
+        memset(little_buffer, 0, sizeof(little_buffer));
+        if ((r = recvfrom(sc->s, little_buffer, LITTLE_BUFFER_SIZE, 0,
+                          (struct sockaddr *)&peerSocketAddress,
+                          &peerAddrlen)) < 0)
+          perror("Receive Failed");
+        int cc = 0;
+        string temp;
+        while (little_buffer[cc] != 0) {
+                temp.append(1, little_buffer[cc]);
+                cc++;
+              }
+
+        return retmap(temp);
+    }
+
+map <string, vector<string>> retmap (string s ){
+
+    map <string, vector<string>> mymap;
+
+    while(s!=""){
+
+        int len = s.find ("*");
+
+        string name = s.substr(0, len);
+
+        s=s.erase(0, len+1);
+
+        while (s[0]!='@'){
+
+            int imgl = s.find("#");
+
+            string img = s.substr(0, imgl);
+
+            s=s.erase(0, imgl+1);
+
+            mymap[name].push_back(img);
+
+        }
+
+        s= s.erase(0,1);
+
+    }
+
+    return mymap;
+
+}
+
 };
 
 #endif
