@@ -472,7 +472,7 @@ map<string, vector<string>> getUsers() {
 
         return retmap(temp);
     }
-
+/*
 map <string, vector<string>> retmap (string s ){
 
     map <string, vector<string>> mymap;
@@ -504,7 +504,63 @@ map <string, vector<string>> retmap (string s ){
     return mymap;
 
 }
+*/
 
+map <string, vector<string>> retmap (string s ){
+
+    map <string, vector<string>> mymap;
+
+    while(s!=""){
+
+        int len = s.find ("*");
+
+        string name = s.substr(0, len);
+
+        s=s.erase(0, len+1);
+
+        int onlineln= s.find("&");
+
+        string online= s.substr(0, onlineln);
+
+        s= s.erase(0, onlineln+1);
+
+        int ipln= s.find("&");
+
+        string ip= s.substr(0, ipln);
+
+        s= s.erase(0, ipln+1);
+
+        int portln= s.find("&");
+
+        string port= s.substr(0, portln);
+
+        s= s.erase(0, portln+1);
+
+        mymap[name].push_back(online);
+
+        mymap[name].push_back(ip);
+
+        mymap[name].push_back(port);
+
+        while (s[0]!='@'){
+
+            int imgl = s.find("#");
+
+            string img = s.substr(0, imgl);
+
+            s=s.erase(0, imgl+1);
+
+            mymap[name].push_back(img);
+
+        }
+
+        s= s.erase(0,1);
+
+    }
+
+    return mymap;
+
+}
 };
 
 #endif

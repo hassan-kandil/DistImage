@@ -443,34 +443,55 @@ public:
     users_map[username].port = "";
   }
 
-  string view() {
+  string view (){
 
-    string ret = "";
+      string ret="";
 
-    // cout << "USERNAME:   Images:" << endl;
+  //    cout<<"USERNAME:   Images:"<<endl;
 
-    for (auto const &x : users_map) {
+      for (auto const &x:users_map){
 
-      // cout << x.first << " ";
+      //    cout <<x.first<<" ";
 
-      ret += x.first + "*";
+          ret+=x.first+"*";
 
-      for (int i = 0; i < x.second.img.size(); i++) {
+          if (x.second.online){
 
-        // cout << x.second.img[i] << " ";
+              ret+="1&";
 
-        ret += x.second.img[i] + "#";
+              ret+=x.second.currentIP+"&";
+
+              ret+=x.second.port+"&";
+
+          }
+
+          else {
+
+              ret+="0&&&";
+
+          }
+
+          for ( int i=0; i<x.second.img.size(); i++){
+
+        //      cout<<x.second.img[i]<<" ";
+
+              ret+= x.second.img[i]+"#";
+
+          }
+
+      //    cout<<endl;
+
+          ret+="@";
+
       }
 
-      // cout << endl;
+//      cout<<"************"<<endl;
 
-      ret += "@";
-    }
+      return ret;
 
-    // cout << "************" << endl;
-
-    return ret;
   }
+
+
 
   ~DoS() {}
 };

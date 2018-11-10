@@ -7,11 +7,19 @@ UsersDialog::UsersDialog(QWidget *parent, Peer * peer)
   map <string, vector<string>> users;
   map<string, vector<string>>::iterator it;
   users = peer->getUsers();
-
+    int i = 0;
   for ( it = users.begin(); it != users.end(); it++ )
   {
+      if (it->second[0].at((0)) == '1'){
       ui->listWidget->addItem(QString::fromStdString(it->first));
+      ui->listWidget->item(i)->setTextColor(Qt::green);
+  }
+      else{
+          ui->listWidget->addItem(QString::fromStdString(it->first));
+          ui->listWidget->item(i)->setTextColor(Qt::red);
 
+      }
+        i = i + 1;
   }
   /*
   ui->listWidget->addItem("User 1");
