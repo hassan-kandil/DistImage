@@ -1,6 +1,6 @@
 #ifndef SECONDDIALOG_H
 #define SECONDDIALOG_H
-
+#include "Peer.h"
 #include <QDialog>
 
 namespace Ui {
@@ -11,7 +11,7 @@ class SecondDialog : public QDialog {
   Q_OBJECT
 
 public:
-  explicit SecondDialog(QWidget *parent = nullptr);
+  explicit SecondDialog(QWidget *parent = nullptr, Peer * peer = nullptr);
   ~SecondDialog();
 
 private slots:
@@ -23,6 +23,7 @@ private slots:
 
 private:
   Ui::SecondDialog *ui;
+  Peer* peer;
 };
 
 #endif // SECONDDIALOG_H

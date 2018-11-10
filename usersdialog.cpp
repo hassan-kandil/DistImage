@@ -1,12 +1,13 @@
 #include "ui_usersdialog.h"
 #include "usersdialog.h"
 
-UsersDialog::UsersDialog(QWidget *parent)
-    : QDialog(parent), ui(new Ui::UsersDialog) {
+UsersDialog::UsersDialog(QWidget *parent, Peer * peer)
+    : QDialog(parent), ui(new Ui::UsersDialog), peer(peer) {
   ui->setupUi(this);
   map <string, vector<string>> users;
   map<string, vector<string>>::iterator it;
   users = peer->getUsers();
+
   for ( it = users.begin(); it != users.end(); it++ )
   {
       ui->listWidget->addItem(QString::fromStdString(it->first));

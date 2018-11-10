@@ -12,7 +12,7 @@ class UsersDialog : public QDialog {
   Q_OBJECT
 
 public:
-  explicit UsersDialog(QWidget *parent = nullptr);
+  explicit UsersDialog(QWidget *parent = nullptr, Peer * peer = nullptr);
   ~UsersDialog();
 
 private slots:
