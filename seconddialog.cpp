@@ -5,8 +5,6 @@
 #include "usersdialog.h"
 #include <thread>
 
-
-
 SecondDialog::SecondDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::SecondDialog), peer(peer) {
   ui->setupUi(this);
@@ -48,7 +46,9 @@ void SecondDialog::on_push_notifications_clicked() {
 }
 
 void SecondDialog::on_push_upload_clicked() {
-  int upload_stat = peer->upload(ui->line_upload_path->text().toStdString(),ui->line_upload_name->text().toStdString(), ui->line_upload_default->text().toStdString());
+  int upload_stat = peer->upload(ui->line_upload_path->text().toStdString(),
+                                 ui->line_upload_name->text().toStdString(),
+                                 ui->line_upload_default->text().toStdString());
   if (upload_stat == 1) { // Successful
     ui->lbl_upload_successful->setVisible(true);
     ui->lbl_upload_successful->setText(QString("Uploaded Successfully!"));

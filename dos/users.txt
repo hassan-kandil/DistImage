@@ -1,8 +1,8 @@
 t 
-e 
-w 
-io /home/refaay/distributed_pro/rooney.jpeg 
-tt 
-aa /home/refaay/distributed_pro/rooney.jpeg /rooney.jpeg 
-po 
-fs 
+e
+w
+io /home/refaay/distributed_pro/rooney.jpeg
+tt
+aa /home/refaay/distributed_pro/rooney.jpeg /rooney.jpeg
+po
+fs

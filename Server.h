@@ -5,6 +5,7 @@
 
 #include "UDPSocketServer.h"
 #include "base64.h"
+#include <arpa/inet.h>
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -15,7 +16,6 @@
 #include <string>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <arpa/inet.h>
 using namespace std;
 
 static const std::string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -41,7 +41,6 @@ public:
 
   unsigned char buffer[BUFFER_SIZE];
   unsigned char little_buffer[LITTLE_BUFFER_SIZE];
-
 
   std::string base64_decode(std::string const &encoded_string) {
     int in_len = encoded_string.size();
@@ -89,74 +88,71 @@ public:
 
   Server(int port) { sv = new UDPSocketServer(port); }
   void getRequest() {
-      printf("%s.\n", "Start of getRequest");
-          unsigned long current_received = 0;
+    printf("%s.\n", "Start of getRequest");
+    unsigned long current_received = 0;
 
-          memset(buffer, 0, sizeof(buffer));
-          // Receive Marshalled Message
-          r = recvfrom(sv->s, buffer, BUFFER_SIZE, 0,
-                       (struct sockaddr *)&recievedAddr, &addresslength);
+    memset(buffer, 0, sizeof(buffer));
+    // Receive Marshalled Message
+    r = recvfrom(sv->s, buffer, BUFFER_SIZE, 0,
+                 (struct sockaddr *)&recievedAddr, &addresslength);
 
-          printf("Received Message = %s.\n", buffer);
+    printf("Received Message = %s.\n", buffer);
 
-          inet_ntop(AF_INET, &(recievedAddr.sin_addr), sender_ip, INET_ADDRSTRLEN);
+    inet_ntop(AF_INET, &(recievedAddr.sin_addr), sender_ip, INET_ADDRSTRLEN);
 
-          sender_port = htons((&recievedAddr)->sin_port);
+    sender_port = htons((&recievedAddr)->sin_port);
 
-          printf("Sign up IP:%s & port: %d\n", sender_ip, sender_port);
+    printf("Sign up IP:%s & port: %d\n", sender_ip, sender_port);
 
-          // Get operation ID as unsigned long
-          unsigned long op_id = 0;
-          for (int i = 0; i < 4 && buffer[i] != '\0'; i++) {
-            op_id *= 10;
-            op_id += buffer[i] - '0';
-            // cout << op_id << endl;
-          }
+    // Get operation ID as unsigned long
+    unsigned long op_id = 0;
+    for (int i = 0; i < 4 && buffer[i] != '\0'; i++) {
+      op_id *= 10;
+      op_id += buffer[i] - '0';
+      // cout << op_id << endl;
+    }
 
-          printf("Received op_id = %lu.\n", op_id);
-          switch (op_id) {
+    printf("Received op_id = %lu.\n", op_id);
+    switch (op_id) {
 
-          case 2002: // view request
-          {
+    case 2002: // view request
+    {
 
-              int cc = 4;
-              string username = "", imageName = "";
-              while (buffer[cc] != '*') {
-                username.append(1, buffer[cc]);
-                cc++;
-              }
-              cc++;
-              while (buffer[cc] != '*') {
-                imageName.append(1, buffer[cc]);
-                cc++;
-              }
-              cout << "User: " << username << endl;
-              cout << "Requested Image Name: " << imageName << endl;
-              bool didApprove = true;
-              //bool didApprove = grantRequest( username, imageName);
-              // View Request reply
-              memset(little_buffer, 0, sizeof(little_buffer));
-              if (didApprove)
-              {
-                  little_buffer[0] = '1';
-                  peer->
-              }
-              else
-              {
-                little_buffer[0] = '0';
-              }
-              // sprintf((char *)(little_buffer), "%d", didsign);
-              little_buffer[1] = 0;
-              if (sendto(sv->s, little_buffer, strlen((const char *)little_buffer), 0,
-                         (struct sockaddr *)&recievedAddr, addresslength) < 0) {
-                perror("View Request reply sendto failed");
-              }
+      int cc = 4;
+      string username = "", imageName = "";
+      while (buffer[cc] != '*') {
+        username.append(1, buffer[cc]);
+        cc++;
+      }
+      cc++;
+      while (buffer[cc] != '*') {
+        imageName.append(1, buffer[cc]);
+        cc++;
+      }
+      cout << "User: " << username << endl;
+      cout << "Requested Image Name: " << imageName << endl;
+      bool didApprove = true;
+      // bool didApprove = grantRequest( username, imageName);
+      // View Request reply
+      memset(little_buffer, 0, sizeof(little_buffer));
+      if (didApprove) {
+        little_buffer[0] = '1';
+        peer->
+      } else {
+        little_buffer[0] = '0';
+      }
+      // sprintf((char *)(little_buffer), "%d", didsign);
+      little_buffer[1] = 0;
+      if (sendto(sv->s, little_buffer, strlen((const char *)little_buffer), 0,
+                 (struct sockaddr *)&recievedAddr, addresslength) < 0) {
+        perror("View Request reply sendto failed");
+      }
 
-          } break; // end of view
+    } break; // end of view
 
-          default:
-            break;
-          }
+    default:
+      break;
+    }
     /*printf("%s.\n", "Start of getRequest");
     unsigned long current_received = 0;
     memset(buffer, 0, sizeof(buffer));
@@ -232,4 +228,3 @@ public:
   ~Server();
 };
 #endif
-
