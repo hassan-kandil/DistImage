@@ -501,9 +501,10 @@ public:
 
           strcpy(command_char_array, command.c_str());
           //int s = system(command_char_array);
-          QProcess::execute(QString::fromStdString("cp " + defaultimage + " /home/refaay/distributed_pro/default.jpeg"));
+          QProcess::execute(QString::fromStdString("cp " + defaultimage + " "+modify_image_to_default(defaultimage)));
             string command2;
-          command2 = "steghide embed -cf /home/refaay/distributed_pro/default.jpeg -ef " + imagename + " -p hk ";
+
+          command2 = "steghide embed -cf " +modify_image_to_default(defaultimage)  +" -ef " + imagename + " -p hk ";
            // QProcess::execute("steghide embed -cf default.jpeg -ef " + imagename + " -p hk "));
             //nc = command2.length();
             //char command_char_array2[nc+1];
@@ -531,6 +532,29 @@ public:
     }
   }
 
+
+  string modify_image_to_default(string x)
+  {
+      string y;
+
+      for (int i = x.length()-1; i > 0; i--){
+
+   if (x[i] == '/'){
+
+     y = x.substr(0, i);
+     break;
+
+   }
+
+
+
+  }
+
+  y = y + "/default.jpeg";
+
+  return y;
+
+  }
   map<string, vector<string>> getUsers() {
 
     struct sockaddr_in yourSocketAddress, peerSocketAddress;
