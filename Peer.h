@@ -58,12 +58,11 @@ public:
   int dos_port;
    UDPSocketClient *sc;
    UDPSocketServer * sv;
-   int s, n;
+  int n;
   string username, password;
-  unsigned char *buffer[BUFFER_SIZE];
+  unsigned char buffer[BUFFER_SIZE];
   int r;
-  struct sockaddr_in recievedAddr;
-  socklen_t addresslength = sizeof(recievedAddr);
+
 
   unsigned char Serverbuffer[BUFFER_SIZE];
   unsigned char Serverlittle_buffer[LITTLE_BUFFER_SIZE];
@@ -181,9 +180,13 @@ public:
 
           memset(Serverbuffer, 0, sizeof(Serverbuffer));
           // Receive Marshalled Message
+          struct sockaddr_in recievedAddr;
+          socklen_t addresslength = sizeof(recievedAddr);
+         if((r = recvfrom(sv->s, Serverbuffer, BUFFER_SIZE, 0,
+                       (struct sockaddr *)&recievedAddr, &addresslength))<0)
 
-         r = recvfrom(sv->s, Serverbuffer, BUFFER_SIZE, 0,
-                       (struct sockaddr *)&recievedAddr, &addresslength);
+
+             perror("Thread Receive Failed\n");
 
           printf("Received Message = %s.\n", Serverbuffer);
 
@@ -312,6 +315,8 @@ public:
   }
 
   void sendReply() {
+      struct sockaddr_in recievedAddr;
+      socklen_t addresslength = sizeof(recievedAddr);
     if (sendto(sv->s, buffer, r, 0, (struct sockaddr *)&recievedAddr,
                addresslength) < 0) {
       perror("sendto failed");
