@@ -447,11 +447,7 @@ public:
 
     string ret = "";
 
-    //    cout<<"USERNAME:   Images:"<<endl;
-
     for (auto const &x : users_map) {
-
-      //    cout <<x.first<<" ";
 
       ret += x.first + "*";
 
@@ -472,17 +468,11 @@ public:
 
       for (int i = 0; i < x.second.img.size(); i++) {
 
-        //      cout<<x.second.img[i]<<" ";
-
         ret += x.second.img[i] + "#";
       }
 
-      //    cout<<endl;
-
       ret += "@";
     }
-
-    //      cout<<"************"<<endl;
 
     return ret;
   }
