@@ -5,3 +5,9 @@ t
 v 
 s /home/refaay/distributed_pro/rooney.jpeg 
 r 
+minawi 
+aaa 
+h 
+hh 
+u 
+rt 
