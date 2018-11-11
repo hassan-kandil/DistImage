@@ -1,18 +1,5 @@
-w /home/refaay/distributed_pro/rooney.jpeg /home/refaay/distribued_pro/rooney.jpeg 
-q /home/refaay/distributed_pro/rooney.jpeg 
-e 
 t 
-v 
-s /home/refaay/distributed_pro/rooney.jpeg 
-r 
-<<<<<<< HEAD
-noor /home/refaay/distributed_pro/rooney.jpeg  
-y /home/refaay/distributed_pro/rooney.jpeg 
-=======
-minawi 
-aaa 
-h 
-hh 
-u 
-rt 
->>>>>>> 1625f016abd7168fa24e7631b40c5a220df9a41e
+e 
+w 
+io /home/refaay/distributed_pro/rooney.jpeg 
+tt 

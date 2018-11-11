@@ -53,11 +53,13 @@ class Peer {
 private:
     char sender_ip[INET_ADDRSTRLEN];
     uint16_t sender_port;
+
 public:
+    UDPSocketServer * sv;
   char *dos_ip;
   int dos_port;
    UDPSocketClient *sc;
-   UDPSocketServer * sv;
+
    int s, n;
   string username, password;
   unsigned char *buffer[BUFFER_SIZE];
@@ -68,7 +70,8 @@ public:
   unsigned char Serverbuffer[BUFFER_SIZE];
   unsigned char Serverlittle_buffer[LITTLE_BUFFER_SIZE];
   Peer() {
-
+    this->sv = new UDPSocketServer(dos_port);
+    this->sc = new UDPSocketClient();
 
 
   }
@@ -182,8 +185,7 @@ public:
           memset(Serverbuffer, 0, sizeof(Serverbuffer));
           // Receive Marshalled Message
 
-         r = recvfrom(sv->s, Serverbuffer, BUFFER_SIZE, 0,
-                       (struct sockaddr *)&recievedAddr, &addresslength);
+         r = recvfrom(sv->s, Serverbuffer, BUFFER_SIZE, 0, (struct sockaddr *)&recievedAddr, &addresslength);
 
           printf("Received Message = %s.\n", Serverbuffer);
 
@@ -226,6 +228,7 @@ public:
               memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
               if (didApprove)
               {
+                  sendImageThread(sender_ip,sender_port,imageName);
                   Serverlittle_buffer[0] = '1';
               }
               else

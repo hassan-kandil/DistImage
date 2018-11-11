@@ -34,12 +34,6 @@ userimagesdialog::~userimagesdialog() { delete ui; }
 
 void userimagesdialog::on_push_request_clicked()
 {
-
-}
-
-
-void userimagesdialog::temp()
-{
     map<string, vector<string>> users;
     map<string, vector<string>>::iterator it;
     users = peer->getUsers();
@@ -59,5 +53,12 @@ void userimagesdialog::temp()
 
     const QString &s = ui->listWidget->currentItem()->text();
     peer->request_image(selectedUser.toUtf8().constData(), s.toUtf8().constData(), path);
+
+}
+
+
+void userimagesdialog::temp()
+{
+
 }
 
