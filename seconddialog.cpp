@@ -1,13 +1,13 @@
 #include "myimagesdialog.h"
+#include "notificationdialog.h"
 #include "seconddialog.h"
 #include "ui_seconddialog.h"
 #include "usersdialog.h"
-#include "notificationdialog.h"
 
-SecondDialog::SecondDialog(QWidget *parent, Peer * peer)
+SecondDialog::SecondDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::SecondDialog), peer(peer) {
   ui->setupUi(this);
-  //peer = peer;
+  // peer = peer;
 }
 
 SecondDialog::~SecondDialog() { delete ui; }
@@ -26,9 +26,8 @@ void SecondDialog::on_push_images_clicked() {
   secd.exec();
 }
 
-void SecondDialog::on_push_notifications_clicked()
-{
-    NotificationDialog secd;
-    secd.setModal(true);
-    secd.exec();
+void SecondDialog::on_push_notifications_clicked() {
+  NotificationDialog secd;
+  secd.setModal(true);
+  secd.exec();
 }

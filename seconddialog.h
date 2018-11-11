@@ -11,7 +11,7 @@ class SecondDialog : public QDialog {
   Q_OBJECT
 
 public:
-  explicit SecondDialog(QWidget *parent = nullptr, Peer * peer = nullptr);
+  explicit SecondDialog(QWidget *parent = nullptr, Peer *peer = nullptr);
   ~SecondDialog();
 
 private slots:
@@ -25,7 +25,7 @@ private slots:
 
 private:
   Ui::SecondDialog *ui;
-  Peer* peer;
+  Peer *peer;
 };
 
 #endif // SECONDDIALOG_H

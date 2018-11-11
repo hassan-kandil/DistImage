@@ -46,10 +46,10 @@ void MainWindow::on_push_login_clicked() {
         ui->lbl_login_wrong->setText(QString("Welcome!"));
         ui->lbl_login_wrong->setStyleSheet("QLabel { color : green; }");
         // Open the next window
-        secdia = new SecondDialog(this, peer); // if want to distroy secdia with the main,
-                                     // put (this)
+        secdia = new SecondDialog(this, peer); // if want to distroy secdia with
+                                               // the main, put (this)
         secdia->show();
-        //this->close();
+        // this->close();
       } else if (sign_result == 3) {
         ui->lbl_login_wrong->setVisible(true);
         ui->lbl_login_wrong->setText(QString("No Special Characters!"));

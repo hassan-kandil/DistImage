@@ -14,11 +14,11 @@
 
 #include <fstream>
 #include <locale>
+#include <map>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <vector>
-#include <map>
 using namespace std;
 
 #define BUFFER_SIZE 50000
@@ -421,146 +421,138 @@ public:
     }
   }
 
+  map<string, vector<string>> getUsers() {
 
+    struct sockaddr_in yourSocketAddress, peerSocketAddress;
+    socklen_t peerAddrlen;
+    makeDestSA(&yourSocketAddress, dos_ip, dos_port);
 
-map<string, vector<string>> getUsers() {
+    char marshalled_massage[BUFFER_SIZE];
+    memset(marshalled_massage, 0, sizeof(marshalled_massage));
+    string marshalled_massage_s = "1100";
+    for (int j = 0; j < marshalled_massage_s.length(); j++) {
+      marshalled_massage[j] = marshalled_massage_s[j];
+    }
+    marshalled_massage[marshalled_massage_s.length()] = 0;
 
+    int r = 1;
 
-      struct sockaddr_in yourSocketAddress, peerSocketAddress;
-      socklen_t peerAddrlen;
-      makeDestSA(&yourSocketAddress, dos_ip, dos_port);
+    if ((n = sendto(sc->s, marshalled_massage,
+                    strlen((const char *)marshalled_massage), 0,
+                    (struct sockaddr *)&yourSocketAddress,
+                    sizeof(struct sockaddr_in))) < 0)
+      perror("Send failed\n");
 
-      char marshalled_massage[BUFFER_SIZE];
-      memset(marshalled_massage, 0, sizeof(marshalled_massage));
-      string marshalled_massage_s = "1100";
-      for (int j = 0; j < marshalled_massage_s.length(); j++) {
-        marshalled_massage[j] = marshalled_massage_s[j];
+    // Receive Timeout
+    peerAddrlen = sizeof(peerSocketAddress);
+
+    int n;
+
+    struct pollfd ss;
+    ss.fd = sc->s;
+    ss.events = POLLIN;
+    n = poll(&ss, 1, 1);
+
+    unsigned char little_buffer[LITTLE_BUFFER_SIZE];
+    memset(little_buffer, 0, sizeof(little_buffer));
+    if ((r = recvfrom(sc->s, little_buffer, LITTLE_BUFFER_SIZE, 0,
+                      (struct sockaddr *)&peerSocketAddress, &peerAddrlen)) < 0)
+      perror("Receive Failed");
+    int cc = 0;
+    string temp;
+    while (little_buffer[cc] != 0) {
+      temp.append(1, little_buffer[cc]);
+      cc++;
+    }
+
+    return retmap(temp);
+  }
+  /*
+  map <string, vector<string>> retmap (string s ){
+
+      map <string, vector<string>> mymap;
+
+      while(s!=""){
+
+          int len = s.find ("*");
+
+          string name = s.substr(0, len);
+
+          s=s.erase(0, len+1);
+
+          while (s[0]!='@'){
+
+              int imgl = s.find("#");
+
+              string img = s.substr(0, imgl);
+
+              s=s.erase(0, imgl+1);
+
+              mymap[name].push_back(img);
+
+          }
+
+          s= s.erase(0,1);
+
       }
-      marshalled_massage[marshalled_massage_s.length()] = 0;
 
-      int r = 1;
+      return mymap;
 
-      if ((n = sendto(sc->s, marshalled_massage,
-                      strlen((const char *)marshalled_massage), 0,
-                      (struct sockaddr *)&yourSocketAddress,
-                      sizeof(struct sockaddr_in))) < 0)
-        perror("Send failed\n");
+  }
+  */
 
-      // Receive Timeout
-      peerAddrlen = sizeof(peerSocketAddress);
+  map<string, vector<string>> retmap(string s) {
 
-      int n;
+    map<string, vector<string>> mymap;
 
-      struct pollfd ss;
-      ss.fd = sc->s;
-      ss.events = POLLIN;
-      n = poll(&ss, 1, 1);
+    while (s != "") {
 
+      int len = s.find("*");
 
-        unsigned char little_buffer[LITTLE_BUFFER_SIZE];
-        memset(little_buffer, 0, sizeof(little_buffer));
-        if ((r = recvfrom(sc->s, little_buffer, LITTLE_BUFFER_SIZE, 0,
-                          (struct sockaddr *)&peerSocketAddress,
-                          &peerAddrlen)) < 0)
-          perror("Receive Failed");
-        int cc = 0;
-        string temp;
-        while (little_buffer[cc] != 0) {
-                temp.append(1, little_buffer[cc]);
-                cc++;
-              }
+      string name = s.substr(0, len);
 
-        return retmap(temp);
-    }
-/*
-map <string, vector<string>> retmap (string s ){
+      s = s.erase(0, len + 1);
 
-    map <string, vector<string>> mymap;
+      int onlineln = s.find("&");
 
-    while(s!=""){
+      string online = s.substr(0, onlineln);
 
-        int len = s.find ("*");
+      s = s.erase(0, onlineln + 1);
 
-        string name = s.substr(0, len);
+      int ipln = s.find("&");
 
-        s=s.erase(0, len+1);
+      string ip = s.substr(0, ipln);
 
-        while (s[0]!='@'){
+      s = s.erase(0, ipln + 1);
 
-            int imgl = s.find("#");
+      int portln = s.find("&");
 
-            string img = s.substr(0, imgl);
+      string port = s.substr(0, portln);
 
-            s=s.erase(0, imgl+1);
+      s = s.erase(0, portln + 1);
 
-            mymap[name].push_back(img);
+      mymap[name].push_back(online);
 
-        }
+      mymap[name].push_back(ip);
 
-        s= s.erase(0,1);
+      mymap[name].push_back(port);
 
+      while (s[0] != '@') {
+
+        int imgl = s.find("#");
+
+        string img = s.substr(0, imgl);
+
+        s = s.erase(0, imgl + 1);
+
+        mymap[name].push_back(img);
+      }
+
+      s = s.erase(0, 1);
     }
 
     return mymap;
-
-}
-*/
-
-map <string, vector<string>> retmap (string s ){
-
-    map <string, vector<string>> mymap;
-
-    while(s!=""){
-
-        int len = s.find ("*");
-
-        string name = s.substr(0, len);
-
-        s=s.erase(0, len+1);
-
-        int onlineln= s.find("&");
-
-        string online= s.substr(0, onlineln);
-
-        s= s.erase(0, onlineln+1);
-
-        int ipln= s.find("&");
-
-        string ip= s.substr(0, ipln);
-
-        s= s.erase(0, ipln+1);
-
-        int portln= s.find("&");
-
-        string port= s.substr(0, portln);
-
-        s= s.erase(0, portln+1);
-
-        mymap[name].push_back(online);
-
-        mymap[name].push_back(ip);
-
-        mymap[name].push_back(port);
-
-        while (s[0]!='@'){
-
-            int imgl = s.find("#");
-
-            string img = s.substr(0, imgl);
-
-            s=s.erase(0, imgl+1);
-
-            mymap[name].push_back(img);
-
-        }
-
-        s= s.erase(0,1);
-
-    }
-
-    return mymap;
-
-}
+  }
 };
 
 #endif

@@ -7,18 +7,18 @@ namespace Ui {
 class userimagesdialog;
 }
 
-class userimagesdialog : public QDialog
-{
-    Q_OBJECT
+class userimagesdialog : public QDialog {
+  Q_OBJECT
 
 public:
-    explicit userimagesdialog(QWidget *parent = nullptr, Peer* peer = nullptr, QString s = "");
-    ~userimagesdialog();
+  explicit userimagesdialog(QWidget *parent = nullptr, Peer *peer = nullptr,
+                            QString s = "");
+  ~userimagesdialog();
 
 private:
-    Ui::userimagesdialog *ui;    
-    Peer * peer;
-    QString selectedUser;
+  Ui::userimagesdialog *ui;
+  Peer *peer;
+  QString selectedUser;
 };
 
 #endif // USERIMAGESDIALOG_H
