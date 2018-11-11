@@ -5,3 +5,5 @@ t
 v 
 s /home/refaay/distributed_pro/rooney.jpeg 
 r 
+noor /home/refaay/distributed_pro/rooney.jpeg  
+y /home/refaay/distributed_pro/rooney.jpeg 

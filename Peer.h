@@ -531,6 +531,45 @@ public:
     }
   */
 
+  void request_image(string selectedUser, string selectedImage, string path_full){
+
+      map<string, vector<string>> users;
+      users = this->getUsers();
+      vector<string> images;
+      images = users[selectedUser];
+      struct sockaddr_in yourSocketAddress, peerSocketAddress;
+      socklen_t peerAddrlen;
+
+      string temp_ip = images[1];
+       int remote_peer_port = std::stoi (images[2],nullptr,0);
+
+
+       char remote_peer_address[1024];
+       strcpy(remote_peer_address, temp_ip.c_str());
+
+
+      makeDestSA(&yourSocketAddress, remote_peer_address, remote_peer_port);
+
+      char marshalled_massage[BUFFER_SIZE];
+      memset(marshalled_massage, 0, sizeof(marshalled_massage));
+      string image_with_full_path = path_full+"/"+selectedImage;
+      string marshalled_massage_s = "2002"+this->username+"*"+image_with_full_path+"*";
+
+      for (int j = 0; j < marshalled_massage_s.length(); j++) {
+        marshalled_massage[j] = marshalled_massage_s[j];
+      }
+      marshalled_massage[marshalled_massage_s.length()] = 0;
+
+      int r = 1;
+
+      if ((n = sendto(sc->s, marshalled_massage,
+                      strlen((const char *)marshalled_massage), 0,
+                      (struct sockaddr *)&yourSocketAddress,
+                      sizeof(struct sockaddr_in))) < 0)
+        perror("Send failed\n");
+
+  }
+
   map<string, vector<string>> getUsers() {
 
     struct sockaddr_in yourSocketAddress, peerSocketAddress;
