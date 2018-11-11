@@ -3,3 +3,6 @@ e e
 w w
 io io
 tt tt
+aa aa
+po po
+fs fs

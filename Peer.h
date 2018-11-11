@@ -66,6 +66,7 @@ public:
   int r;
   struct sockaddr_in recievedAddr;
   socklen_t addresslength = sizeof(recievedAddr);
+  vector<string> requests_buffer;
 
   unsigned char Serverbuffer[BUFFER_SIZE];
   unsigned char Serverlittle_buffer[LITTLE_BUFFER_SIZE];
@@ -73,7 +74,7 @@ public:
     this->sv = new UDPSocketServer(dos_port);
     this->sc = new UDPSocketClient();
 
-
+    requests_buffer.push_back("hi");
   }
   ~Peer() {}
 
@@ -125,6 +126,7 @@ public:
 
   void listenPeer()
   {
+      cout<<"Ana Henaaaa Thread ba listen!! "<<endl;
       while(serveRequests())
       {
 
@@ -179,15 +181,18 @@ public:
   }
 
   void getRequest() {
-      printf("%s.\n", "Start of getRequest");
+      //cout << this->username;
+      //printf(" %s.\n", "Start of getRequest");
+        cout << "ana hen b get request lma t3bt" << endl;
           unsigned long current_received = 0;
 
           memset(Serverbuffer, 0, sizeof(Serverbuffer));
           // Receive Marshalled Message
 
-         r = recvfrom(sv->s, Serverbuffer, BUFFER_SIZE, 0, (struct sockaddr *)&recievedAddr, &addresslength);
-
-          printf("Received Message = %s.\n", Serverbuffer);
+        if ( (r = recvfrom(sv->s, Serverbuffer, BUFFER_SIZE, 0,
+                            (struct sockaddr *)&recievedAddr, &addresslength))<0)
+             cerr << "get request received failed!!" << endl;
+          cout<<"Received Message = %s.\n"<<Serverbuffer;
 
           inet_ntop(AF_INET, &(recievedAddr.sin_addr), sender_ip, INET_ADDRSTRLEN);
 
@@ -208,7 +213,7 @@ public:
 
           case 2002: // view request
           {
-
+                cout << "2002 request recieved"<< endl;
               int cc = 4;
               string username = "", imageName = "";
               while (Serverbuffer[cc] != '*') {
@@ -222,6 +227,7 @@ public:
               }
               cout << "User: " << username << endl;
               cout << "Requested Image Name: " << imageName << endl;
+              requests_buffer.push_back(username+" wants to view " +imageName);
               bool didApprove = true;
               //bool didApprove = grantRequest( username, imageName);
               // View Request reply
@@ -321,7 +327,7 @@ public:
     }
   }
 
-   bool serveRequests() { getRequest(); }
+   bool serveRequests() { cout<<"ana hena ba server requestss"<<endl; getRequest(); }
 
 
 
@@ -748,7 +754,7 @@ public:
 
        char remote_peer_address[1024];
        strcpy(remote_peer_address, temp_ip.c_str());
-
+        cout << "Remote Address "<< temp_ip << " remote port" << remote_peer_port << endl;
 
       makeDestSA(&yourSocketAddress, remote_peer_address, remote_peer_port);
 
@@ -756,7 +762,7 @@ public:
       memset(marshalled_massage, 0, sizeof(marshalled_massage));
       string image_with_full_path = path_full+"/"+selectedImage;
       string marshalled_massage_s = "2002"+this->username+"*"+image_with_full_path+"*";
-
+        cout << "marshalled messeage " << marshalled_massage_s<< endl;
       for (int j = 0; j < marshalled_massage_s.length(); j++) {
         marshalled_massage[j] = marshalled_massage_s[j];
       }

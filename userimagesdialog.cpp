@@ -34,6 +34,8 @@ userimagesdialog::~userimagesdialog() { delete ui; }
 
 void userimagesdialog::on_push_request_clicked()
 {
+
+    cout << "Request button clicked" << endl;
     map<string, vector<string>> users;
     map<string, vector<string>>::iterator it;
     users = peer->getUsers();
@@ -52,6 +54,7 @@ void userimagesdialog::on_push_request_clicked()
     }
 
     const QString &s = ui->listWidget->currentItem()->text();
+    cout << "selectedUser " << selectedUser.toUtf8().constData() << " parh" << path << endl;
     peer->request_image(selectedUser.toUtf8().constData(), s.toUtf8().constData(), path);
 
 }

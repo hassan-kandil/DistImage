@@ -1,6 +1,6 @@
 #ifndef NOTIFICATIONDIALOG_H
 #define NOTIFICATIONDIALOG_H
-
+#include "Peer.h"
 #include <QDialog>
 
 namespace Ui {
@@ -11,7 +11,7 @@ class NotificationDialog : public QDialog {
   Q_OBJECT
 
 public:
-  explicit NotificationDialog(QWidget *parent = nullptr);
+  explicit NotificationDialog(QWidget *parent = nullptr, Peer* peer = nullptr);
   ~NotificationDialog();
 
 private slots:
@@ -19,6 +19,8 @@ private slots:
 
 private:
   Ui::NotificationDialog *ui;
+  Peer *peer;
+  QString selectedRequest;
 };
 
 #endif // NOTIFICATIONDIALOG_H

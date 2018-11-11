@@ -11,6 +11,7 @@ SecondDialog::SecondDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::SecondDialog), peer(peer) {
   ui->setupUi(this);
   ui->lbl_upload_successful->setVisible(false);
+  cout<<"The thread is starting!! "<<endl;
   std::thread listenThread (&Peer::listenPeer, peer);
   listenThread.detach();
 }
@@ -39,7 +40,7 @@ void SecondDialog::on_push_images_clicked() {
 }
 
 void SecondDialog::on_push_notifications_clicked() {
-  NotificationDialog secd;
+  NotificationDialog secd(this, peer);
   secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
                       Qt::CustomizeWindowHint);
   secd.setModal(true);
