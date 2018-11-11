@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <string>
 #include <vector>
+#include <QProcess>
 using namespace std;
 
 #define BUFFER_SIZE 50000
@@ -31,11 +32,6 @@ using namespace std;
 static const std::string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                         "abcdefghijklmnopqrstuvwxyz"
                                         "0123456789+/";
-/*
-static inline bool is_base64(unsigned char c) {
-  return (isalnum(c) || (c == '+') || (c == '/'));
-}
-*/
 
 class Peer {
 private:
@@ -446,12 +442,15 @@ public:
     }
   }
 
-  int upload(string imagename) {
+  int upload(string imagename, string defaultimage) {
+    if(imagename == "" || defaultimage == "") return 6;
     bool nospecial = true;
-    for (int i = 0; i < imagename.length() && nospecial; i++) {
-      nospecial = isalnum(imagename[i]) || imagename[i] == '.';
+    /*for (int i = 0; i < imagename.length() && nospecial; i++) {
+      nospecial = isalnum(imagename[i]) || imagename[i] == '.' || imagename[i] == '/';
     }
-
+    for (int i = 0; i < defaultimage.length() && nospecial; i++) {
+      nospecial = isalnum(defaultimage[i]) || defaultimage[i] == '.' || imagename[i] == '/';
+    }*/
     if (!nospecial) { // special chars
       return 3;       // error code for special chars as they are delimiters
     } else {
@@ -494,8 +493,38 @@ public:
                           (struct sockaddr *)&peerSocketAddress,
                           &peerAddrlen)) < 0)
           perror("Receive Failed");
-        if (little_buffer[0] == '1')
-          return 1;
+        if (little_buffer[0] == '1'){
+          string command;
+          command = "cp " + defaultimage + " default.jpeg";
+          int nc = command.length();
+          char command_char_array[nc+1];
+
+          strcpy(command_char_array, command.c_str());
+          //int s = system(command_char_array);
+          QProcess::execute(QString::fromStdString("cp " + defaultimage + " /home/refaay/distributed_pro/default.jpeg"));
+            string command2;
+          command2 = "steghide embed -cf /home/refaay/distributed_pro/default.jpeg -ef " + imagename + " -p hk ";
+           // QProcess::execute("steghide embed -cf default.jpeg -ef " + imagename + " -p hk "));
+            //nc = command2.length();
+            //char command_char_array2[nc+1];
+
+            //strcpy(command_char_array2, command2.c_str());
+            //s = system(command_char_array2);
+
+          /*string command, defaultPath,privatePath;
+              defaultPath = "river.jpeg";
+              privatePath = "rooney.jpeg";
+              command = "steghide embed -cf " + defaultPath + " -ef " + privatePath + " -p hk ";
+
+            int nc = command.length();
+            char command_char_array[nc+1];
+
+            strcpy(command_char_array, command.c_str());
+              int s = system(command_char_array);
+*/
+            return 1;
+
+        }
         else
           return 0;
       }

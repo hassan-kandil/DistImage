@@ -64,7 +64,7 @@ void MainWindow::on_push_login_clicked() {
         ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
       } else if (sign_result == 0) {
         ui->lbl_login_wrong->setVisible(true);
-        ui->lbl_login_wrong->setText(QString("You are not register!"));
+        ui->lbl_login_wrong->setText(QString("You are not registered!"));
         ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
       } else if (sign_result == 5) {
         ui->lbl_login_wrong->setVisible(true);
