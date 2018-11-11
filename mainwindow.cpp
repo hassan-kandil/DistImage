@@ -42,6 +42,7 @@ void MainWindow::on_push_login_clicked() {
 
       int sign_result = peer->login(username, password);
       if (sign_result == 1) { // Logged in correctly
+        //peer->peerServer = new Server(peer->dos_port);
         peer->username = username;
         peer->password = password;
         ui->lbl_login_wrong->setVisible(true);
@@ -49,9 +50,7 @@ void MainWindow::on_push_login_clicked() {
         ui->lbl_login_wrong->setStyleSheet("QLabel { color : green; }");
         // Open the next window
         SecondDialog secdia(this, peer);
-        // secdia = new SecondDialog // if want to distroy secdia with
-        // the main, put (this)
-        // secdia->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+
         secdia.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
                               Qt::CustomizeWindowHint);
         secdia.setModal(true);

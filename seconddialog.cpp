@@ -3,12 +3,16 @@
 #include "seconddialog.h"
 #include "ui_seconddialog.h"
 #include "usersdialog.h"
+#include <thread>
+
+
 
 SecondDialog::SecondDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::SecondDialog), peer(peer) {
   ui->setupUi(this);
   ui->lbl_upload_successful->setVisible(false);
-  // peer = peer;
+  std::thread listenThread (&Peer::listenPeer, peer);
+  listenThread.detach();
 }
 
 SecondDialog::~SecondDialog() { delete ui; }

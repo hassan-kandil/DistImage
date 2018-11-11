@@ -40,7 +40,9 @@ HEADERS += \
     myimagesdialog.h \
     Peer.h \
     userimagesdialog.h \
-    notificationdialog.h
+    notificationdialog.h \
+    Server.h \
+    Client.h
 
 FORMS += \
         mainwindow.ui \

@@ -1,5 +1,6 @@
 #include "UDPSocketClient.h"
 #include "base64.h"
+//#include "Client.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -11,6 +12,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include<thread>
 
 #include <QProcess>
 #include <fstream>
@@ -20,6 +22,11 @@
 #include <stdlib.h>
 #include <string>
 #include <vector>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+#include "UDPSocketServer.h"
+//#include "Server.h"
 using namespace std;
 
 #define BUFFER_SIZE 50000
@@ -27,25 +34,47 @@ using namespace std;
 #ifndef PEER_H
 #define PEER_H
 #define LITTLE_BUFFER_SIZE 50000
-using namespace std;
+
 
 static const std::string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                         "abcdefghijklmnopqrstuvwxyz"
                                         "0123456789+/";
 
+
+static inline bool is_base64(unsigned char c) {
+  return (isalnum(c) || (c == '+') || (c == '/'));
+}
+
+using namespace std;
+
+
+
 class Peer {
 private:
+    char sender_ip[INET_ADDRSTRLEN];
+    uint16_t sender_port;
 public:
   char *dos_ip;
   int dos_port;
-  UDPSocketClient *sc;
-  int s, n;
+   UDPSocketClient *sc;
+   UDPSocketServer * sv;
+   int s, n;
   string username, password;
   unsigned char *buffer[BUFFER_SIZE];
-  Peer() {}
+  int r;
+  struct sockaddr_in recievedAddr;
+  socklen_t addresslength = sizeof(recievedAddr);
+
+  unsigned char Serverbuffer[BUFFER_SIZE];
+  unsigned char Serverlittle_buffer[LITTLE_BUFFER_SIZE];
+  Peer() {
+
+
+
+  }
   ~Peer() {}
 
-  std::string base64_encode(unsigned char const *bytes_to_encode,
+  static std::string base64_encode(unsigned char const *bytes_to_encode,
                             unsigned int in_len) {
     std::string ret;
     int i = 0;
@@ -89,7 +118,261 @@ public:
     return ret;
   }
 
-  bool sendImage(char *machine, int port, char message[]) {
+
+
+  void listenPeer()
+  {
+      while(serveRequests())
+      {
+
+      }
+  }
+
+  //Server Functions Start HEREEE
+
+
+  static std::string base64_decode(std::string const &encoded_string) {
+    int in_len = encoded_string.size();
+    int i = 0;
+    int j = 0;
+    int in_ = 0;
+    unsigned char char_array_4[4], char_array_3[3];
+    std::string ret;
+
+    while (in_len-- && (encoded_string[in_] != '=') &&
+           is_base64(encoded_string[in_])) {
+      char_array_4[i++] = encoded_string[in_];
+      in_++;
+      if (i == 4) {
+        for (i = 0; i < 4; i++)
+          char_array_4[i] = base64_chars.find(char_array_4[i]);
+
+        char_array_3[0] =
+            (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+        char_array_3[1] =
+            ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+        char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+
+        for (i = 0; (i < 3); i++)
+          ret += char_array_3[i];
+        i = 0;
+      }
+    }
+
+    if (i) {
+      for (j = 0; j < i; j++)
+        char_array_4[j] = base64_chars.find(char_array_4[j]);
+
+      char_array_3[0] =
+          (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+      char_array_3[1] =
+          ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+
+      for (j = 0; (j < i - 1); j++)
+        ret += char_array_3[j];
+    }
+
+    return ret;
+  }
+
+  void getRequest() {
+      printf("%s.\n", "Start of getRequest");
+          unsigned long current_received = 0;
+
+          memset(Serverbuffer, 0, sizeof(Serverbuffer));
+          // Receive Marshalled Message
+
+         r = recvfrom(sv->s, Serverbuffer, BUFFER_SIZE, 0,
+                       (struct sockaddr *)&recievedAddr, &addresslength);
+
+          printf("Received Message = %s.\n", Serverbuffer);
+
+          inet_ntop(AF_INET, &(recievedAddr.sin_addr), sender_ip, INET_ADDRSTRLEN);
+
+          sender_port = htons((&recievedAddr)->sin_port);
+
+          printf("Sign up IP:%s & port: %d\n", sender_ip, sender_port);
+
+          // Get operation ID as unsigned long
+          unsigned long op_id = 0;
+          for (int i = 0; i < 4 && Serverbuffer[i] != '\0'; i++) {
+            op_id *= 10;
+            op_id += Serverbuffer[i] - '0';
+            // cout << op_id << endl;
+          }
+
+          printf("Received op_id = %lu.\n", op_id);
+          switch (op_id) {
+
+          case 2002: // view request
+          {
+
+              int cc = 4;
+              string username = "", imageName = "";
+              while (Serverbuffer[cc] != '*') {
+                username.append(1, Serverbuffer[cc]);
+                cc++;
+              }
+              cc++;
+              while (Serverbuffer[cc] != '*') {
+                imageName.append(1, Serverbuffer[cc]);
+                cc++;
+              }
+              cout << "User: " << username << endl;
+              cout << "Requested Image Name: " << imageName << endl;
+              bool didApprove = true;
+              //bool didApprove = grantRequest( username, imageName);
+              // View Request reply
+              memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
+              if (didApprove)
+              {
+                  Serverlittle_buffer[0] = '1';
+              }
+              else
+              {
+                Serverlittle_buffer[0] = '0';
+              }
+              // sprintf((char *)(Serverlittle_buffer), "%d", didsign);
+              Serverlittle_buffer[1] = 0;
+              if (sendto(sv->s, Serverlittle_buffer, strlen((const char *)Serverlittle_buffer), 0,
+                         (struct sockaddr *)&recievedAddr, addresslength) < 0) {
+                perror("View Request reply sendto failed");
+              }
+
+          } break; // end of view
+
+          default:
+            break;
+          }
+
+          //Receiving Image
+    /*printf("%s.\n", "Start of getRequest");
+    unsigned long current_received = 0;
+    memset(buffer, 0, sizeof(buffer));
+    std::ofstream os("new_2.jpeg");
+    memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
+    // Receive Image Length
+    r = recvfrom(sv->s, Serverlittle_buffer, LITTLE_BUFFER_SIZE, 0,
+                 (struct sockaddr *)&recievedAddr, &addresslength);
+    printf("Received Length of Encoded Message (char[]) = %s.\n",
+           Serverlittle_buffer);
+    // Change to unsigned long
+    unsigned long received_length = 0;
+    for (int i = 0; i < LITTLE_BUFFER_SIZE && Serverlittle_buffer[i] != '\0'; i++) {
+      received_length *= 10;
+      received_length += Serverlittle_buffer[i] - '0';
+    }
+
+    // Reply with Length
+    memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
+    sprintf((char *)(Serverlittle_buffer), "%lu", received_length);
+    if (sendto(sv->s, Serverlittle_buffer, strlen((const char *)Serverlittle_buffer), 0,
+               (struct sockaddr *)&recievedAddr, addresslength) < 0) {
+      perror("length reply sendto failed");
+    }
+
+    printf("Received Length of Encoded Message (lu) = %lu.\n", received_length);
+
+    // Start Receiving Image
+    while (current_received < received_length) {
+      printf("%s\n", "Loop Start:");
+      memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
+
+      r = recvfrom(sv->s, Serverlittle_buffer, LITTLE_BUFFER_SIZE, 0,
+                   (struct sockaddr *)&recievedAddr, &addresslength);
+
+      current_received += r;
+      printf("Received total %lu encoded bytes.\n", current_received);
+      std::string sName(reinterpret_cast<char *>(Serverlittle_buffer));
+      string y = base64_decode(sName);
+
+      if (r > 0)
+        os << y;
+      memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
+      sprintf((char *)(Serverlittle_buffer), "%lu", current_received);
+
+      if (sendto(sv->s, Serverlittle_buffer, LITTLE_BUFFER_SIZE, 0,
+                 (struct sockaddr *)&recievedAddr, addresslength) < 0) {
+        perror("sendto failed");
+      }
+    }
+    os.close();
+
+
+
+    // Steganography
+    string extract_command, defaultPath = "default.jpeg";
+    extract_command = "steghide extract -sf " + defaultPath + " -p hk";
+    int n = extract_command.length();
+    char char_array[n + 1];
+
+    strcpy(char_array, extract_command.c_str());
+    system(char_array);
+    */
+  }
+
+  void sendReply() {
+    if (sendto(sv->s, buffer, r, 0, (struct sockaddr *)&recievedAddr,
+               addresslength) < 0) {
+      perror("sendto failed");
+    }
+  }
+
+   bool serveRequests() { getRequest(); }
+
+
+
+
+  //End of Server Functions
+  //////////////// //
+  static void sendImage(Peer * p,string privatePath, string name,int port){
+
+
+    string command, defaultPath;
+    char* my_name = new char[name.size() + 1];
+    name.copy(my_name, name.size() + 1);
+    my_name[name.size()] = '\0';
+    defaultPath = "default.jpeg";
+    command = "steghide embed -cf " + defaultPath + " -ef " + privatePath + " -p hk ";
+
+    int nc = command.length();
+    char command_char_array[nc+1];
+
+    strcpy(command_char_array, command.c_str());
+    int s = system(command_char_array);
+
+    std::ifstream is ("default.jpeg", std::ifstream::binary);
+
+    if (is) {
+       is.seekg (0, is.end); // get length of file
+       unsigned int length = is.tellg();
+       is.seekg (0, is.beg);
+
+
+      char * buffer = new  char [length]; // allocate memory
+      is.read (buffer,length); // read data as a block
+      is.close();
+      string x = base64_encode( (const unsigned char *)buffer, length);
+      int n = x.length();
+      char char_array[n+1];
+      strcpy(char_array, x.c_str());
+      p->DoOperation(my_name, port, char_array);
+    }
+    else
+      cout << "could'nt open file" << endl;
+
+
+
+
+  }
+  bool sendImageThread(string hostname, int port, string imageName) {
+
+      std::thread t1(sendImage,this,move(imageName), move(hostname),move(port));
+      t1.detach();
+
+  }
+
+   bool DoOperation(char *machine, int port, char message[]) {
     printf("%s.\n", "Start of DoOperation");
     struct sockaddr_in yourSocketAddress, peerSocketAddress;
     socklen_t peerAddrlen;
@@ -173,91 +456,7 @@ public:
     printf("Current %lu.\n", current_length);
   }
 
-  bool DoOperation(char *machine, int port, char message[]) {
-    printf("%s.\n", "Start of DoOperation");
-    struct sockaddr_in yourSocketAddress, peerSocketAddress;
-    socklen_t peerAddrlen;
-    makeDestSA(&yourSocketAddress, machine, port);
-
-    char char_array[10001];
-
-    unsigned long current_length = 0;
-    int r = 1;
-    unsigned char little_buffer[10];
-    memset(little_buffer, 0, sizeof(little_buffer));
-
-    printf("Length of Encoded Message = %lu.\n", strlen(message));
-
-    // Send Image Length
-    unsigned long received_length = 0;
-
-    while (received_length != strlen(message)) { // != strlen(message)
-      received_length = 0;
-      sprintf((char *)little_buffer, "%lu", strlen(message));
-
-      if ((n = sendto(sc->s, little_buffer, strlen((const char *)little_buffer),
-                      0, (struct sockaddr *)&yourSocketAddress,
-                      sizeof(struct sockaddr_in))) < 0)
-        perror("Send failed\n");
-
-      if ((r = recvfrom(sc->s, little_buffer, 10, 0,
-                        (struct sockaddr *)&peerSocketAddress, &peerAddrlen)) <
-          0)
-        perror("Receive Failed");
-
-      // Change to unsigned long
-      for (int i = 0; i < 10 && little_buffer[i] != '\0'; i++) {
-        received_length *= 10;
-        received_length += little_buffer[i] - '0';
-      }
-    }
-
-    printf("Received Length of Encoded Message = %s.\n", little_buffer);
-    unsigned long fakka = strlen(message) % 10000; // last image chunk
-
-    // Start Sending Image
-    while (current_length <
-           strlen(message)) { //  && r == 1 && little_buffer[0] == '1'
-      printf("%s\n", "Loop Start:");
-      if (current_length + 10000 < strlen(message)) {
-        memcpy(char_array, message + (current_length), 10000);
-        current_length += 10000;
-        char_array[10000] = 0;
-      } else {
-        memcpy(char_array, message + (current_length), fakka);
-        current_length += fakka;
-        char_array[fakka] = 0; // C-String terminate
-      }
-      if ((n = sendto(sc->s, char_array, strlen(char_array), 0,
-                      (struct sockaddr *)&yourSocketAddress,
-                      sizeof(struct sockaddr_in))) < 0)
-        perror("Send failed\n");
-      printf("Current Sent Total = %lu.\n", current_length);
-
-      memset(little_buffer, 0, sizeof(little_buffer));
-      if ((r = recvfrom(sc->s, little_buffer, 10, 0,
-                        (struct sockaddr *)&peerSocketAddress, &peerAddrlen)) <
-          0)
-        perror("Receive Failed");
-      // Change to unsigned long
-      received_length = 0;
-      for (int i = 0; i < 10 && little_buffer[i] != '\0'; i++) {
-        received_length *= 10;
-        received_length += little_buffer[i] - '0';
-      }
-
-      if (received_length != current_length) {
-        perror("Dropped packets! received_length != current_length.");
-        current_length = received_length; // Drop Tolerance
-      }
-
-      printf("Current Received Total %lu.\n", current_length);
-    }
-    printf("%s", "Message Sent. ");
-    printf("Current %lu.\n", current_length);
-  }
-
-  void makeDestSA(struct sockaddr_in *sa, char *hostname, int port) {
+  static void makeDestSA(struct sockaddr_in *sa, char *hostname, int port) {
     struct hostent *host;
     sa->sin_family = AF_INET;
     if ((host = gethostbyname(hostname)) == NULL) {
