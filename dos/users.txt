@@ -1,0 +1,7 @@
+w /home/refaay/distributed_pro/rooney.jpeg /home/refaay/distribued_pro/rooney.jpeg 
+q /home/refaay/distributed_pro/rooney.jpeg 
+e 
+t 
+v 
+s /home/refaay/distributed_pro/rooney.jpeg 
+r 

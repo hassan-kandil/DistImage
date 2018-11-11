@@ -7,6 +7,7 @@ string selected;
 UsersDialog::UsersDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::UsersDialog), peer(peer) {
   ui->setupUi(this);
+  ui->lbl_offline->setVisible(false);
   map<string, vector<string>> users;
   map<string, vector<string>>::iterator it;
   users = peer->getUsers();
@@ -31,6 +32,12 @@ UsersDialog::UsersDialog(QWidget *parent, Peer *peer)
 UsersDialog::~UsersDialog() { delete ui; }
 
 void UsersDialog::on_push_view_clicked() {
+  if (ui->listWidget->currentItem()->textColor() == Qt::red) {
+    ui->lbl_offline->setVisible(true);
+    ui->lbl_offline->setStyleSheet("QLabel { color : red; }");
+  } else {
+    ui->lbl_offline->setVisible(false);
+  }
   const QString &s = ui->listWidget->currentItem()->text();
   secdia = new userimagesdialog(this, peer, s); // if want to distroy secdia
                                                 // with the main, put (this)
@@ -39,4 +46,20 @@ void UsersDialog::on_push_view_clicked() {
   secdia->show();
 }
 
-void UsersDialog::on_push_refresh_clicked() {}
+void UsersDialog::on_push_refresh_clicked() {
+  ui->listWidget->clear();
+  map<string, vector<string>> users;
+  map<string, vector<string>>::iterator it;
+  users = peer->getUsers();
+  int i = 0;
+  for (it = users.begin(); it != users.end(); it++) {
+    if (it->second[0].at((0)) == '1') {
+      ui->listWidget->addItem(QString::fromStdString(it->first));
+      ui->listWidget->item(i)->setTextColor(Qt::green);
+    } else {
+      ui->listWidget->addItem(QString::fromStdString(it->first));
+      ui->listWidget->item(i)->setTextColor(Qt::red);
+    }
+    i = i + 1;
+  }
+}

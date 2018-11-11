@@ -79,7 +79,7 @@
      <item>
       <widget class="QLineEdit" name="line_request">
        <property name="text">
-        <string>No. Of Views</string>
+        <string/>
        </property>
       </widget>
      </item>
@@ -178,8 +178,8 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>525</x>
-     <y>22</y>
+     <x>489</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
      <x>383</x>

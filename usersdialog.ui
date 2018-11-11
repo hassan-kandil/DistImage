@@ -85,6 +85,13 @@
      </item>
     </layout>
    </item>
+   <item>
+    <widget class="QLabel" name="lbl_offline">
+     <property name="text">
+      <string>Selected User is Offline!</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <tabstops>

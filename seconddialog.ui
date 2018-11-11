@@ -180,6 +180,20 @@
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QLabel" name="lbl_upload_path">
+       <property name="text">
+        <string>Upload Images Path:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="line_upload_path"/>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <spacer name="horizontalSpacer_6">
@@ -204,7 +218,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="line_upload"/>
+        <widget class="QLineEdit" name="line_upload_name"/>
        </item>
       </layout>
      </item>
@@ -300,14 +314,16 @@
   <tabstop>push_users</tabstop>
   <tabstop>push_images</tabstop>
   <tabstop>push_notifications</tabstop>
-  <tabstop>line_upload</tabstop>
+  <tabstop>line_upload_path</tabstop>
+  <tabstop>line_upload_name</tabstop>
+  <tabstop>line_upload_default</tabstop>
   <tabstop>push_upload</tabstop>
   <tabstop>push_logout</tabstop>
  </tabstops>
  <resources/>
  <connections>
   <connection>
-   <sender>line_upload</sender>
+   <sender>line_upload_name</sender>
    <signal>returnPressed()</signal>
    <receiver>push_upload</receiver>
    <slot>click()</slot>
@@ -317,8 +333,24 @@
      <y>452</y>
     </hint>
     <hint type="destinationlabel">
-     <x>361</x>
+     <x>464</x>
+     <y>448</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>line_upload_default</sender>
+   <signal>returnPressed()</signal>
+   <receiver>push_upload</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>293</x>
      <y>446</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>412</x>
+     <y>438</y>
     </hint>
    </hints>
   </connection>
