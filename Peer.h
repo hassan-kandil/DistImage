@@ -53,12 +53,19 @@ class Peer {
 private:
     char sender_ip[INET_ADDRSTRLEN];
     uint16_t sender_port;
+
 public:
+    UDPSocketServer * sv;
   char *dos_ip;
   int dos_port;
    UDPSocketClient *sc;
+<<<<<<< HEAD
    UDPSocketServer * sv;
   int n;
+=======
+
+   int s, n;
+>>>>>>> e88443f2da4368f5e7120daf2128e5abe68ee2cc
   string username, password;
   unsigned char buffer[BUFFER_SIZE];
   int r;
@@ -67,7 +74,8 @@ public:
   unsigned char Serverbuffer[BUFFER_SIZE];
   unsigned char Serverlittle_buffer[LITTLE_BUFFER_SIZE];
   Peer() {
-
+    this->sv = new UDPSocketServer(dos_port);
+    this->sc = new UDPSocketClient();
 
 
   }
@@ -186,7 +194,11 @@ public:
                        (struct sockaddr *)&recievedAddr, &addresslength))<0)
 
 
+<<<<<<< HEAD
              perror("Thread Receive Failed\n");
+=======
+         r = recvfrom(sv->s, Serverbuffer, BUFFER_SIZE, 0, (struct sockaddr *)&recievedAddr, &addresslength);
+>>>>>>> e88443f2da4368f5e7120daf2128e5abe68ee2cc
 
           printf("Received Message = %s.\n", Serverbuffer);
 
@@ -229,6 +241,7 @@ public:
               memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
               if (didApprove)
               {
+                  sendImageThread(sender_ip,sender_port,imageName);
                   Serverlittle_buffer[0] = '1';
               }
               else
@@ -734,6 +747,45 @@ public:
       return y;
     }
   */
+
+  void request_image(string selectedUser, string selectedImage, string path_full){
+
+      map<string, vector<string>> users;
+      users = this->getUsers();
+      vector<string> images;
+      images = users[selectedUser];
+      struct sockaddr_in yourSocketAddress, peerSocketAddress;
+      socklen_t peerAddrlen;
+
+      string temp_ip = images[1];
+       int remote_peer_port = std::stoi (images[2],nullptr,0);
+
+
+       char remote_peer_address[1024];
+       strcpy(remote_peer_address, temp_ip.c_str());
+
+
+      makeDestSA(&yourSocketAddress, remote_peer_address, remote_peer_port);
+
+      char marshalled_massage[BUFFER_SIZE];
+      memset(marshalled_massage, 0, sizeof(marshalled_massage));
+      string image_with_full_path = path_full+"/"+selectedImage;
+      string marshalled_massage_s = "2002"+this->username+"*"+image_with_full_path+"*";
+
+      for (int j = 0; j < marshalled_massage_s.length(); j++) {
+        marshalled_massage[j] = marshalled_massage_s[j];
+      }
+      marshalled_massage[marshalled_massage_s.length()] = 0;
+
+      int r = 1;
+
+      if ((n = sendto(sc->s, marshalled_massage,
+                      strlen((const char *)marshalled_massage), 0,
+                      (struct sockaddr *)&yourSocketAddress,
+                      sizeof(struct sockaddr_in))) < 0)
+        perror("Send failed\n");
+
+  }
 
   map<string, vector<string>> getUsers() {
 

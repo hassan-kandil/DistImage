@@ -13,7 +13,11 @@ class userimagesdialog : public QDialog {
 public:
   explicit userimagesdialog(QWidget *parent = nullptr, Peer *peer = nullptr,
                             QString s = "");
+    void temp();
   ~userimagesdialog();
+
+private slots:
+    void on_push_request_clicked();
 
 private:
   Ui::userimagesdialog *ui;
