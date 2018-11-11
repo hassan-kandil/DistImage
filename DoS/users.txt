@@ -1,14 +1,3 @@
-rrr x.png y.jpeg 
-uuu gh.png jkl.png 
-uuuu jhdf.png uhdg.png 
-pp 
-uy 
-hgh 
-ahmed 
-ahmed1 
-ppo 
-<<<<<<< HEAD
-hawas h.png 
-=======
-qa 
->>>>>>> c2c739fbd591c04d4812108798f3ee95d080bf3e
+Ahmed 
+ref 
+Doka x.jpg x.jpg j.jpg j.jpg q.jpg hh.png w.jpg 

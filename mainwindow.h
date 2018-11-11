@@ -24,7 +24,6 @@ private slots:
 
 private:
   Ui::MainWindow *ui;
-  SecondDialog *secdia;
   Peer *peer;
 };
 

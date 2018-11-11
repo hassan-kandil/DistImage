@@ -44,6 +44,7 @@ public:
   int dos_port;
   UDPSocketClient *sc;
   int s, n;
+  string username, password;
   unsigned char *buffer[BUFFER_SIZE];
   Peer() {}
   ~Peer() {}
@@ -275,13 +276,9 @@ public:
     bool nospecial = true;
     for (int i = 0; i < username.length() && nospecial; i++) {
       nospecial = isalnum(username[i]);
-      if (!nospecial)
-        cout << username[i] << endl;
     }
     for (int i = 0; i < password.length() && nospecial; i++) {
       nospecial = isalnum(password[i]);
-      if (!nospecial)
-        cout << password[i] << endl;
     }
     if (!nospecial) { // special chars
       return 3;       // error code for special chars as they are delimiters
@@ -300,12 +297,6 @@ public:
 
       int r = 1;
 
-      // Send Image Length
-
-      /*while (received_length != strlen(message)) {
-        received_length = 0;
-        sprintf((char *)little_buffer, "%lu", strlen(message));
-      */
       if ((n = sendto(sc->s, marshalled_massage,
                       strlen((const char *)marshalled_massage), 0,
                       (struct sockaddr *)&yourSocketAddress,
@@ -340,30 +331,16 @@ public:
         else
           return 8;
       }
-
-      /*
-            // Change to unsigned long
-            for (int i = 0; i < 10 && little_buffer[i] != '\0'; i++) {
-              received_length *= 10;
-              received_length += little_buffer[i] - '0';
-            }
-          }
-      */
     }
-    // cout << "End of sign_up.\n";
   }
 
   int login(string username, string password) {
     bool nospecial = true;
     for (int i = 0; i < username.length() && nospecial; i++) {
       nospecial = isalnum(username[i]);
-      if (!nospecial)
-        cout << username[i] << endl;
     }
     for (int i = 0; i < password.length() && nospecial; i++) {
       nospecial = isalnum(password[i]);
-      if (!nospecial)
-        cout << password[i] << endl;
     }
     if (!nospecial) { // special chars
       return 3;       // error code for special chars as they are delimiters
@@ -421,6 +398,110 @@ public:
     }
   }
 
+  int logout() {
+
+    struct sockaddr_in yourSocketAddress, peerSocketAddress;
+    socklen_t peerAddrlen;
+    makeDestSA(&yourSocketAddress, dos_ip, dos_port);
+
+    char marshalled_massage[BUFFER_SIZE];
+    memset(marshalled_massage, 0, sizeof(marshalled_massage));
+    string marshalled_massage_s = "1003" + this->username;
+    for (int j = 0; j < marshalled_massage_s.length(); j++) {
+      marshalled_massage[j] = marshalled_massage_s[j];
+    }
+    marshalled_massage[marshalled_massage_s.length()] = 0;
+
+    int r = 1;
+
+    if ((n = sendto(sc->s, marshalled_massage,
+                    strlen((const char *)marshalled_massage), 0,
+                    (struct sockaddr *)&yourSocketAddress,
+                    sizeof(struct sockaddr_in))) < 0)
+      perror("Send failed\n");
+
+    // Receive Timeout
+    peerAddrlen = sizeof(peerSocketAddress);
+
+    int n;
+
+    struct pollfd ss;
+    ss.fd = sc->s;
+    ss.events = POLLIN;
+    n = poll(&ss, 1, 1);
+    if (n == 0 || n == -1) {
+      // printf("Timeout!!\n");
+      return 2;
+    } else {
+      unsigned char little_buffer[10];
+      memset(little_buffer, 0, sizeof(little_buffer));
+      if ((r = recvfrom(sc->s, little_buffer, 10, 0,
+                        (struct sockaddr *)&peerSocketAddress, &peerAddrlen)) <
+          0)
+        perror("Receive Failed");
+      if (little_buffer[0] == '1')
+        return 1;
+      else
+        return 0;
+    }
+  }
+
+  int upload(string imagename) {
+    bool nospecial = true;
+    for (int i = 0; i < imagename.length() && nospecial; i++) {
+      nospecial = isalnum(imagename[i]) || imagename[i] == '.';
+    }
+
+    if (!nospecial) { // special chars
+      return 3;       // error code for special chars as they are delimiters
+    } else {
+      struct sockaddr_in yourSocketAddress, peerSocketAddress;
+      socklen_t peerAddrlen;
+      makeDestSA(&yourSocketAddress, dos_ip, dos_port);
+
+      char marshalled_massage[BUFFER_SIZE];
+      memset(marshalled_massage, 0, sizeof(marshalled_massage));
+      string marshalled_massage_s = "2001" + this->username + "*" + imagename;
+      for (int j = 0; j < marshalled_massage_s.length(); j++) {
+        marshalled_massage[j] = marshalled_massage_s[j];
+      }
+      marshalled_massage[marshalled_massage_s.length()] = 0;
+
+      int r = 1;
+
+      if ((n = sendto(sc->s, marshalled_massage,
+                      strlen((const char *)marshalled_massage), 0,
+                      (struct sockaddr *)&yourSocketAddress,
+                      sizeof(struct sockaddr_in))) < 0)
+        perror("Send failed\n");
+
+      // Receive Timeout
+      peerAddrlen = sizeof(peerSocketAddress);
+
+      int n;
+
+      struct pollfd ss;
+      ss.fd = sc->s;
+      ss.events = POLLIN;
+      n = poll(&ss, 1, 1);
+      if (n == 0 || n == -1) {
+        // printf("Timeout!!\n");
+        return 2;
+      } else {
+        unsigned char little_buffer[10];
+        memset(little_buffer, 0, sizeof(little_buffer));
+        if ((r = recvfrom(sc->s, little_buffer, 10, 0,
+                          (struct sockaddr *)&peerSocketAddress,
+                          &peerAddrlen)) < 0)
+          perror("Receive Failed");
+        if (little_buffer[0] == '1')
+          return 1;
+        else
+          return 0;
+      }
+    }
+  }
+
   map<string, vector<string>> getUsers() {
 
     struct sockaddr_in yourSocketAddress, peerSocketAddress;
@@ -467,39 +548,6 @@ public:
 
     return retmap(temp);
   }
-  /*
-  map <string, vector<string>> retmap (string s ){
-
-      map <string, vector<string>> mymap;
-
-      while(s!=""){
-
-          int len = s.find ("*");
-
-          string name = s.substr(0, len);
-
-          s=s.erase(0, len+1);
-
-          while (s[0]!='@'){
-
-              int imgl = s.find("#");
-
-              string img = s.substr(0, imgl);
-
-              s=s.erase(0, imgl+1);
-
-              mymap[name].push_back(img);
-
-          }
-
-          s= s.erase(0,1);
-
-      }
-
-      return mymap;
-
-  }
-  */
 
   map<string, vector<string>> retmap(string s) {
 

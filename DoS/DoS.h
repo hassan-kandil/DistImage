@@ -171,6 +171,35 @@ public:
 
     } break; // end of login
 
+    case 1003: // logout
+    {
+      int cc = 4;
+      string username = "";
+      while (buffer[cc] != 0) {
+        username.append(1, buffer[cc]);
+        cc++;
+      }
+
+      cout << "User: " << username << endl;
+
+      bool wasin = logout(username);
+
+      cout << "Logged out? " << wasin << endl;
+
+      // Sign Up reply
+      memset(little_buffer, 0, sizeof(little_buffer));
+      if (wasin == true)
+        little_buffer[0] = '1';
+      else
+        little_buffer[0] = '0';
+      little_buffer[1] = 0;
+      if (sendto(sv->s, little_buffer, strlen((const char *)little_buffer), 0,
+                 (struct sockaddr *)&recievedAddr, addresslength) < 0) {
+        perror("Sign up reply sendto failed");
+      }
+
+    } break; // end of logout
+
     case 1100: // view
     {
 
@@ -190,9 +219,38 @@ public:
 
     } break; // end of view
 
-    case 2001:
+    case 2001: // upload
+    {
+      int cc = 4;
+      string username = "", imagename = "";
+      while (buffer[cc] != '*') {
+        username.append(1, buffer[cc]);
+        cc++;
+      }
+      cc++;
+      while (buffer[cc] != 0) {
+        imagename.append(1, buffer[cc]);
+        cc++;
+      }
+      cout << "User: " << username << endl;
+      cout << "Imagename: " << imagename << endl;
+      int uploaded = upload(username, imagename);
 
-      break; // upload image
+      cout << "Uploaded? " << uploaded << endl;
+      // Sign Up reply
+      memset(little_buffer, 0, sizeof(little_buffer));
+      if (uploaded == 1)
+        little_buffer[0] = '1';
+      else
+        little_buffer[0] = '0';
+      little_buffer[1] = 0;
+      if (sendto(sv->s, little_buffer, strlen((const char *)little_buffer), 0,
+                 (struct sockaddr *)&recievedAddr, addresslength) < 0) {
+        perror("Sign up reply sendto failed");
+      }
+
+    } break; // end of upload
+
     default:
       break;
     }
@@ -437,10 +495,55 @@ public:
     }
   }
 
-  void logout(string username) {
+  bool logout(string username) {
+    bool wasin = users_map[username].online;
     users_map[username].online = false;
     users_map[username].currentIP = "";
     users_map[username].port = "";
+    return wasin;
+  }
+
+  int upload(string username,
+             string img_name) { // Upload a new image to an existing user by
+                                // updating the users map and file
+    bool flag = false; // flag to check if that user exists in the first place
+    string Final = "";
+    for (auto const &x : users_map) {
+      if (x.first == username) {
+        flag = true;
+        break;
+      }
+    }
+    if (flag) {
+      users_map[username].img.push_back(img_name);
+      users.seekg(0);
+      while (!users.eof()) {
+        string line;
+        getline(users, line);
+        if (line == "")
+          break;
+        string orig = line;
+        int name_len;
+        name_len = line.find(" ");
+        string name = line.substr(0, name_len);
+        line = line.erase(0, name_len + 1);
+        if (name == username) {
+          Final += username + " ";
+          for (int i = 0; i < users_map[username].img.size(); i++)
+            Final += users_map[username].img[i] + " ";
+          Final += "\n";
+        } else {
+          Final += orig + "\n";
+        }
+      }
+    } else {
+      cout << "Username not found \n";
+      return 0;
+    }
+    users.close();
+    users.open("users.txt", fstream::out | fstream::in);
+    users << Final;
+    return 1;
   }
 
   string view() {

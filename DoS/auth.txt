@@ -1,14 +1,3 @@
-rrr rrr
-uuu uuu
-uuuu uuuu
-pp pp
-uy uy
-hgh hgh
-ahmed ahmed
-ahmed1 ahmed
-ppo ppo
-<<<<<<< HEAD
-hawas 123
-=======
-qa qa
->>>>>>> c2c739fbd591c04d4812108798f3ee95d080bf3e
+Ahmed Ahmed
+ref ref
+Doka Doka

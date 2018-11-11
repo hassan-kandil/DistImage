@@ -34,6 +34,8 @@ void UsersDialog::on_push_view_clicked() {
   const QString &s = ui->listWidget->currentItem()->text();
   secdia = new userimagesdialog(this, peer, s); // if want to distroy secdia
                                                 // with the main, put (this)
+  secdia->setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
+                         Qt::CustomizeWindowHint);
   secdia->show();
 }
 

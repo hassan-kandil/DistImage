@@ -42,13 +42,21 @@ void MainWindow::on_push_login_clicked() {
 
       int sign_result = peer->login(username, password);
       if (sign_result == 1) { // Logged in correctly
+        peer->username = username;
+        peer->password = password;
         ui->lbl_login_wrong->setVisible(true);
         ui->lbl_login_wrong->setText(QString("Welcome!"));
         ui->lbl_login_wrong->setStyleSheet("QLabel { color : green; }");
         // Open the next window
-        secdia = new SecondDialog(this, peer); // if want to distroy secdia with
-                                               // the main, put (this)
-        secdia->show();
+        SecondDialog secdia(this, peer);
+        // secdia = new SecondDialog // if want to distroy secdia with
+        // the main, put (this)
+        // secdia->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+        secdia.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
+                              Qt::CustomizeWindowHint);
+        secdia.setModal(true);
+        secdia.exec();
+
         // this->close();
       } else if (sign_result == 3) {
         ui->lbl_login_wrong->setVisible(true);

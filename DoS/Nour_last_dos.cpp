@@ -189,17 +189,6 @@ void upload(string username, string img_name,
   users << Final;
 }
 
-void show_online() {
-  cout << "Online users\nUsername IP port\n";
-  for (auto const &x : users_map) {
-    if (x.second.online) {
-      cout << x.first << " " << x.second.currentIP << " " << x.second.port
-           << endl;
-    }
-  }
-  cout << "**************\n";
-}
-
 int main(int argc, const char *argv[]) {
   fstream auth, users;
   auth.open("auth.txt", fstream::out | fstream::in | fstream::app);

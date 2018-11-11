@@ -23,6 +23,8 @@ private slots:
 
   void on_push_notifications_clicked();
 
+  void on_push_upload_clicked();
+
 private:
   Ui::SecondDialog *ui;
   Peer *peer;
