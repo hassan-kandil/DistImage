@@ -251,6 +251,38 @@ public:
 
     } break; // end of upload
 
+    case 2002: // upload
+    {
+      int cc = 4;
+      string username = "", imagename = "";
+      while (buffer[cc] != '*') {
+        username.append(1, buffer[cc]);
+        cc++;
+      }
+      cc++;
+      while (buffer[cc] != 0) {
+        imagename.append(1, buffer[cc]);
+        cc++;
+      }
+      cout << "User: " << username << endl;
+      cout << "Imagename: " << imagename << endl;
+      int uploaded = upload(username, imagename);
+
+      cout << "Uploaded? " << uploaded << endl;
+      // Sign Up reply
+      memset(little_buffer, 0, sizeof(little_buffer));
+      if (uploaded == 1)
+        little_buffer[0] = '1';
+      else
+        little_buffer[0] = '0';
+      little_buffer[1] = 0;
+      if (sendto(sv->s, little_buffer, strlen((const char *)little_buffer), 0,
+                 (struct sockaddr *)&recievedAddr, addresslength) < 0) {
+        perror("Sign up reply sendto failed");
+      }
+
+    } break; // end of upload
+
     default:
       break;
     }
