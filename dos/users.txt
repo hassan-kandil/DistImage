@@ -3,3 +3,5 @@ e
 w 
 io /home/refaay/distributed_pro/rooney.jpeg 
 tt 
+r 
+z 

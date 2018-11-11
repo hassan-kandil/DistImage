@@ -42,7 +42,7 @@ void MainWindow::on_push_login_clicked() {
 
       int sign_result = peer->login(username, password);
       if (sign_result == 1) { // Logged in correctly
-        //peer->peerServer = new Server(peer->dos_port);
+        // peer->peerServer = new Server(peer->dos_port);
         peer->username = username;
         peer->password = password;
         ui->lbl_login_wrong->setVisible(true);
