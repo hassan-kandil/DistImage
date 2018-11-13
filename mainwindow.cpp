@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
   ui->lbl_dos_error->setVisible(false);
   ui->line_dos_port->setValidator(new QIntValidator); // only numbers
 
-  peer->sc = new UDPSocketClient();
+  // peer->sc = new UDPSocketClient();// already done in peer
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -41,6 +41,7 @@ void MainWindow::on_push_login_clicked() {
     } else {
 
       int sign_result = peer->login(username, password);
+
       if (sign_result == 1) { // Logged in correctly
         // peer->peerServer = new Server(peer->dos_port);
         peer->username = username;
@@ -73,9 +74,13 @@ void MainWindow::on_push_login_clicked() {
         ui->lbl_login_wrong->setVisible(true);
         ui->lbl_login_wrong->setText(QString("Username already logged in!"));
         ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
-      } else { // Timeout
+      } else if (sign_result == 2) { // Timeout
         ui->lbl_login_wrong->setVisible(true);
         ui->lbl_login_wrong->setText(QString("DoS Offline!"));
+        ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
+      } else { // Timeout
+        ui->lbl_login_wrong->setVisible(true);
+        ui->lbl_login_wrong->setText(QString("Unexpected behaviour!"));
         ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
       }
     }

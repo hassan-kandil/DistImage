@@ -34,15 +34,14 @@ userimagesdialog::userimagesdialog(QWidget *parent, Peer *peer, QString s)
 
 userimagesdialog::~userimagesdialog() { delete ui; }
 
-void userimagesdialog::on_push_request_clicked()
-{
+void userimagesdialog::on_push_request_clicked() {
 
-    cout << "Request button clicked" << endl;
-    map<string, vector<string>> users;
-    map<string, vector<string>>::iterator it;
-    users = peer->getUsers();
-    int i = 0;
-    vector<string> images;
+  cout << "Request button clicked" << endl;
+  map<string, vector<string>> users;
+  map<string, vector<string>>::iterator it;
+  users = peer->getUsers();
+  int i = 0;
+  vector<string> images;
 
   images = users[selectedUser.toUtf8().constData()];
   string path;
@@ -55,19 +54,19 @@ void userimagesdialog::on_push_request_clicked()
     }
   }
 
-    const QString &s = ui->listWidget->currentItem()->text();
-    cout << "selectedUser " << selectedUser.toUtf8().constData() << " parh" << path << endl;
-    peer->request_image(selectedUser.toUtf8().constData(), s.toUtf8().constData(), path);
-
+  const QString &s = ui->listWidget->currentItem()->text();
+  cout << "selectedUser " << selectedUser.toUtf8().constData() << " path"
+       << path << endl;
+  peer->request_image(selectedUser.toUtf8().constData(), s.toUtf8().constData(),
+                      path);
 }
 
 void userimagesdialog::temp() {}
 
-void userimagesdialog::on_push_view_clicked()
-{
-    ViewImageDialog secd(this, peer);
-    secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
-                        Qt::CustomizeWindowHint);
-    secd.setModal(true);
-    secd.exec();
+void userimagesdialog::on_push_view_clicked() {
+  ViewImageDialog secd(this, peer);
+  secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
+                      Qt::CustomizeWindowHint);
+  secd.setModal(true);
+  secd.exec();
 }

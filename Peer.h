@@ -1,6 +1,5 @@
 #include "UDPSocketClient.h"
 #include "base64.h"
-//#include "Client.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -13,20 +12,16 @@
 #include <sys/types.h>
 #include <thread>
 #include <unistd.h>
-
-#include "UDPSocketServer.h"
+//#include "UDPSocketServer.h"
 #include <QProcess>
 #include <arpa/inet.h>
 #include <fstream>
 #include <locale>
 #include <map>
-#include <netdb.h>
-#include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <vector>
-//#include "Server.h"
 using namespace std;
 
 #define BUFFER_SIZE 50000
@@ -51,10 +46,11 @@ private:
   uint16_t sender_port;
 
 public:
-  UDPSocketServer *sv;
+  UDPSocketClient *sv; // UDPSocketServer *sv;
   char *dos_ip;
   int dos_port;
   UDPSocketClient *sc;
+  struct sockaddr_in dosSocket;
 
   int n;
 
@@ -68,7 +64,7 @@ public:
   unsigned char Serverbuffer[BUFFER_SIZE];
   unsigned char Serverlittle_buffer[LITTLE_BUFFER_SIZE];
   Peer() {
-    this->sv = new UDPSocketServer(dos_port);
+    this->sv = new UDPSocketClient(); // UDPSocketServer(0); // dos_port
     this->sc = new UDPSocketClient();
 
     requests_buffer.push_back("hi");
@@ -119,15 +115,11 @@ public:
     return ret;
   }
 
-
-
-  void listenPeer()
-  {
-      cout<<"Ana Henaaaa Thread ba listen!! "<<endl;
-      while(serveRequests())
-      {
-
-      }
+  void listenPeer() {
+    cout << "Ana Henaaaa Thread ba listen!! " << endl;
+    while (true) {
+      getRequest();
+    }
   }
 
   // Server Functions Start HEREEE
@@ -177,143 +169,77 @@ public:
   }
 
   void getRequest() {
-      //cout << this->username;
-      //printf(" %s.\n", "Start of getRequest");
-        cout << "ana hen b get request lma t3bt" << endl;
-          unsigned long current_received = 0;
 
-          memset(Serverbuffer, 0, sizeof(Serverbuffer));
-          // Receive Marshalled Message
+    cout << this->username << " user starts get request:" << endl;
+    // unsigned long current_received = 0;
 
-        if ( (r = recvfrom(sv->s, Serverbuffer, BUFFER_SIZE, 0,
-                            (struct sockaddr *)&recievedAddr, &addresslength))<0)
-             cerr << "get request received failed!!" << endl;
-          cout<<"Received Message = %s.\n"<<Serverbuffer;
+    memset(Serverbuffer, 0, sizeof(Serverbuffer));
+    // Receive Marshalled Message
 
-          inet_ntop(AF_INET, &(recievedAddr.sin_addr), sender_ip, INET_ADDRSTRLEN);
+    struct sockaddr_in tempSocketAddress;
+    socklen_t tempAddrlen = sizeof(tempSocketAddress);
+    if ((r = recvfrom(sv->s, Serverbuffer, BUFFER_SIZE, 0,
+                      (struct sockaddr *)&tempSocketAddress, &tempAddrlen)) < 0)
 
-          sender_port = htons((&recievedAddr)->sin_port);
+      cout << "Received Message = %s.\n" << Serverbuffer;
 
-          printf("Sign up IP:%s & port: %d\n", sender_ip, sender_port);
+    inet_ntop(AF_INET, &(tempSocketAddress.sin_addr), sender_ip,
+              INET_ADDRSTRLEN);
 
-          // Get operation ID as unsigned long
-          unsigned long op_id = 0;
-          for (int i = 0; i < 4 && Serverbuffer[i] != '\0'; i++) {
-            op_id *= 10;
-            op_id += Serverbuffer[i] - '0';
-            // cout << op_id << endl;
-          }
+    sender_port = htons((&tempSocketAddress)->sin_port);
 
-          printf("Received op_id = %lu.\n", op_id);
-          switch (op_id) {
+    // printf("Thread re IP:%s & port: %d\n", sender_ip, sender_port);
 
-          case 2002: // view request
-          {
-                cout << "2002 request recieved"<< endl;
-              int cc = 4;
-              string username = "", imageName = "";
-              while (Serverbuffer[cc] != '*') {
-                username.append(1, Serverbuffer[cc]);
-                cc++;
-              }
-              cc++;
-              while (Serverbuffer[cc] != '*') {
-                imageName.append(1, Serverbuffer[cc]);
-                cc++;
-              }
-              cout << "User: " << username << endl;
-              cout << "Requested Image Name: " << imageName << endl;
-              requests_buffer.push_back(username+" wants to view " +imageName);
-              bool didApprove = true;
-              //bool didApprove = grantRequest( username, imageName);
-              // View Request reply
-              memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
-              if (didApprove)
-              {
-                  sendImageThread(sender_ip,sender_port,imageName);
-                  Serverlittle_buffer[0] = '1';
-              }
-              else
-              {
-                Serverlittle_buffer[0] = '0';
-              }
-              // sprintf((char *)(Serverlittle_buffer), "%d", didsign);
-              Serverlittle_buffer[1] = 0;
-              if (sendto(sv->s, Serverlittle_buffer, strlen((const char *)Serverlittle_buffer), 0,
-                         (struct sockaddr *)&recievedAddr, addresslength) < 0) {
-                perror("View Request reply sendto failed");
-              }
-
-          } break; // end of view
-
-          default:
-            break;
-          }
-
-          //Receiving Image
-    /*printf("%s.\n", "Start of getRequest");
-    unsigned long current_received = 0;
-    memset(buffer, 0, sizeof(buffer));
-    std::ofstream os("new_2.jpeg");
-    memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
-    // Receive Image Length
-    r = recvfrom(sv->s, Serverlittle_buffer, LITTLE_BUFFER_SIZE, 0,
-                 (struct sockaddr *)&recievedAddr, &addresslength);
-    printf("Received Length of Encoded Message (char[]) = %s.\n",
-           Serverlittle_buffer);
-    // Change to unsigned long
-    unsigned long received_length = 0;
-    for (int i = 0; i < LITTLE_BUFFER_SIZE && Serverlittle_buffer[i] != '\0';
-    i++) { received_length *= 10; received_length += Serverlittle_buffer[i] -
-    '0';
+    // Get operation ID as unsigned long
+    unsigned long op_id = 0;
+    for (int i = 0; i < 4 && Serverbuffer[i] != '\0'; i++) {
+      op_id *= 10;
+      op_id += Serverbuffer[i] - '0';
+      // cout << op_id << endl;
     }
 
-    // Reply with Length
-    memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
-    sprintf((char *)(Serverlittle_buffer), "%lu", received_length);
-    if (sendto(sv->s, Serverlittle_buffer, strlen((const char
-    *)Serverlittle_buffer), 0, (struct sockaddr *)&recievedAddr, addresslength)
-    < 0) { perror("length reply sendto failed");
-    }
+    switch (op_id) {
 
-    printf("Received Length of Encoded Message (lu) = %lu.\n", received_length);
-
-    // Start Receiving Image
-    while (current_received < received_length) {
-      printf("%s\n", "Loop Start:");
-      memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
-
-      r = recvfrom(sv->s, Serverlittle_buffer, LITTLE_BUFFER_SIZE, 0,
-                   (struct sockaddr *)&recievedAddr, &addresslength);
-
-      current_received += r;
-      printf("Received total %lu encoded bytes.\n", current_received);
-      std::string sName(reinterpret_cast<char *>(Serverlittle_buffer));
-      string y = base64_decode(sName);
-
-      if (r > 0)
-        os << y;
-      memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
-      sprintf((char *)(Serverlittle_buffer), "%lu", current_received);
-
-      if (sendto(sv->s, Serverlittle_buffer, LITTLE_BUFFER_SIZE, 0,
-                 (struct sockaddr *)&recievedAddr, addresslength) < 0) {
-        perror("sendto failed");
+    case 2002: // view request
+    {
+      cout << "2002 request recieved" << endl;
+      int cc = 4;
+      string username = "", imageName = "";
+      while (Serverbuffer[cc] != '*') {
+        username.append(1, Serverbuffer[cc]);
+        cc++;
       }
+      cc++;
+      while (Serverbuffer[cc] != '*') {
+        imageName.append(1, Serverbuffer[cc]);
+        cc++;
+      }
+      cout << "User: " << username << endl;
+      cout << "Requested Image Name: " << imageName << endl;
+      requests_buffer.push_back(username + " wants to view " + imageName);
+      bool didApprove = true;
+      // bool didApprove = grantRequest( username, imageName);
+      // View Request reply
+      memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
+      if (didApprove) {
+        // sendImageThread(sender_ip, sender_port, imageName);
+        Serverlittle_buffer[0] = '1';
+      } else {
+        Serverlittle_buffer[0] = '0';
+      }
+      // sprintf((char *)(Serverlittle_buffer), "%d", didsign);
+      Serverlittle_buffer[1] = 0;
+      if (sendto(sv->s, Serverlittle_buffer,
+                 strlen((const char *)Serverlittle_buffer), 0,
+                 (struct sockaddr *)&tempSocketAddress, tempAddrlen) < 0) {
+        perror("View Request reply sendto failed");
+      }
+
+    } break; // end of view
+
+    default:
+      break;
     }
-    os.close();
-
-
-
-    // Steganography
-    string extract_command, defaultPath = "default.jpeg";
-    extract_command = "steghide extract -sf " + defaultPath + " -p hk";
-    int n = extract_command.length();
-    char char_array[n + 1];
-
-    strcpy(char_array, extract_command.c_str());
-    system(char_array);
-    */
   }
 
   void sendReply() {
@@ -324,11 +250,6 @@ public:
       perror("sendto failed");
     }
   }
-
-   bool serveRequests() { cout<<"ana hena ba server requestss"<<endl; getRequest(); }
-
-
-
 
   // End of Server Functions
 
@@ -375,7 +296,7 @@ public:
   }
 
   bool DoOperation(char *machine, int port, char message[]) {
-    printf("%s.\n", "Start of DoOperation");
+    // printf("%s.\n", "Start of DoOperation");
     struct sockaddr_in yourSocketAddress, peerSocketAddress;
     socklen_t peerAddrlen;
     makeDestSA(&yourSocketAddress, machine, port);
@@ -387,7 +308,7 @@ public:
     unsigned char little_buffer[10];
     memset(little_buffer, 0, sizeof(little_buffer));
 
-    printf("Length of Encoded Message = %lu.\n", strlen(message));
+    // printf("Length of Encoded Message = %lu.\n", strlen(message));
 
     // Send Image Length
     unsigned long received_length = 0;
@@ -413,13 +334,13 @@ public:
       }
     }
 
-    printf("Received Length of Encoded Message = %s.\n", little_buffer);
+    // printf("Received Length of Encoded Message = %s.\n", little_buffer);
     unsigned long fakka = strlen(message) % 10000; // last image chunk
 
     // Start Sending Image
     while (current_length <
            strlen(message)) { //  && r == 1 && little_buffer[0] == '1'
-      printf("%s\n", "Loop Start:");
+      // printf("%s\n", "Loop Start:");
       if (current_length + 10000 < strlen(message)) {
         memcpy(char_array, message + (current_length), 10000);
         current_length += 10000;
@@ -433,7 +354,7 @@ public:
                       (struct sockaddr *)&yourSocketAddress,
                       sizeof(struct sockaddr_in))) < 0)
         perror("Send failed\n");
-      printf("Current Sent Total = %lu.\n", current_length);
+      // printf("Current Sent Total = %lu.\n", current_length);
 
       memset(little_buffer, 0, sizeof(little_buffer));
       if ((r = recvfrom(sc->s, little_buffer, 10, 0,
@@ -452,17 +373,17 @@ public:
         current_length = received_length; // Drop Tolerance
       }
 
-      printf("Current Received Total %lu.\n", current_length);
+      // printf("Current Received Total %lu.\n", current_length);
     }
-    printf("%s", "Message Sent. ");
-    printf("Current %lu.\n", current_length);
+    // printf("%s", "Message Sent. ");
+    // printf("Current %lu.\n", current_length);
   }
 
   static void makeDestSA(struct sockaddr_in *sa, char *hostname, int port) {
     struct hostent *host;
     sa->sin_family = AF_INET;
     if ((host = gethostbyname(hostname)) == NULL) {
-      printf("Unknown host name\n");
+      // printf("Unknown host name\n");
       exit(-1);
     }
     sa->sin_addr = *(struct in_addr *)(host->h_addr);
@@ -480,9 +401,8 @@ public:
     if (!nospecial) { // special chars
       return 3;       // error code for special chars as they are delimiters
     } else {
-      struct sockaddr_in yourSocketAddress, peerSocketAddress;
-      socklen_t peerAddrlen;
-      makeDestSA(&yourSocketAddress, dos_ip, dos_port);
+      struct sockaddr_in dosSocketAddress;
+      makeDestSA(&dosSocketAddress, dos_ip, dos_port);
 
       char marshalled_massage[BUFFER_SIZE];
       memset(marshalled_massage, 0, sizeof(marshalled_massage));
@@ -496,30 +416,29 @@ public:
 
       if ((n = sendto(sc->s, marshalled_massage,
                       strlen((const char *)marshalled_massage), 0,
-                      (struct sockaddr *)&yourSocketAddress,
+                      (struct sockaddr *)&dosSocketAddress,
                       sizeof(struct sockaddr_in))) < 0)
         perror("Send failed\n");
 
       // Receive Timeout
-      peerAddrlen = sizeof(peerSocketAddress);
-
-      int n;
 
       struct pollfd ss;
       ss.fd = sc->s;
       ss.events = POLLIN;
-      n = poll(&ss, 1, 1);
-      if (n == 0 || n == -1) {
-        // printf("Timeout!!\n");
+      int npoll = poll(&ss, 1, 1);
+      if (npoll == 0 || npoll == -1) {
+        ////printf("Timeout!!\n");
         return 2;
       }
 
       else {
         unsigned char little_buffer[10];
         memset(little_buffer, 0, sizeof(little_buffer));
+        struct sockaddr_in tempSocketAddress;
+        socklen_t tempAddrlen = sizeof(tempSocketAddress);
         if ((r = recvfrom(sc->s, little_buffer, 10, 0,
-                          (struct sockaddr *)&peerSocketAddress,
-                          &peerAddrlen)) < 0)
+                          (struct sockaddr *)&tempSocketAddress,
+                          &tempAddrlen)) < 0)
           perror("Receive Failed");
         if (little_buffer[0] == '1')
           return 1;
@@ -542,13 +461,21 @@ public:
     if (!nospecial) { // special chars
       return 3;       // error code for special chars as they are delimiters
     } else {
-      struct sockaddr_in yourSocketAddress, peerSocketAddress;
-      socklen_t peerAddrlen;
-      makeDestSA(&yourSocketAddress, dos_ip, dos_port);
+
+      makeDestSA(&(this->dosSocket), dos_ip, dos_port); // make dos socket
 
       char marshalled_massage[BUFFER_SIZE];
       memset(marshalled_massage, 0, sizeof(marshalled_massage));
-      string marshalled_massage_s = "1002" + username + "*" + password;
+
+      /*struct sockaddr_in peeraddr;
+      socklen_t peeraddrlen = sizeof(peeraddr);
+      getpeername(this->sv->s, (sockaddr*)&peeraddr, &peeraddrlen);
+
+      int sv_port_d = ntohs(peeraddr.sin_port);
+      cout << "sv_port_d " << sv_port_d << endl;
+      string sv_port = to_string(sv_port_d);*/
+      string marshalled_massage_s =
+          "1002" + username + "*" + password; // + "*" + sv_port;
       for (int j = 0; j < marshalled_massage_s.length(); j++) {
         marshalled_massage[j] = marshalled_massage_s[j];
       }
@@ -556,30 +483,29 @@ public:
 
       int r = 1;
 
-      if ((n = sendto(sc->s, marshalled_massage,
+      if ((n = sendto(sv->s, marshalled_massage, // sc->s
                       strlen((const char *)marshalled_massage), 0,
-                      (struct sockaddr *)&yourSocketAddress,
+                      (struct sockaddr *)&(this->dosSocket),
                       sizeof(struct sockaddr_in))) < 0)
         perror("Send failed\n");
 
       // Receive Timeout
-      peerAddrlen = sizeof(peerSocketAddress);
-
-      int n;
 
       struct pollfd ss;
-      ss.fd = sc->s;
+      ss.fd = sv->s;
       ss.events = POLLIN;
-      n = poll(&ss, 1, 1);
-      if (n == 0 || n == -1) {
-        // printf("Timeout!!\n");
+      int npoll = poll(&ss, 1, 1);
+      if (npoll == 0 || npoll == -1) {
+        ////printf("Timeout!!\n");
         return 2;
       } else {
         unsigned char little_buffer[10];
         memset(little_buffer, 0, sizeof(little_buffer));
-        if ((r = recvfrom(sc->s, little_buffer, 10, 0,
-                          (struct sockaddr *)&peerSocketAddress,
-                          &peerAddrlen)) < 0)
+        struct sockaddr_in tempSocketAddress;
+        socklen_t tempAddrlen = sizeof(tempSocketAddress);
+        if ((r = recvfrom(sv->s, little_buffer, 10, 0, // sc->s
+                          (struct sockaddr *)&tempSocketAddress,
+                          &tempAddrlen)) < 0)
           perror("Receive Failed");
         if (little_buffer[0] == '1')
           return 1;
@@ -597,10 +523,6 @@ public:
 
   int logout() {
 
-    struct sockaddr_in yourSocketAddress, peerSocketAddress;
-    socklen_t peerAddrlen;
-    makeDestSA(&yourSocketAddress, dos_ip, dos_port);
-
     char marshalled_massage[BUFFER_SIZE];
     memset(marshalled_massage, 0, sizeof(marshalled_massage));
     string marshalled_massage_s = "1003" + this->username;
@@ -613,27 +535,26 @@ public:
 
     if ((n = sendto(sc->s, marshalled_massage,
                     strlen((const char *)marshalled_massage), 0,
-                    (struct sockaddr *)&yourSocketAddress,
+                    (struct sockaddr *)&(this->dosSocket),
                     sizeof(struct sockaddr_in))) < 0)
       perror("Send failed\n");
 
     // Receive Timeout
-    peerAddrlen = sizeof(peerSocketAddress);
-
-    int n;
 
     struct pollfd ss;
     ss.fd = sc->s;
     ss.events = POLLIN;
-    n = poll(&ss, 1, 1);
-    if (n == 0 || n == -1) {
-      // printf("Timeout!!\n");
+    int npoll = poll(&ss, 1, 1);
+    if (npoll == 0 || npoll == -1) {
+      ////printf("Timeout!!\n");
       return 2;
     } else {
       unsigned char little_buffer[10];
       memset(little_buffer, 0, sizeof(little_buffer));
+      struct sockaddr_in tempSocketAddress; //////////////////
+      socklen_t tempAddrlen = sizeof(tempSocketAddress);
       if ((r = recvfrom(sc->s, little_buffer, 10, 0,
-                        (struct sockaddr *)&peerSocketAddress, &peerAddrlen)) <
+                        (struct sockaddr *)&tempSocketAddress, &tempAddrlen)) <
           0)
         perror("Receive Failed");
       if (little_buffer[0] == '1')
@@ -658,9 +579,6 @@ public:
     if (!nospecial) { // special chars
       return 3;       // error code for special chars as they are delimiters
     } else {
-      struct sockaddr_in yourSocketAddress, peerSocketAddress;
-      socklen_t peerAddrlen;
-      makeDestSA(&yourSocketAddress, dos_ip, dos_port);
 
       char marshalled_massage[BUFFER_SIZE];
       memset(marshalled_massage, 0, sizeof(marshalled_massage));
@@ -675,27 +593,26 @@ public:
 
       if ((n = sendto(sc->s, marshalled_massage,
                       strlen((const char *)marshalled_massage), 0,
-                      (struct sockaddr *)&yourSocketAddress,
+                      (struct sockaddr *)&(this->dosSocket),
                       sizeof(struct sockaddr_in))) < 0)
         perror("Send failed\n");
 
       // Receive Timeout
-      peerAddrlen = sizeof(peerSocketAddress);
-
-      int n;
 
       struct pollfd ss;
       ss.fd = sc->s;
       ss.events = POLLIN;
-      n = poll(&ss, 1, 1);
-      if (n == 0 || n == -1) {
-        return 2; // printf("Timeout!!\n");
+      int npoll = poll(&ss, 1, 1);
+      if (npoll == 0 || npoll == -1) {
+        return 2; ////printf("Timeout!!\n");
       } else {
         unsigned char little_buffer[10];
         memset(little_buffer, 0, sizeof(little_buffer));
+        struct sockaddr_in tempSocketAddress;
+        socklen_t tempAddrlen = sizeof(tempSocketAddress);
         if ((r = recvfrom(sc->s, little_buffer, 10, 0,
-                          (struct sockaddr *)&peerSocketAddress,
-                          &peerAddrlen)) < 0)
+                          (struct sockaddr *)&tempSocketAddress,
+                          &tempAddrlen)) < 0)
           perror("Receive Failed");
         if (little_buffer[0] == '1') {
 
@@ -740,16 +657,15 @@ public:
     users = this->getUsers();
     vector<string> images;
     images = users[selectedUser];
-    struct sockaddr_in yourSocketAddress, peerSocketAddress;
-    socklen_t peerAddrlen;
+    struct sockaddr_in ownerSocket;
 
     string temp_ip = images[1];
-    int remote_peer_port = std::stoi(images[2], nullptr, 0);
-
+    int remote_peer_port = std::stoi(images[2], nullptr, 0); // Refaay
+    cout << "Remote IP " << temp_ip << ", port " << remote_peer_port << endl;
     char remote_peer_address[1024];
     strcpy(remote_peer_address, temp_ip.c_str());
 
-    makeDestSA(&yourSocketAddress, remote_peer_address, remote_peer_port);
+    makeDestSA(&ownerSocket, remote_peer_address, remote_peer_port);
 
     char marshalled_massage[BUFFER_SIZE];
     memset(marshalled_massage, 0, sizeof(marshalled_massage));
@@ -766,16 +682,12 @@ public:
 
     if ((n = sendto(sc->s, marshalled_massage,
                     strlen((const char *)marshalled_massage), 0,
-                    (struct sockaddr *)&yourSocketAddress,
+                    (struct sockaddr *)&ownerSocket,
                     sizeof(struct sockaddr_in))) < 0)
       perror("Send failed\n");
   }
 
   map<string, vector<string>> getUsers() {
-
-    struct sockaddr_in yourSocketAddress, peerSocketAddress;
-    socklen_t peerAddrlen;
-    makeDestSA(&yourSocketAddress, dos_ip, dos_port);
 
     char marshalled_massage[BUFFER_SIZE];
     memset(marshalled_massage, 0, sizeof(marshalled_massage));
@@ -789,25 +701,20 @@ public:
 
     if ((n = sendto(sc->s, marshalled_massage,
                     strlen((const char *)marshalled_massage), 0,
-                    (struct sockaddr *)&yourSocketAddress,
+                    (struct sockaddr *)&(this->dosSocket),
                     sizeof(struct sockaddr_in))) < 0)
       perror("Send failed\n");
 
     // Receive Timeout
-    peerAddrlen = sizeof(peerSocketAddress);
-
-    int n;
-
-    struct pollfd ss;
-    ss.fd = sc->s;
-    ss.events = POLLIN;
-    n = poll(&ss, 1, 1);
-
+    cout << "getusers sent" << endl;
     unsigned char little_buffer[LITTLE_BUFFER_SIZE];
     memset(little_buffer, 0, sizeof(little_buffer));
+    struct sockaddr_in tempSocketAddress;
+    socklen_t tempAddrlen = sizeof(tempSocketAddress);
     if ((r = recvfrom(sc->s, little_buffer, LITTLE_BUFFER_SIZE, 0,
-                      (struct sockaddr *)&peerSocketAddress, &peerAddrlen)) < 0)
+                      (struct sockaddr *)&tempSocketAddress, &tempAddrlen)) < 0)
       perror("Receive Failed");
+    cout << "getusers received" << endl;
     int cc = 0;
     string temp;
     while (little_buffer[cc] != 0) {
@@ -819,55 +726,31 @@ public:
   }
 
   map<string, vector<string>> retmap(string s) {
-
     map<string, vector<string>> mymap;
-
     while (s != "") {
-
       int len = s.find("*");
-
       string name = s.substr(0, len);
-
       s = s.erase(0, len + 1);
-
       int onlineln = s.find("&");
-
       string online = s.substr(0, onlineln);
-
       s = s.erase(0, onlineln + 1);
-
       int ipln = s.find("&");
-
       string ip = s.substr(0, ipln);
-
       s = s.erase(0, ipln + 1);
-
       int portln = s.find("&");
-
       string port = s.substr(0, portln);
-
       s = s.erase(0, portln + 1);
-
       mymap[name].push_back(online);
-
       mymap[name].push_back(ip);
-
       mymap[name].push_back(port);
-
       while (s[0] != '@') {
-
         int imgl = s.find("#");
-
         string img = s.substr(0, imgl);
-
         s = s.erase(0, imgl + 1);
-
         mymap[name].push_back(img);
       }
-
       s = s.erase(0, 1);
     }
-
     return mymap;
   }
 };

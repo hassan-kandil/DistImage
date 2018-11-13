@@ -1,4 +1,5 @@
 #include <cstring>
+#include <iostream>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <stdio.h>
@@ -6,7 +7,7 @@
 #include <string>
 #include <sys/socket.h>
 #include <sys/types.h>
-
+using namespace std;
 #ifndef UDPSOCKETCLIENT_H
 #define UDPSOCKETCLIENT_H
 class UDPSocketClient {
@@ -16,7 +17,8 @@ public:
   bool initializeClient() {
 
     if ((s = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
-      perror("cannot create socket");
+      // perror("cannot create socket");
+      cout << "error make client socket" << endl;
       return 0;
     }
 
@@ -28,7 +30,8 @@ public:
     clientAddress.sin_port = htons(0);
 
     if (bind(s, (struct sockaddr *)&clientAddress, sizeof(clientAddress)) < 0) {
-      perror("bind failed");
+      // perror("bind failed");
+      cout << "error bind client socket" << endl;
       return 0;
     }
   }
