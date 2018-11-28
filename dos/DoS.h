@@ -8,10 +8,9 @@
 #include <map>
 #include <string>
 #include <vector>
-using namespace std;
 
+#include "Message.h"
 #include "UDPSocketServer.h"
-#include "base64.h"
 #include <arpa/inet.h>
 #include <cstring>
 #include <netdb.h>
@@ -21,14 +20,7 @@ using namespace std;
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-
-static const std::string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                        "abcdefghijklmnopqrstuvwxyz"
-                                        "0123456789+/";
-
-static inline bool is_base64(unsigned char c) {
-  return (isalnum(c) || (c == '+') || (c == '/'));
-}
+using namespace std;
 
 struct data {
   vector<string> img;
@@ -55,9 +47,6 @@ public:
 
   socklen_t addresslength = sizeof(recievedAddr);
 
-  unsigned char buffer[BUFFER_SIZE];
-  unsigned char little_buffer[LITTLE_BUFFER_SIZE];
-
   DoS() {
     cout << "Enter the port: ";
     cin >> port;
@@ -77,6 +66,10 @@ public:
   }
 
   void getRequest() {
+
+    unsigned char *buffer = new unsigned char[BUFFER_SIZE];
+    unsigned char *little_buffer = new unsigned char[LITTLE_BUFFER_SIZE];
+
     printf("%s.\n", "Start of getRequest");
     unsigned long current_received = 0;
 
@@ -87,33 +80,35 @@ public:
 
     printf("Received Message = %s.\n", buffer);
 
+    cout << "Received Message Length = "
+         << strlen(reinterpret_cast<char *>(buffer)) << endl;
+
     inet_ntop(AF_INET, &(recievedAddr.sin_addr), sender_ip, INET_ADDRSTRLEN);
 
     sender_port = htons((&recievedAddr)->sin_port);
 
-    printf("Sign up IP:%s & port: %d\n", sender_ip, sender_port);
+    printf("Sender IP:%s & port: %d\n", sender_ip, sender_port);
 
-    // Get operation ID as unsigned long
-    unsigned long op_id = 0;
-    for (int i = 0; i < 4 && buffer[i] != '\0'; i++) {
-      op_id *= 10;
-      op_id += buffer[i] - '0';
-      // cout << op_id << endl;
-    }
+    Message requestMsg(reinterpret_cast<char *>(buffer));
+    int op_id = requestMsg.getOperation();
+    string msg = requestMsg.getUnmarshalledMessage();
+    int rpcid = requestMsg.getRPCId();
 
-    printf("Received op_id = %lu.\n", op_id);
+    cout << "op id: " << op_id << endl;
+    cout << "rpc id: " << rpcid << endl;
+    cout << "Received Msg: " << msg << endl;
     switch (op_id) {
     case 1001: // sign_up
     {
-      int cc = 4;
+      int cc = 0;
       string username = "", password = "";
-      while (buffer[cc] != '*') {
-        username.append(1, buffer[cc]);
+      while (msg[cc] != '*') {
+        username.append(1, msg[cc]);
         cc++;
       }
       cc++;
-      while (buffer[cc] != 0) {
-        password.append(1, buffer[cc]);
+      while (msg[cc] != 0) {
+        password.append(1, msg[cc]);
         cc++;
       }
       cout << "User: " << username << endl;
@@ -137,15 +132,15 @@ public:
 
     case 1002: // login
     {
-      int cc = 4;
+      int cc = 0;
       string username = "", password = "";
-      while (buffer[cc] != '*') {
-        username.append(1, buffer[cc]);
+      while (msg[cc] != '*') {
+        username.append(1, msg[cc]);
         cc++;
       }
       cc++;
-      while (buffer[cc] != 0) {
-        password.append(1, buffer[cc]);
+      while (msg[cc] != 0) {
+        password.append(1, msg[cc]);
         cc++;
       }
       cout << "User: " << username << endl;
@@ -173,10 +168,10 @@ public:
 
     case 1003: // logout
     {
-      int cc = 4;
+      int cc = 0;
       string username = "";
-      while (buffer[cc] != 0) {
-        username.append(1, buffer[cc]);
+      while (msg[cc] != 0) {
+        username.append(1, msg[cc]);
         cc++;
       }
 
@@ -221,15 +216,15 @@ public:
 
     case 2001: // upload
     {
-      int cc = 4;
+      int cc = 0;
       string username = "", imagename = "";
-      while (buffer[cc] != '*') {
-        username.append(1, buffer[cc]);
+      while (msg[cc] != '*') {
+        username.append(1, msg[cc]);
         cc++;
       }
       cc++;
-      while (buffer[cc] != 0) {
-        imagename.append(1, buffer[cc]);
+      while (msg[cc] != 0) {
+        imagename.append(1, msg[cc]);
         cc++;
       }
       cout << "User: " << username << endl;
@@ -256,70 +251,7 @@ public:
     }
   }
 
-  void receiveImage() {
-    printf("%s.\n", "Start of getRequest");
-    unsigned long current_received = 0;
-    memset(buffer, 0, sizeof(buffer));
-    std::ofstream os("new_2.jpeg");
-    memset(little_buffer, 0, sizeof(little_buffer));
-    // Receive Image Length
-    r = recvfrom(sv->s, little_buffer, LITTLE_BUFFER_SIZE, 0,
-                 (struct sockaddr *)&recievedAddr, &addresslength);
-    printf("Received Length of Encoded Message (char[]) = %s.\n",
-           little_buffer);
-    // Change to unsigned long
-    unsigned long received_length = 0;
-    for (int i = 0; i < LITTLE_BUFFER_SIZE && little_buffer[i] != '\0'; i++) {
-      received_length *= 10;
-      received_length += little_buffer[i] - '0';
-    }
-
-    // Reply with Length
-    memset(little_buffer, 0, sizeof(little_buffer));
-    sprintf((char *)(little_buffer), "%lu", received_length);
-    if (sendto(sv->s, little_buffer, strlen((const char *)little_buffer), 0,
-               (struct sockaddr *)&recievedAddr, addresslength) < 0) {
-      perror("length reply sendto failed");
-    }
-
-    printf("Received Length of Encoded Message (lu) = %lu.\n", received_length);
-
-    // Start Receiving Image
-    while (current_received < received_length) {
-      printf("%s\n", "Loop Start:");
-      memset(little_buffer, 0, sizeof(little_buffer));
-
-      r = recvfrom(sv->s, little_buffer, LITTLE_BUFFER_SIZE, 0,
-                   (struct sockaddr *)&recievedAddr, &addresslength);
-
-      current_received += r;
-      printf("Received total %lu encoded bytes.\n", current_received);
-      std::string sName(reinterpret_cast<char *>(little_buffer));
-      string y = base64_decode(sName);
-
-      if (r > 0)
-        os << y;
-      memset(little_buffer, 0, sizeof(little_buffer));
-      sprintf((char *)(little_buffer), "%lu", current_received);
-
-      if (sendto(sv->s, little_buffer, LITTLE_BUFFER_SIZE, 0,
-                 (struct sockaddr *)&recievedAddr, addresslength) < 0) {
-        perror("sendto failed");
-      }
-    }
-    os.close();
-
-    // Steganography
-    string extract_command, defaultPath = "default.jpeg";
-    extract_command = "steghide extract -sf " + defaultPath + " -p hk";
-    int n = extract_command.length();
-    char char_array[n + 1];
-
-    strcpy(char_array, extract_command.c_str());
-    system(char_array);
-  }
-
-  void sendReply() {
+  void sendReply(unsigned char *buffer) {
     if (sendto(sv->s, buffer, r, 0, (struct sockaddr *)&recievedAddr,
                addresslength) < 0) {
       perror("sendto failed");
@@ -327,50 +259,6 @@ public:
   }
 
   bool serveRequests() { getRequest(); }
-
-  std::string base64_decode(std::string const &encoded_string) {
-    int in_len = encoded_string.size();
-    int i = 0;
-    int j = 0;
-    int in_ = 0;
-    unsigned char char_array_4[4], char_array_3[3];
-    std::string ret;
-
-    while (in_len-- && (encoded_string[in_] != '=') &&
-           is_base64(encoded_string[in_])) {
-      char_array_4[i++] = encoded_string[in_];
-      in_++;
-      if (i == 4) {
-        for (i = 0; i < 4; i++)
-          char_array_4[i] = base64_chars.find(char_array_4[i]);
-
-        char_array_3[0] =
-            (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
-        char_array_3[1] =
-            ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-        char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
-
-        for (i = 0; (i < 3); i++)
-          ret += char_array_3[i];
-        i = 0;
-      }
-    }
-
-    if (i) {
-      for (j = 0; j < i; j++)
-        char_array_4[j] = base64_chars.find(char_array_4[j]);
-
-      char_array_3[0] =
-          (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
-      char_array_3[1] =
-          ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-
-      for (j = 0; (j < i - 1); j++)
-        ret += char_array_3[j];
-    }
-
-    return ret;
-  }
 
   void read_first_time_users(
       fstream &users) { // load data from users file into the users map (done

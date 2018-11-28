@@ -7,13 +7,13 @@ userimagesdialog::userimagesdialog(QWidget *parent, Peer *peer, QString s)
       selectedUser(s) {
   ui->setupUi(this);
   ui->line_request->setPlaceholderText("No. of Views");
-  map<string, vector<string>> users;
-  map<string, vector<string>>::iterator it;
-  users = peer->getUsers();
+  // map<string, vector<string>> users;
+  // map<string, vector<string>>::iterator it;
+  // users = peer->getUsers();
   int i = 0;
   vector<string> images;
 
-  images = users[selectedUser.toUtf8().constData()];
+  images = peer->users[selectedUser.toUtf8().constData()];
 
   for (int i = 0; i < images.size(); i++) {
     string imageonly;
@@ -37,13 +37,13 @@ userimagesdialog::~userimagesdialog() { delete ui; }
 void userimagesdialog::on_push_request_clicked() {
 
   cout << "Request button clicked" << endl;
-  map<string, vector<string>> users;
-  map<string, vector<string>>::iterator it;
-  users = peer->getUsers();
+  // map<string, vector<string>> users;
+  // map<string, vector<string>>::iterator it;
+  // users = peer->getUsers();
   int i = 0;
   vector<string> images;
 
-  images = users[selectedUser.toUtf8().constData()];
+  images = peer->users[selectedUser.toUtf8().constData()];
   string path;
   for (int j = images[3].length() - 1; j > 0; j--) {
 

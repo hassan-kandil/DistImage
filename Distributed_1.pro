@@ -45,7 +45,8 @@ HEADERS += \
     Server.h \
     Client.h \
     viewimagedialog.h \
-    UDPSocketClient.h
+    UDPSocketClient.h \
+    Message.h
 
 FORMS += \
         mainwindow.ui \
