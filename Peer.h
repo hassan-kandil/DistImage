@@ -267,9 +267,10 @@ public:
     }
   }
 
-  // End of Server Functions
 
-  static void makeDestSA(struct sockaddr_in *sa, char *hostname, int port) {
+      // End of Server Functions
+
+      static void makeDestSA(struct sockaddr_in *sa, char *hostname, int port) {
     struct hostent *host;
     sa->sin_family = AF_INET;
     if ((host = gethostbyname(hostname)) == NULL) {

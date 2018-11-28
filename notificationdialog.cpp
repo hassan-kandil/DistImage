@@ -18,16 +18,16 @@ NotificationDialog::NotificationDialog(QWidget *parent, Peer *peer)
         QString::fromStdString(peer->requests_buffer[i].second.first + req +
                                peer->requests_buffer[i].second.second));
   }
-  //peer->getUsers();
+  // peer->getUsers();
 }
 
 NotificationDialog::~NotificationDialog() { delete ui; }
 
 void NotificationDialog::on_push_approve_clicked() {
   cout << "Approve button clicked" << endl;
-  //map<string, vector<string>> users;
-  //map<string, vector<string>>::iterator it;
-  //users = peer->getUsers();
+  // map<string, vector<string>> users;
+  // map<string, vector<string>>::iterator it;
+  // users = peer->getUsers();
   int i = 0;
   // vector<string> images;
   string usname =
@@ -52,8 +52,7 @@ void NotificationDialog::on_push_approve_clicked() {
   peer->send_image(usname, imname);
 }
 
-void NotificationDialog::on_push_refresh_clicked()
-{
-    //peer->getUsers();
-    // refill list
+void NotificationDialog::on_push_refresh_clicked() {
+  // peer->getUsers();
+  // refill list
 }
