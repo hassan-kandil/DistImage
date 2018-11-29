@@ -193,7 +193,7 @@ public:
 
       printf("%s.\n", "Start of image receive");
       std::ofstream os(
-          "/home/hkandil/Downloads/distributed_pro-master/new.jpeg");
+          "/home/refaay/distributed_pro/new.jpeg");
 
       if (r > 0) {
         os << msg;
