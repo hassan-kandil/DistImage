@@ -22,7 +22,7 @@
 #include <unistd.h>
 #include <vector>
 using namespace std;
-
+//#include <limits.h> // for getcwd
 #define BUFFER_SIZE 50000
 
 #ifndef PEER_H
@@ -52,7 +52,8 @@ public:
   int r;
   struct sockaddr_in recievedAddr;
   socklen_t addresslength = sizeof(recievedAddr);
-  vector<pair<int, pair<string, string>>> requests_buffer; // <request_code, <user, image>>
+  vector<pair<int, pair<string, string>>>
+      requests_buffer; // <request_code, <user, image>>
 
   unsigned char Serverbuffer[BUFFER_SIZE];
   unsigned char Serverlittle_buffer[LITTLE_BUFFER_SIZE];
@@ -89,18 +90,20 @@ public:
       cout << "Receive Failed! " << endl;
     }
 
+    cout << "r  " << r << endl;
+
     inet_ntop(AF_INET, &(tempSocketAddress.sin_addr), sender_ip,
               INET_ADDRSTRLEN);
 
     sender_port = htons((&tempSocketAddress)->sin_port);
 
     Message requestMsg(reinterpret_cast<char *>(Serverbuffer));
-    int op_id = requestMsg.getOperation();
-    //    int rpcid = requestMsg.getRPCId();
+    int op_id_request = requestMsg.getOperation();
+    int rpcid_request = requestMsg.getRPCId();
     //    size_t msgsize = requestMsg.getMessageSize();
     string msg = requestMsg.getUnmarshalledMessage();
 
-    switch (op_id) {
+    switch (op_id_request) {
 
     case 2002: // view request
     {
@@ -119,29 +122,40 @@ public:
 
       cout << "User: " << username << endl;
       cout << "Requested Image Name: " << imageName << endl;
-      // View Request add & reply
+
       memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
 
-      pair<int, pair<string, string>> pair_temp = make_pair(2002, make_pair(username, imageName));
+      pair<int, pair<string, string>> pair_temp =
+          make_pair(2002, make_pair(username, imageName));
       bool pair_found = false;
-      for(int e=0; e<requests_buffer.size() && !pair_found; e++){
-          pair_found = requests_buffer[e] == pair_temp;
-
+      for (int e = 0; e < requests_buffer.size() && !pair_found; e++) {
+        pair_found = requests_buffer[e] == pair_temp;
       }
-      if(!pair_found){
-          requests_buffer.push_back(pair_temp);
-          Serverlittle_buffer[0] = '1';
-      }
-      else{
-          Serverlittle_buffer[0] = '0';
+      if (!pair_found) {
+        requests_buffer.push_back(pair_temp);
+        Serverlittle_buffer[0] = '1';
+      } else {
+        Serverlittle_buffer[0] = '0';
       }
 
       Serverlittle_buffer[1] = 0;
-      if (sendto(sv->s, Serverlittle_buffer,
-                 strlen((const char *)Serverlittle_buffer), 0,
+
+      char *msg_char = reinterpret_cast<char *>(this->Serverlittle_buffer);
+
+      Message view_request_reply(Reply, msg_char, strlen(msg_char),
+                                 op_id_request, rpcid_request, 0, 0, 0);
+      string x_reply = view_request_reply.marshal();
+      char marshalled_message_reply[BUFFER_SIZE];
+      int n = x_reply.length();
+      strncpy(marshalled_message_reply, x_reply.c_str(), n + 1);
+
+      if (sendto(sv->s, marshalled_message_reply,
+                 strlen((const char *)marshalled_message_reply), 0,
                  (struct sockaddr *)&tempSocketAddress, tempAddrlen) < 0) {
         perror("View Request reply sendto failed");
       }
+
+      // End of changes
 
     } break; // end of view
 
@@ -164,12 +178,34 @@ public:
       requests_buffer.push_back(
           make_pair(2003, make_pair(username, imageName)));
 
-      this->sendReply(reinterpret_cast<char *>(
-          this->Serverbuffer)); // This does nothing, why no reply like above
+      // Hassan Changes
+      // this->sendReply(reinterpret_cast<char*>(this->Serverbuffer));
+
+      // Marshal the reply and then send it
+      char *msg_char = reinterpret_cast<char *>(this->Serverbuffer);
+
+      Message login_request_reply(Reply, msg_char, strlen(msg_char),
+                                  op_id_request, rpcid_request, 0, 0, 0);
+
+      string x_reply = login_request_reply.marshal();
+
+      char marshalled_message_reply[BUFFER_SIZE];
+
+      int n = x_reply.length();
+      strncpy(marshalled_message_reply, x_reply.c_str(), n + 1);
+
+      if (sendto(sv->s, marshalled_message_reply,
+                 strlen(marshalled_message_reply), 0,
+                 (struct sockaddr *)&tempSocketAddress, tempAddrlen) < 0) {
+        perror("send to reply failed");
+      }
+
+      // End of changes
 
     } break; // end of view
 
-    case 2004: { // receive image
+    case 2004: // receive Image
+    {
       // image length
       unsigned long current_received = 0;
 
@@ -189,21 +225,44 @@ public:
       cout << "imfirstfrag length " << fraglength << endl;
       // this->sendReply(reinterpret_cast<char*>(this->Serverbuffer));
 
+      // Hassan Changes
+
       current_received += r;
       unsigned char little_buffer[20000];
 
       memset(little_buffer, 0, sizeof(little_buffer));
       sprintf((char *)(little_buffer), "%lu", current_received);
 
-      if (sendto(sv->s, little_buffer, LITTLE_BUFFER_SIZE, 0,
+      // Marshal the reply and then send it
+      char *msg_char = reinterpret_cast<char *>(little_buffer);
+
+      cout << "little_buffer " << little_buffer << endl;
+
+      Message image_reply(Reply, msg_char, strlen(msg_char), op_id_request,
+                          rpcid_request, fragd, fragc, MF);
+
+      string x_reply = image_reply.marshal();
+
+      char marshalled_message_reply[BUFFER_SIZE];
+
+      int n = x_reply.length();
+      strncpy(marshalled_message_reply, x_reply.c_str(), n + 1);
+
+      cout << "marshalled_message_reply " << marshalled_message_reply << endl;
+
+      if (sendto(sv->s, marshalled_message_reply,
+                 strlen(marshalled_message_reply), 0,
                  (struct sockaddr *)&tempSocketAddress, tempAddrlen) < 0) {
-        perror("first image frag reply send to failed");
+        perror("send to reply failed");
       }
 
       printf("%s.\n", "Start of image receive");
+      // std::ofstream os(
+      //    "/home/hkandil/Downloads/distributed_pro-master-latest/new.jpeg");
+
       // refaay: should get ownername and imagename with the send
-      //string steg_image_name = this->username + "_" + selectedImage;
-      std::ofstream os("/home/refaay/distributed_pro/new.jpeg"); // refaay should change
+      // string steg_image_name = this->username + "_" + selectedImage;
+      std::ofstream os("new.jpeg"); // refaay should change
 
       if (r > 0) {
         os << msg;
@@ -222,42 +281,75 @@ public:
           r = recvfrom(sv->s, little_buffer, LITTLE_BUFFER_SIZE, 0,
                        (struct sockaddr *)&tempSocketAddress, &tempAddrlen);
 
-          current_received += r;
-          cout << "Received total " << current_received << " encoded bytes.\n";
-
           Message imageFrag(reinterpret_cast<char *>(little_buffer));
 
           string imfrag = imageFrag.getUnmarshalledMessage();
           int imfraglen = imageFrag.getMessageSize();
-          MF = imageFrag.getMoreFrag();
-          fragc = imageFrag.getFragCount();
+          int rpcid_new = imageFrag.getRPCId();
+          int op_id_new = imageFrag.getOperation();
+          int fragc_new = imageFrag.getFragCount();
 
           // string newY(imfrag,imfraglen);
 
-          if (r > 0) {
-            os << imfrag;
-          }
+          current_received += r;
+          cout << "Received total " << current_received << " encoded bytes.\n";
+
+          // Marshal the reply and then send it
+
           memset(little_buffer, 0, sizeof(little_buffer));
           sprintf((char *)(little_buffer), "%lu", current_received);
 
-          if (sendto(sv->s, little_buffer, LITTLE_BUFFER_SIZE, 0,
-                     (struct sockaddr *)&tempSocketAddress, tempAddrlen) < 0) {
-            perror("sendto failed");
+          char *msg_char = reinterpret_cast<char *>(little_buffer);
+
+          Message image_reply(Reply, msg_char, strlen(msg_char), op_id_new,
+                              rpcid_new, fragd, fragc_new, MF);
+
+          string x_reply = image_reply.marshal();
+
+          char marshalled_message_reply[BUFFER_SIZE];
+
+          int n = x_reply.length();
+          strncpy(marshalled_message_reply, x_reply.c_str(), n + 1);
+
+          if (rpcid_request == rpcid_new && (fragc++) == fragc_new) {
+
+            MF = imageFrag.getMoreFrag();
+
+            if (r > 0) {
+              os << imfrag;
+            }
+
+            if (sendto(sv->s, marshalled_message_reply,
+                       strlen(marshalled_message_reply), 0,
+                       (struct sockaddr *)&tempSocketAddress,
+                       tempAddrlen) < 0) {
+              perror("send to reply failed");
+            }
+
+            // End of changes
+
+          } else if ((rpcid_request == rpcid_new) && (fragc == fragc_new)) {
+            // Re-send the reply without writing the image
+            // if the image fragment was sent before
+
+            if (sendto(sv->s, marshalled_message_reply,
+                       strlen(marshalled_message_reply), 0,
+                       (struct sockaddr *)&tempSocketAddress,
+                       tempAddrlen) < 0) {
+              perror("send to reply failed");
+            }
           }
         }
       }
       os.close();
 
-      string extract_command,
-      defaultPath = "/home/refaay/distributed_pro/new.jpeg"; // refaay should change
-      extract_command = "steghide extract -sf " + defaultPath + " -p hk ";
-
+      string extract_command, defaultPath = "new.jpeg";
+      extract_command = "steghide extract -sf " + defaultPath + " -p hk";
       QProcess::execute(QString::fromStdString(extract_command));
-
-      //         int n = extract_command.length();
-      //         char char_array[n+1];
-      //         strcpy(char_array, extract_command.c_str());
-      //         system(char_array);
+      /*int nn = extract_command.length();
+      char char_array[nn + 1];
+      strcpy(char_array, extract_command.c_str());
+      system(char_array);*/
     }
 
     default:
@@ -488,9 +580,11 @@ public:
     bool nospecial = true;
 
     for (int i = 0; i < imagename.length() && nospecial; i++) {
-          nospecial = isalnum(imagename[i]) || imagename[i] == '.' || imagename[i] == '/';
-          if(!nospecial) cout << "Special char is " << imagename[i] << endl;
-        }
+      nospecial =
+          isalnum(imagename[i]) || imagename[i] == '.' || imagename[i] == '/';
+      if (!nospecial)
+        cout << "Special char is " << imagename[i] << endl;
+    }
     if (!nospecial) { // special chars
       return 3;       // error code for special chars as they are delimiters
     } else {
@@ -549,10 +643,9 @@ public:
       } else if (little_buffer[0] == '0') {
         return 0;
       } else if (little_buffer[0] == '9') {
-          return 9;
-        } else
-          return 8;
-
+        return 9;
+      } else
+        return 8;
     }
   }
 
@@ -566,6 +659,7 @@ public:
     int remote_peer_port = std::stoi(images[2], nullptr, 0); // Refaay
     cout << "Remote IP " << temp_ip << ", port " << remote_peer_port << endl;
     char remote_peer_address[1024];
+    char little_buffer[100];
     strcpy(remote_peer_address, temp_ip.c_str());
 
     makeDestSA(&ownerSocket, remote_peer_address, remote_peer_port);
@@ -585,32 +679,56 @@ public:
     int n = x.length();
     strncpy(marshalled_message, x.c_str(), n + 1);
 
-    int r = 1;
-
     if ((n = sendto(sc->s, marshalled_message,
                     strlen((const char *)marshalled_message), 0,
                     (struct sockaddr *)&ownerSocket,
                     sizeof(struct sockaddr_in))) < 0)
       perror("Send failed\n");
-    // should receive reply
-    socklen_t tempAddrlen = sizeof(ownerSocket);
-    memset(marshalled_message, 0, sizeof(marshalled_message));
-    // Receive Marshalled Message
 
-    if ((r = recvfrom(sc->s, marshalled_message, BUFFER_SIZE, 0,
-                      (struct sockaddr *)&ownerSocket, &tempAddrlen)) < 0) {
+    memset(little_buffer, 0, sizeof(little_buffer));
+
+    // Preparing a temp socket address to store the address of the receiver
+    // sending the reply in
+    struct sockaddr_in tempSocketAddress;
+    socklen_t tempAddrlen = sizeof(tempSocketAddress);
+
+    if ((r = recvfrom(sc->s, little_buffer, sizeof(little_buffer), 0,
+                      (struct sockaddr *)&tempSocketAddress, &tempAddrlen)) <
+        0) {
       cout << "Receive Failed! " << endl;
-      return 0;
+      return 3;
     } else {
-      if (marshalled_message[0] == '1')
+      // unmarshal the reply
+      Message reply_view_request(reinterpret_cast<char *>(little_buffer));
+
+      string msg_view_request_reply =
+          reply_view_request.getUnmarshalledMessage();
+
+      cout << "msg_received_length " << msg_view_request_reply << endl;
+      if (msg_view_request_reply[0] == '1')
         return 1;
+      else if (msg_view_request_reply[0] == '0')
+        return 0;
       else
         return 2;
     }
+
+    /* Hassan's resend if lost
+        int rpc_id_new = reply_view_request.getRPCId();
+
+
+    if (rpc_id_new != requestID) // check if the request matches the reply
+    {
+      // if not resend the request
+      if ((n = sendto(sc->s, marshalled_message,
+                      strlen((const char *)marshalled_message), 0,
+                      (struct sockaddr *)&ownerSocket,
+                      sizeof(struct sockaddr_in))) < 0)
+        perror("Send failed\n");
+    }*/
   }
 
   void approve_image(string selectedUser, string selectedImage) {
-
 
     vector<string> images;
     images = this->users[selectedUser]; // Saving the vector of the selected
@@ -669,12 +787,11 @@ public:
   }
 
   void send_image(string viewerName, string selectedImage) {
-
-
+    UDPSocketClient *newSock = new UDPSocketClient();
     vector<string> images;
     images = this->users[viewerName]; // Saving the vector of the selected
-                                        // user image names & socket addresses
-                                        // inside the variable images
+                                      // user image names & socket addresses
+                                      // inside the variable images
 
     struct sockaddr_in
         receiverSocket; // instantiating the receiver socket address (the user
@@ -692,10 +809,21 @@ public:
     strcpy(remote_peer_address, remote_peer_ip.c_str());
     makeDestSA(&receiverSocket, remote_peer_address, remote_peer_port);
 
-    printf("%s.\n", "Start of Send image");
-    cout << "Image name " << selectedImage << endl;
+    cout << "Start of Send image" << endl;
     string steg_image_name = this->username + "_" + selectedImage;
-    std::ifstream is(steg_image_name, std::ifstream::binary);
+    cout << "Image name " << selectedImage << " Steg name " << steg_image_name
+         << endl;
+    // Refaay: Qt needs path to open image!
+    char cwd[1000];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+      cout << "Current working dir: " << cwd << endl;
+    } else {
+      cout << "getcwd() error! Cannot get current path!" << endl;
+      // return 1;
+    }
+
+    std::ifstream is(string(cwd) + "/" + steg_image_name,
+                     std::ifstream::binary);
 
     if (is) {
 
@@ -718,7 +846,7 @@ public:
       int current_length_before_marshalling = 0;
       unsigned long fakka = length % 10000; // last image chunk
 
-      unsigned char little_buffer[10];
+      unsigned char little_buffer[2000];
       memset(little_buffer, 0, sizeof(little_buffer));
 
       requestID++;
@@ -757,7 +885,7 @@ public:
           current_length_before_marshalling += 10000;
 
           //  cout<<message<<endl;
-          if ((n = sendto(sc->s, message, strlen(message), 0,
+          if ((n = sendto(newSock->s, message, strlen(message), 0,
                           (struct sockaddr *)&receiverSocket,
                           sizeof(struct sockaddr_in))) < 0)
             perror("Send failed\n");
@@ -765,21 +893,33 @@ public:
           printf("Current Sent Total = %d.\n", current_length);
 
           memset(little_buffer, 0, sizeof(little_buffer));
-          if ((r = recvfrom(sc->s, little_buffer, 10, 0,
+          if ((r = recvfrom(newSock->s, little_buffer, sizeof(little_buffer), 0,
                             (struct sockaddr *)&tempSocketAddress,
                             &tempAddrlen)) < 0)
             perror("Receive Failed");
-          // Change to unsigned long
-          unsigned long received_length = 0;
-          for (int i = 0; i < 10 && little_buffer[i] != '\0'; i++) {
-            received_length *= 10;
-            received_length += little_buffer[i] - '0';
-          }
+          cout << "received length before unmarshalling: " << little_buffer
+               << endl;
+
+          // unmarshal the reply
+          Message reply_received_length(
+              reinterpret_cast<char *>(little_buffer));
+
+          string msg_received_length =
+              reply_received_length.getUnmarshalledMessage();
+
+          cout << "msg_received_length " << msg_received_length << endl;
+          // Change to long
+          long received_length = stol(msg_received_length);
           cout << "received_length " << received_length << endl;
 
+          // checks if the total length of the packets sent is equal to the
+          // received length in the reply
+
           if (received_length != current_length) {
+            // if not reset the current_length_before_marshalling in order to
+            // resend the packet
             perror("Dropped packets! received_length != current_length.");
-            current_length = received_length; // Drop Tolerance
+            current_length_before_marshalling -= 10000; // Drop Tolerance
           }
 
           printf("Current Received Total %d.\n", current_length);
@@ -808,21 +948,28 @@ public:
           printf("Current Sent Total = %d.\n", current_length);
 
           memset(little_buffer, 0, sizeof(little_buffer));
-          if ((r = recvfrom(sc->s, little_buffer, 10, 0,
+          if ((r = recvfrom(sc->s, little_buffer, 2000, 0,
                             (struct sockaddr *)&tempSocketAddress,
                             &tempAddrlen)) < 0)
             perror("Receive Failed");
-          // Change to unsigned long
-          unsigned long received_length = 0;
-          for (int i = 0; i < 10 && little_buffer[i] != '\0'; i++) {
-            received_length *= 10;
-            received_length += little_buffer[i] - '0';
-          }
+          cout << "received length before unmarshalling: " << little_buffer
+               << endl;
+
+          // unmarshal the reply
+          Message reply_received_length(
+              reinterpret_cast<char *>(little_buffer));
+
+          string msg_received_length =
+              reply_received_length.getUnmarshalledMessage();
+
+          cout << "msg_received_length " << msg_received_length << endl;
+          // Change to long
+          long received_length = stol(msg_received_length);
           cout << "received_length " << received_length << endl;
 
           if (received_length != current_length) {
             perror("Dropped packets! received_length != current_length.");
-            current_length = received_length; // Drop Tolerance
+            current_length_before_marshalling -= fakka; // Drop Tolerance
           }
 
           printf("Current Received Total %d.\n", current_length);

@@ -7,23 +7,14 @@ userimagesdialog::userimagesdialog(QWidget *parent, Peer *peer, QString s)
       selectedUser(s) {
   ui->setupUi(this);
   ui->line_request->setPlaceholderText("No. of Views");
-    ui->lbl_request_done->setVisible(false);
+  ui->lbl_request_done->setVisible(false);
 
   vector<string> images;
 
   images = peer->users[selectedUser.toUtf8().constData()];
 
   for (int i = 0; i < images.size(); i++) {
-    //string imageonly;
     if (i > 2) {
-      //      for (int j = images[i].length() - 1; j > 0; j--) {
-
-      //        if (images[i][j] == '/') {
-
-      //          imageonly = images[i].substr(j + 1, images[i].length() - 1);
-      //          break;
-      //        }
-      //      }
 
       ui->listWidget->addItem(QString::fromStdString(images[i]));
     }
@@ -38,26 +29,30 @@ void userimagesdialog::on_push_request_clicked() {
 
   const QString &s = ui->listWidget->currentItem()->text();
 
-  int result = peer->request_image(selectedUser.toUtf8().constData(), s.toUtf8().constData());
-  if(result == 1) {
-      ui->lbl_request_done->setStyleSheet("QLabel { color : green; }");
-      ui->lbl_request_done->setText(QString("Request sent!"));
-      ui->lbl_request_done->setVisible(true);
-  }
-  else if(result == 0) {
-      ui->lbl_request_done->setStyleSheet("QLabel { color : red; }");
-      ui->lbl_request_done->setText(QString("Request not sent!"));
-      ui->lbl_request_done->setVisible(true);
-  }
-  else if(result == 2) {
-      ui->lbl_request_done->setStyleSheet("QLabel { color : red; }");
-      ui->lbl_request_done->setText(QString("Request sent before! Wait for owner response!"));
-      ui->lbl_request_done->setVisible(true);
-  }
-  else {
-      ui->lbl_request_done->setStyleSheet("QLabel { color : red; }");
-      ui->lbl_request_done->setText(QString("Something went wrong!"));
-      ui->lbl_request_done->setVisible(true);
+  int result = peer->request_image(selectedUser.toUtf8().constData(),
+                                   s.toUtf8().constData());
+  if (result == 1) {
+    ui->lbl_request_done->setStyleSheet("QLabel { color : green; }");
+    ui->lbl_request_done->setText(QString("Request sent!"));
+    ui->lbl_request_done->setVisible(true);
+  } else if (result == 3) {
+    ui->lbl_request_done->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_request_done->setText(QString("Request send failed!"));
+    ui->lbl_request_done->setVisible(true);
+  } else if (result == 0) {
+    ui->lbl_request_done->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_request_done->setText(
+        QString("Request sent before! Wait for owner response!"));
+    ui->lbl_request_done->setVisible(true);
+  } else if (result == 2) {
+    ui->lbl_request_done->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_request_done->setText(
+        QString("Something went wrong at peer->request_image!"));
+    ui->lbl_request_done->setVisible(true);
+  } else {
+    ui->lbl_request_done->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_request_done->setText(QString("Something went wrong here!"));
+    ui->lbl_request_done->setVisible(true);
   }
 }
 

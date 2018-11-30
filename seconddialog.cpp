@@ -51,10 +51,6 @@ void SecondDialog::on_push_upload_clicked() {
   QString imagePath = QFileDialog::getOpenFileName(
       this, tr("Open Image"), "", tr("JPEG (*.jpg *.jpeg);;PNG (*.png)"));
 
-  //  int upload_stat = peer->upload(ui->line_upload_path->text().toStdString(),
-  //                                 ui->line_upload_name->text().toStdString(),
-  //                                 ui->line_upload_default->text().toStdString());
-
   int upload_stat = peer->upload(imagePath.toStdString());
 
   if (upload_stat == 1) { // Successful
@@ -70,14 +66,15 @@ void SecondDialog::on_push_upload_clicked() {
     ui->lbl_upload_successful->setText(QString("Fill all info!"));
     ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
   } else if (upload_stat == 3) {
-      ui->lbl_upload_successful->setVisible(true);
-      ui->lbl_upload_successful->setText(QString("No special Chars allowed in image name! Only 1 dot."));
-      ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
-    }  else if (upload_stat == 9) {
-      ui->lbl_upload_successful->setVisible(true);
-      ui->lbl_upload_successful->setText(QString("Image uploaded before!"));
-      ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
-    } else {
+    ui->lbl_upload_successful->setVisible(true);
+    ui->lbl_upload_successful->setText(
+        QString("No special Chars allowed in image name! Only 1 dot."));
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+  } else if (upload_stat == 9) {
+    ui->lbl_upload_successful->setVisible(true);
+    ui->lbl_upload_successful->setText(QString("Image uploaded before!"));
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+  } else {
     ui->lbl_upload_successful->setVisible(true);
     ui->lbl_upload_successful->setText(QString("Something Wrong here!"));
     ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");

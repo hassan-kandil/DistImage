@@ -1,12 +1,2 @@
-q rooney.jpeg 
-z 
-r /home/refaay/distributed_pro/rrooney.jpeg 
-i 
-a 
-bb 
-hassan 
-hello 
-upload 
-test /home/hkandil 
-imageowner 
-g 
+q batman.jpeg 
+r 

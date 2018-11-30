@@ -4,6 +4,8 @@
 NotificationDialog::NotificationDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::NotificationDialog), peer(peer) {
   ui->setupUi(this);
+  ui->line_views->setPlaceholderText("No. of Views");
+  peer->getUsers(); // because approve needs IP & port
   for (int i = 0; i < peer->requests_buffer.size(); i++) {
     string req;
     if (peer->requests_buffer[i].first == 2002)
@@ -28,23 +30,11 @@ void NotificationDialog::on_push_approve_clicked() {
   string imname =
       peer->requests_buffer[ui->listWidget->currentRow()].second.second;
 
-//  string path;
-//  // Parsing the path from the image name
-//  for (int j = imname.length() - 1; j > 0; j--) {
-
-//    if (imname[j] == '/') {
-
-//      path = imname.substr(0, j);
-//      break;
-//    }
-//  }
-
-  // const QString &s = ui->listWidget->currentItem()->text();
   cout << "ApprovedUser " << usname << " imagename " << imname << endl;
   peer->send_image(usname, imname);
 }
 
 void NotificationDialog::on_push_refresh_clicked() {
-  // peer->getUsers();
+  peer->getUsers(); // because approve needs IP & port
   // refill list
 }

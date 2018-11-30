@@ -44,14 +44,11 @@ void UsersDialog::on_push_view_clicked() {
                            Qt::CustomizeWindowHint);
     secdia->show();
   }
-
 }
 
 void UsersDialog::on_push_refresh_clicked() {
   ui->listWidget->clear();
-  // map<string, vector<string>> users;
-  // map<string, vector<string>>::iterator it;
-  // users =
+
   peer->getUsers();
   int i = 0;
   for (peer->it = peer->users.begin(); peer->it != peer->users.end();
