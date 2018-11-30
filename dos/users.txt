@@ -1,12 +1,2 @@
-q
-z
+q batman.jpeg 
 r 
-i
-a
-bb
-hassan
-hello
-upload
-test
-imageowner
-g

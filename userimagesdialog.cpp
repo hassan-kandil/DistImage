@@ -35,18 +35,23 @@ void userimagesdialog::on_push_request_clicked() {
     ui->lbl_request_done->setStyleSheet("QLabel { color : green; }");
     ui->lbl_request_done->setText(QString("Request sent!"));
     ui->lbl_request_done->setVisible(true);
-  } else if (result == 0) {
+  } else if (result == 3) {
     ui->lbl_request_done->setStyleSheet("QLabel { color : red; }");
-    ui->lbl_request_done->setText(QString("Request not sent!"));
+    ui->lbl_request_done->setText(QString("Request send failed!"));
     ui->lbl_request_done->setVisible(true);
-  } else if (result == 2) {
+  } else if (result == 0) {
     ui->lbl_request_done->setStyleSheet("QLabel { color : red; }");
     ui->lbl_request_done->setText(
         QString("Request sent before! Wait for owner response!"));
     ui->lbl_request_done->setVisible(true);
+  } else if (result == 2) {
+    ui->lbl_request_done->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_request_done->setText(
+        QString("Something went wrong at peer->request_image!"));
+    ui->lbl_request_done->setVisible(true);
   } else {
     ui->lbl_request_done->setStyleSheet("QLabel { color : red; }");
-    ui->lbl_request_done->setText(QString("Something went wrong!"));
+    ui->lbl_request_done->setText(QString("Something went wrong here!"));
     ui->lbl_request_done->setVisible(true);
   }
 }

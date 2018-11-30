@@ -22,7 +22,7 @@
 #include <unistd.h>
 #include <vector>
 using namespace std;
-
+//#include <limits.h> // for getcwd
 #define BUFFER_SIZE 50000
 
 #ifndef PEER_H
@@ -692,29 +692,30 @@ public:
     struct sockaddr_in tempSocketAddress;
     socklen_t tempAddrlen = sizeof(tempSocketAddress);
 
-    if ((r = recvfrom(sc->s, marshalled_message, BUFFER_SIZE, 0,
-                      (struct sockaddr *)&ownerSocket, &tempAddrlen)) < 0) {
+    if ((r = recvfrom(sc->s, little_buffer, sizeof(little_buffer), 0,
+                      (struct sockaddr *)&tempSocketAddress, &tempAddrlen)) <
+        0) {
       cout << "Receive Failed! " << endl;
-      return 0;
+      return 3;
     } else {
-      if (marshalled_message[0] == '1')
+      // unmarshal the reply
+      Message reply_view_request(reinterpret_cast<char *>(little_buffer));
+
+      string msg_view_request_reply =
+          reply_view_request.getUnmarshalledMessage();
+
+      cout << "msg_received_length " << msg_view_request_reply << endl;
+      if (msg_view_request_reply[0] == '1')
         return 1;
+      else if (msg_view_request_reply[0] == '0')
+        return 0;
       else
         return 2;
     }
 
-    // unmarshal the reply
     /* Hassan's resend if lost
-    if ((r = recvfrom(sc->s, little_buffer, sizeof(little_buffer), 0,
-                      (struct sockaddr *)&tempSocketAddress, &tempAddrlen)) < 0)
-      perror("Receive Failed");
+        int rpc_id_new = reply_view_request.getRPCId();
 
-    Message reply_view_request(reinterpret_cast<char *>(little_buffer));
-
-    string msg_view_request_reply = reply_view_request.getUnmarshalledMessage();
-    int rpc_id_new = reply_view_request.getRPCId();
-
-    cout << "msg_received_length " << msg_view_request_reply << endl;
 
     if (rpc_id_new != requestID) // check if the request matches the reply
     {
@@ -808,10 +809,21 @@ public:
     strcpy(remote_peer_address, remote_peer_ip.c_str());
     makeDestSA(&receiverSocket, remote_peer_address, remote_peer_port);
 
-    printf("%s.\n", "Start of Send image");
-    cout << "Image name " << selectedImage << endl;
+    cout << "Start of Send image" << endl;
     string steg_image_name = this->username + "_" + selectedImage;
-    std::ifstream is(steg_image_name, std::ifstream::binary);
+    cout << "Image name " << selectedImage << " Steg name " << steg_image_name
+         << endl;
+    // Refaay: Qt needs path to open image!
+    char cwd[1000];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+      cout << "Current working dir: " << cwd << endl;
+    } else {
+      cout << "getcwd() error! Cannot get current path!" << endl;
+      // return 1;
+    }
+
+    std::ifstream is(string(cwd) + "/" + steg_image_name,
+                     std::ifstream::binary);
 
     if (is) {
 

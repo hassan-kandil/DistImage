@@ -86,7 +86,7 @@
      <item>
       <widget class="QLineEdit" name="line_views">
        <property name="text">
-        <string>No. Of Views</string>
+        <string/>
        </property>
       </widget>
      </item>
