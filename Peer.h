@@ -813,6 +813,7 @@ public:
     string steg_image_name = this->username + "_" + selectedImage;
     cout << "Image name " << selectedImage << " Steg name " << steg_image_name
          << endl;
+    /*
     // Refaay: Qt needs path to open image!
     char cwd[1000];
     if (getcwd(cwd, sizeof(cwd)) != NULL) {
@@ -823,7 +824,8 @@ public:
     }
 
     std::ifstream is(string(cwd) + "/" + steg_image_name,
-                     std::ifstream::binary);
+                     std::ifstream::binary);*/
+    std::ifstream is(steg_image_name, std::ifstream::binary);
 
     if (is) {
 
