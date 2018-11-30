@@ -70,7 +70,7 @@ public:
     unsigned char *buffer = new unsigned char[BUFFER_SIZE];
     unsigned char *little_buffer = new unsigned char[LITTLE_BUFFER_SIZE];
 
-    printf("%s.\n", "Start of getRequest");
+    printf("%s:\n", "Start of GetRequest");
     unsigned long current_received = 0;
 
     memset(buffer, 0, sizeof(buffer));
@@ -78,10 +78,10 @@ public:
     r = recvfrom(sv->s, buffer, BUFFER_SIZE, 0,
                  (struct sockaddr *)&recievedAddr, &addresslength);
 
-    printf("Received Message = %s.\n", buffer);
+    // printf("Received Message = %s.\n", buffer);
 
-    cout << "Received Message Length = "
-         << strlen(reinterpret_cast<char *>(buffer)) << endl;
+    // cout << "Received Message Length = "
+    //     << strlen(reinterpret_cast<char *>(buffer)) << endl;
 
     inet_ntop(AF_INET, &(recievedAddr.sin_addr), sender_ip, INET_ADDRSTRLEN);
 
@@ -236,8 +236,12 @@ public:
       memset(little_buffer, 0, sizeof(little_buffer));
       if (uploaded == 1)
         little_buffer[0] = '1';
-      else
+      else if (uploaded == 0)
         little_buffer[0] = '0';
+      else if (uploaded == 9)
+        little_buffer[0] = '9';
+      else
+        little_buffer[0] = '8'; // if something is wrong
       little_buffer[1] = 0;
       if (sendto(sv->s, little_buffer, strlen((const char *)little_buffer), 0,
                  (struct sockaddr *)&recievedAddr, addresslength) < 0) {
@@ -403,26 +407,35 @@ public:
       }
     }
     if (flag) {
-      users_map[username].img.push_back(img_name);
-      users.seekg(0);
-      while (!users.eof()) {
-        string line;
-        getline(users, line);
-        if (line == "")
-          break;
-        string orig = line;
-        int name_len;
-        name_len = line.find(" ");
-        string name = line.substr(0, name_len);
-        line = line.erase(0, name_len + 1);
-        if (name == username) {
-          Final += username + " ";
-          for (int i = 0; i < users_map[username].img.size(); i++)
-            Final += users_map[username].img[i] + " ";
-          Final += "\n";
-        } else {
-          Final += orig + "\n";
+      // has this user uploaded this image before?
+      bool imagefound = false;
+      for (int e = 0; e < users_map[username].img.size() && !imagefound; e++) {
+        imagefound = users_map[username].img[e] == img_name;
+      }
+      if (!imagefound) {
+        users_map[username].img.push_back(img_name);
+        users.seekg(0);
+        while (!users.eof()) {
+          string line;
+          getline(users, line);
+          if (line == "")
+            break;
+          string orig = line;
+          int name_len;
+          name_len = line.find(" ");
+          string name = line.substr(0, name_len);
+          line = line.erase(0, name_len + 1);
+          if (name == username) {
+            Final += username + " ";
+            for (int i = 0; i < users_map[username].img.size(); i++)
+              Final += users_map[username].img[i] + " ";
+            Final += "\n";
+          } else {
+            Final += orig + "\n";
+          }
         }
+      } else {
+        return 9;
       }
     } else {
       cout << "Username not found \n";

@@ -104,7 +104,7 @@
        <item>
         <widget class="QPushButton" name="push_notifications">
          <property name="text">
-          <string>Pending</string>
+          <string>Notifications</string>
          </property>
         </widget>
        </item>
