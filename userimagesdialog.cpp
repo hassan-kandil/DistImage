@@ -7,27 +7,25 @@ userimagesdialog::userimagesdialog(QWidget *parent, Peer *peer, QString s)
       selectedUser(s) {
   ui->setupUi(this);
   ui->line_request->setPlaceholderText("No. of Views");
-  // map<string, vector<string>> users;
-  // map<string, vector<string>>::iterator it;
-  // users = peer->getUsers();
-  int i = 0;
+    ui->lbl_request_done->setVisible(false);
+
   vector<string> images;
 
   images = peer->users[selectedUser.toUtf8().constData()];
 
   for (int i = 0; i < images.size(); i++) {
-    string imageonly;
+    //string imageonly;
     if (i > 2) {
-      for (int j = images[i].length() - 1; j > 0; j--) {
+      //      for (int j = images[i].length() - 1; j > 0; j--) {
 
-        if (images[i][j] == '/') {
+      //        if (images[i][j] == '/') {
 
-          imageonly = images[i].substr(j + 1, images[i].length() - 1);
-          break;
-        }
-      }
+      //          imageonly = images[i].substr(j + 1, images[i].length() - 1);
+      //          break;
+      //        }
+      //      }
 
-      ui->listWidget->addItem(QString::fromStdString(imageonly));
+      ui->listWidget->addItem(QString::fromStdString(images[i]));
     }
   }
 }
@@ -37,28 +35,30 @@ userimagesdialog::~userimagesdialog() { delete ui; }
 void userimagesdialog::on_push_request_clicked() {
 
   cout << "Request button clicked" << endl;
-  // map<string, vector<string>> users;
-  // map<string, vector<string>>::iterator it;
-  // users = peer->getUsers();
-  int i = 0;
-  vector<string> images;
-
-  images = peer->users[selectedUser.toUtf8().constData()];
-  string path;
-  for (int j = images[3].length() - 1; j > 0; j--) {
-
-    if (images[3][j] == '/') {
-
-      path = images[3].substr(0, j);
-      break;
-    }
-  }
 
   const QString &s = ui->listWidget->currentItem()->text();
-  cout << "selectedUser " << selectedUser.toUtf8().constData() << " path"
-       << path << endl;
-  peer->request_image(selectedUser.toUtf8().constData(), s.toUtf8().constData(),
-                      path);
+
+  int result = peer->request_image(selectedUser.toUtf8().constData(), s.toUtf8().constData());
+  if(result == 1) {
+      ui->lbl_request_done->setStyleSheet("QLabel { color : green; }");
+      ui->lbl_request_done->setText(QString("Request sent!"));
+      ui->lbl_request_done->setVisible(true);
+  }
+  else if(result == 0) {
+      ui->lbl_request_done->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_request_done->setText(QString("Request not sent!"));
+      ui->lbl_request_done->setVisible(true);
+  }
+  else if(result == 2) {
+      ui->lbl_request_done->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_request_done->setText(QString("Request sent before! Wait for owner response!"));
+      ui->lbl_request_done->setVisible(true);
+  }
+  else {
+      ui->lbl_request_done->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_request_done->setText(QString("Something went wrong!"));
+      ui->lbl_request_done->setVisible(true);
+  }
 }
 
 void userimagesdialog::temp() {}

@@ -10,3 +10,8 @@ MyImagesDialog::MyImagesDialog(QWidget *parent)
 }
 
 MyImagesDialog::~MyImagesDialog() { delete ui; }
+
+void MyImagesDialog::on_push_request_clicked()
+{
+
+}

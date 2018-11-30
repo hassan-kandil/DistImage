@@ -1,4 +1,4 @@
-q 
+q rooney.jpeg 
 z 
 r /home/refaay/distributed_pro/rrooney.jpeg 
 i 

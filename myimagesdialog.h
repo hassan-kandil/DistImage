@@ -14,6 +14,9 @@ public:
   explicit MyImagesDialog(QWidget *parent = nullptr);
   ~MyImagesDialog();
 
+private slots:
+    void on_push_request_clicked();
+
 private:
   Ui::MyImagesDialog *ui;
 };

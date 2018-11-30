@@ -1,27 +1,25 @@
-#include "UDPSocketClient.h"
-//#include "UDPSocketServer.h"
 #include "Message.h"
+#include "UDPSocketClient.h"
+#include <QProcess>
+#include <arpa/inet.h>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
 #include <iostream>
+#include <locale>
+#include <map>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <poll.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <string>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <thread>
 #include <unistd.h>
-//#include "UDPSocketServer.h"
-#include <QProcess>
-#include <arpa/inet.h>
-#include <fstream>
-#include <locale>
-#include <map>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
 #include <vector>
 using namespace std;
 
@@ -54,7 +52,7 @@ public:
   int r;
   struct sockaddr_in recievedAddr;
   socklen_t addresslength = sizeof(recievedAddr);
-  vector<pair<int, pair<string, string>>> requests_buffer; // user, image
+  vector<pair<int, pair<string, string>>> requests_buffer; // <request_code, <user, image>>
 
   unsigned char Serverbuffer[BUFFER_SIZE];
   unsigned char Serverlittle_buffer[LITTLE_BUFFER_SIZE];
@@ -121,12 +119,23 @@ public:
 
       cout << "User: " << username << endl;
       cout << "Requested Image Name: " << imageName << endl;
-      requests_buffer.push_back(
-          make_pair(2002, make_pair(username, imageName)));
-
-      // View Request reply
+      // View Request add & reply
       memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
-      Serverlittle_buffer[0] = '1';
+
+      pair<int, pair<string, string>> pair_temp = make_pair(2002, make_pair(username, imageName));
+      bool pair_found = false;
+      for(int e=0; e<requests_buffer.size() && !pair_found; e++){
+          pair_found = requests_buffer[e] == pair_temp;
+
+      }
+      if(!pair_found){
+          requests_buffer.push_back(pair_temp);
+          Serverlittle_buffer[0] = '1';
+      }
+      else{
+          Serverlittle_buffer[0] = '0';
+      }
+
       Serverlittle_buffer[1] = 0;
       if (sendto(sv->s, Serverlittle_buffer,
                  strlen((const char *)Serverlittle_buffer), 0,
@@ -160,7 +169,7 @@ public:
 
     } break; // end of view
 
-    case 2004: {
+    case 2004: { // receive image
       // image length
       unsigned long current_received = 0;
 
@@ -192,8 +201,9 @@ public:
       }
 
       printf("%s.\n", "Start of image receive");
-      std::ofstream os(
-          "/home/refaay/distributed_pro/new.jpeg");
+      // refaay: should get ownername and imagename with the send
+      //string steg_image_name = this->username + "_" + selectedImage;
+      std::ofstream os("/home/refaay/distributed_pro/new.jpeg"); // refaay should change
 
       if (r > 0) {
         os << msg;
@@ -239,8 +249,7 @@ public:
       os.close();
 
       string extract_command,
-          defaultPath =
-              "/home/hkandil/Downloads/distributed_pro-master/new.jpeg";
+      defaultPath = "/home/refaay/distributed_pro/new.jpeg"; // refaay should change
       extract_command = "steghide extract -sf " + defaultPath + " -p hk ";
 
       QProcess::execute(QString::fromStdString(extract_command));
@@ -267,10 +276,9 @@ public:
     }
   }
 
+  // End of Server Functions
 
-      // End of Server Functions
-
-      static void makeDestSA(struct sockaddr_in *sa, char *hostname, int port) {
+  static void makeDestSA(struct sockaddr_in *sa, char *hostname, int port) {
     struct hostent *host;
     sa->sin_family = AF_INET;
     if ((host = gethostbyname(hostname)) == NULL) {
@@ -464,16 +472,29 @@ public:
       return 0;
   }
 
-  int upload(string pathname, string imagename, string defaultimage) {
-    if (pathname == "" || imagename == "" || defaultimage == "")
+  int upload(string imagepath) {
+    if (imagepath == "")
       return 6;
+
+    string pathname, imagename;
+    for (int j = imagepath.length() - 1; j > 0; j--) {
+
+      if (imagepath[j] == '/') {
+        pathname = imagepath.substr(0, j);
+        imagename = imagepath.substr(j + 1, imagepath.length() - 1);
+        break;
+      }
+    }
     bool nospecial = true;
 
+    for (int i = 0; i < imagename.length() && nospecial; i++) {
+          nospecial = isalnum(imagename[i]) || imagename[i] == '.' || imagename[i] == '/';
+          if(!nospecial) cout << "Special char is " << imagename[i] << endl;
+        }
     if (!nospecial) { // special chars
       return 3;       // error code for special chars as they are delimiters
     } else {
-
-      string msg = this->username + "*" + pathname + "/" + imagename;
+      string msg = this->username + "*" + imagename;
       char *msg_char = new char[msg.length() + 1];
       strcpy(msg_char, msg.c_str());
 
@@ -515,26 +536,28 @@ public:
         perror("Receive Failed");
       if (little_buffer[0] == '1') {
 
-        QProcess::execute(QString::fromStdString("cp " + pathname + "/" +
-                                                 defaultimage + " " + pathname +
-                                                 "/s" + imagename));
+        QProcess::execute(QString::fromStdString(
+            "cp " + pathname + "/default.jpeg " + pathname + "/" +
+            this->username + "_" + imagename));
 
         QProcess::execute(QString::fromStdString(
-            "steghide embed -cf " + pathname + "/s" + imagename + " -ef " +
-            pathname + "/" + imagename + " -p hk "));
+            "steghide embed -cf " + pathname + "/" + this->username + "_" +
+            imagename + " -ef " + pathname + "/" + imagename + " -p hk "));
 
         return 1;
 
-      } else
+      } else if (little_buffer[0] == '0') {
         return 0;
+      } else if (little_buffer[0] == '9') {
+          return 9;
+        } else
+          return 8;
+
     }
   }
 
-  void request_image(string selectedUser, string selectedImage,
-                     string path_full) {
+  int request_image(string selectedUser, string selectedImage) {
 
-    // map<string, vector<string>> users;
-    // users = this->getUsers();
     vector<string> images;
     images = this->users[selectedUser];
     struct sockaddr_in ownerSocket;
@@ -547,8 +570,8 @@ public:
 
     makeDestSA(&ownerSocket, remote_peer_address, remote_peer_port);
 
-    string image_with_full_path = path_full + "/" + selectedImage;
-    string msg = this->username + "*" + image_with_full_path + "*";
+    // string image_with_full_path = path_full + "/" + selectedImage;
+    string msg = this->username + "*" + selectedImage + "*";
     char *msg_char = new char[msg.length() + 1];
     strcpy(msg_char, msg.c_str());
 
@@ -569,14 +592,26 @@ public:
                     (struct sockaddr *)&ownerSocket,
                     sizeof(struct sockaddr_in))) < 0)
       perror("Send failed\n");
+    // should receive reply
+    socklen_t tempAddrlen = sizeof(ownerSocket);
+    memset(marshalled_message, 0, sizeof(marshalled_message));
+    // Receive Marshalled Message
+
+    if ((r = recvfrom(sc->s, marshalled_message, BUFFER_SIZE, 0,
+                      (struct sockaddr *)&ownerSocket, &tempAddrlen)) < 0) {
+      cout << "Receive Failed! " << endl;
+      return 0;
+    } else {
+      if (marshalled_message[0] == '1')
+        return 1;
+      else
+        return 2;
+    }
   }
 
   void approve_image(string selectedUser, string selectedImage) {
 
-    // map<string, vector<string>> users;
-    // map containing the table of users (username, images names,
-    // socket addresses)
-    // users = this->getUsers(); // retreiving the map from the dos
+
     vector<string> images;
     images = this->users[selectedUser]; // Saving the vector of the selected
                                         // user image names & socket addresses
@@ -633,14 +668,11 @@ public:
       perror("Receive Failed");
   }
 
-  void send_image(string selectedUser, string selectedImage) {
+  void send_image(string viewerName, string selectedImage) {
 
-    // map<string, vector<string>>
-    //   users; // map containing the table of users (username, images names,
-    // socket addresses)
-    // users = this->getUsers(); // retreiving the map from the dos
+
     vector<string> images;
-    images = this->users[selectedUser]; // Saving the vector of the selected
+    images = this->users[viewerName]; // Saving the vector of the selected
                                         // user image names & socket addresses
                                         // inside the variable images
 
@@ -661,8 +693,9 @@ public:
     makeDestSA(&receiverSocket, remote_peer_address, remote_peer_port);
 
     printf("%s.\n", "Start of Send image");
-    cout << "Image Path " << selectedImage << endl;
-    std::ifstream is(selectedImage, std::ifstream::binary);
+    cout << "Image name " << selectedImage << endl;
+    string steg_image_name = this->username + "_" + selectedImage;
+    std::ifstream is(steg_image_name, std::ifstream::binary);
 
     if (is) {
 
