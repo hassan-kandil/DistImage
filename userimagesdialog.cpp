@@ -8,7 +8,7 @@ userimagesdialog::userimagesdialog(QWidget *parent, Peer *peer, QString s)
   ui->setupUi(this);
   ui->line_request->setPlaceholderText("No. of Views");
   ui->lbl_request_done->setVisible(false);
-
+  ui->lbl_us->setText(selectedUser);
   vector<string> images;
 
   images = peer->users[selectedUser.toUtf8().constData()];

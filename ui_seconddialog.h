@@ -14,7 +14,6 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
@@ -31,33 +30,22 @@ public:
     QSpacerItem *verticalSpacer;
     QPushButton *push_users;
     QSpacerItem *verticalSpacer_2;
+    QPushButton *push_shared;
+    QSpacerItem *verticalSpacer_7;
     QPushButton *push_images;
     QHBoxLayout *horizontalLayout_2;
     QSpacerItem *verticalSpacer_3;
     QSpacerItem *horizontalSpacer_5;
     QPushButton *push_notifications;
     QSpacerItem *verticalSpacer_4;
+    QPushButton *push_upload;
+    QSpacerItem *verticalSpacer_6;
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer_3;
     QPushButton *push_logout;
     QSpacerItem *verticalSpacer_5;
     QSpacerItem *horizontalSpacer_2;
-    QHBoxLayout *horizontalLayout_5;
-    QLabel *lbl_upload_path;
-    QLineEdit *line_upload_path;
-    QHBoxLayout *horizontalLayout_4;
-    QSpacerItem *horizontalSpacer_6;
-    QVBoxLayout *verticalLayout_3;
-    QLabel *lbl_upload_imagename;
-    QLineEdit *line_upload_name;
-    QSpacerItem *horizontalSpacer_10;
-    QVBoxLayout *verticalLayout_4;
-    QLabel *lbl_upload_defaultimage;
-    QLineEdit *line_upload_default;
-    QSpacerItem *horizontalSpacer_7;
-    QPushButton *push_upload;
-    QSpacerItem *horizontalSpacer_8;
     QHBoxLayout *horizontalLayout_6;
     QLabel *lbl_upload_successful;
     QSpacerItem *horizontalSpacer_9;
@@ -90,6 +78,15 @@ public:
 
         verticalLayout->addItem(verticalSpacer_2);
 
+        push_shared = new QPushButton(SecondDialog);
+        push_shared->setObjectName(QStringLiteral("push_shared"));
+
+        verticalLayout->addWidget(push_shared);
+
+        verticalSpacer_7 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_7);
+
         push_images = new QPushButton(SecondDialog);
         push_images->setObjectName(QStringLiteral("push_images"));
 
@@ -116,6 +113,15 @@ public:
         verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer_4);
+
+        push_upload = new QPushButton(SecondDialog);
+        push_upload->setObjectName(QStringLiteral("push_upload"));
+
+        verticalLayout->addWidget(push_upload);
+
+        verticalSpacer_6 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_6);
 
 
         horizontalLayout_3->addLayout(verticalLayout);
@@ -150,77 +156,6 @@ public:
 
         verticalLayout_5->addLayout(horizontalLayout_3);
 
-        horizontalLayout_5 = new QHBoxLayout();
-        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        lbl_upload_path = new QLabel(SecondDialog);
-        lbl_upload_path->setObjectName(QStringLiteral("lbl_upload_path"));
-
-        horizontalLayout_5->addWidget(lbl_upload_path);
-
-        line_upload_path = new QLineEdit(SecondDialog);
-        line_upload_path->setObjectName(QStringLiteral("line_upload_path"));
-
-        horizontalLayout_5->addWidget(line_upload_path);
-
-
-        verticalLayout_5->addLayout(horizontalLayout_5);
-
-        horizontalLayout_4 = new QHBoxLayout();
-        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
-        horizontalSpacer_6 = new QSpacerItem(13, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_4->addItem(horizontalSpacer_6);
-
-        verticalLayout_3 = new QVBoxLayout();
-        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
-        lbl_upload_imagename = new QLabel(SecondDialog);
-        lbl_upload_imagename->setObjectName(QStringLiteral("lbl_upload_imagename"));
-
-        verticalLayout_3->addWidget(lbl_upload_imagename);
-
-        line_upload_name = new QLineEdit(SecondDialog);
-        line_upload_name->setObjectName(QStringLiteral("line_upload_name"));
-
-        verticalLayout_3->addWidget(line_upload_name);
-
-
-        horizontalLayout_4->addLayout(verticalLayout_3);
-
-        horizontalSpacer_10 = new QSpacerItem(17, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_4->addItem(horizontalSpacer_10);
-
-        verticalLayout_4 = new QVBoxLayout();
-        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
-        lbl_upload_defaultimage = new QLabel(SecondDialog);
-        lbl_upload_defaultimage->setObjectName(QStringLiteral("lbl_upload_defaultimage"));
-
-        verticalLayout_4->addWidget(lbl_upload_defaultimage);
-
-        line_upload_default = new QLineEdit(SecondDialog);
-        line_upload_default->setObjectName(QStringLiteral("line_upload_default"));
-
-        verticalLayout_4->addWidget(line_upload_default);
-
-
-        horizontalLayout_4->addLayout(verticalLayout_4);
-
-        horizontalSpacer_7 = new QSpacerItem(17, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_4->addItem(horizontalSpacer_7);
-
-        push_upload = new QPushButton(SecondDialog);
-        push_upload->setObjectName(QStringLiteral("push_upload"));
-
-        horizontalLayout_4->addWidget(push_upload);
-
-        horizontalSpacer_8 = new QSpacerItem(13, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_4->addItem(horizontalSpacer_8);
-
-
-        verticalLayout_5->addLayout(horizontalLayout_4);
-
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
         lbl_upload_successful = new QLabel(SecondDialog);
@@ -237,15 +172,9 @@ public:
 
         QWidget::setTabOrder(push_users, push_images);
         QWidget::setTabOrder(push_images, push_notifications);
-        QWidget::setTabOrder(push_notifications, line_upload_path);
-        QWidget::setTabOrder(line_upload_path, line_upload_name);
-        QWidget::setTabOrder(line_upload_name, line_upload_default);
-        QWidget::setTabOrder(line_upload_default, push_upload);
-        QWidget::setTabOrder(push_upload, push_logout);
+        QWidget::setTabOrder(push_notifications, push_logout);
 
         retranslateUi(SecondDialog);
-        QObject::connect(line_upload_name, SIGNAL(returnPressed()), push_upload, SLOT(click()));
-        QObject::connect(line_upload_default, SIGNAL(returnPressed()), push_upload, SLOT(click()));
 
         QMetaObject::connectSlotsByName(SecondDialog);
     } // setupUi
@@ -254,13 +183,11 @@ public:
     {
         SecondDialog->setWindowTitle(QApplication::translate("SecondDialog", "DistImage", nullptr));
         push_users->setText(QApplication::translate("SecondDialog", "All Users", nullptr));
+        push_shared->setText(QApplication::translate("SecondDialog", "Shared Images", nullptr));
         push_images->setText(QApplication::translate("SecondDialog", "My Images", nullptr));
         push_notifications->setText(QApplication::translate("SecondDialog", "Notifications", nullptr));
-        push_logout->setText(QApplication::translate("SecondDialog", "Logout", nullptr));
-        lbl_upload_path->setText(QApplication::translate("SecondDialog", "Upload Images Path:", nullptr));
-        lbl_upload_imagename->setText(QApplication::translate("SecondDialog", "Upload Image Name", nullptr));
-        lbl_upload_defaultimage->setText(QApplication::translate("SecondDialog", "Default Image Name", nullptr));
         push_upload->setText(QApplication::translate("SecondDialog", "Upload", nullptr));
+        push_logout->setText(QApplication::translate("SecondDialog", "Logout", nullptr));
         lbl_upload_successful->setText(QApplication::translate("SecondDialog", "Uploaded Successfully!", nullptr));
     } // retranslateUi
 

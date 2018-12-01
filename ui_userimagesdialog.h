@@ -27,6 +27,7 @@ class Ui_userimagesdialog
 public:
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_2;
+    QLabel *lbl_us;
     QSpacerItem *horizontalSpacer;
     QPushButton *push_back;
     QListWidget *listWidget;
@@ -53,6 +54,11 @@ public:
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        lbl_us = new QLabel(userimagesdialog);
+        lbl_us->setObjectName(QStringLiteral("lbl_us"));
+
+        horizontalLayout_2->addWidget(lbl_us);
+
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_2->addItem(horizontalSpacer);
@@ -141,6 +147,7 @@ public:
     void retranslateUi(QDialog *userimagesdialog)
     {
         userimagesdialog->setWindowTitle(QApplication::translate("userimagesdialog", "DistImage", nullptr));
+        lbl_us->setText(QApplication::translate("userimagesdialog", "User", nullptr));
         push_back->setText(QApplication::translate("userimagesdialog", "Back", nullptr));
         push_request->setText(QApplication::translate("userimagesdialog", "Request", nullptr));
         line_request->setText(QString());

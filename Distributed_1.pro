@@ -32,7 +32,8 @@ SOURCES += \
     myimagesdialog.cpp \
     userimagesdialog.cpp \
     notificationdialog.cpp \
-    viewimagedialog.cpp
+    viewimagedialog.cpp \
+    sharedimagesdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -46,7 +47,8 @@ HEADERS += \
     Client.h \
     viewimagedialog.h \
     UDPSocketClient.h \
-    Message.h
+    Message.h \
+    sharedimagesdialog.h
 
 FORMS += \
         mainwindow.ui \
@@ -55,7 +57,8 @@ FORMS += \
     myimagesdialog.ui \
     userimagesdialog.ui \
     notificationdialog.ui \
-    viewimagedialog.ui
+    viewimagedialog.ui \
+    sharedimagesdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -1,4 +1,5 @@
 #include "myimagesdialog.h"
+#include "sharedimagesdialog.h"
 #include "notificationdialog.h"
 #include "seconddialog.h"
 #include "ui_seconddialog.h"
@@ -32,7 +33,7 @@ void SecondDialog::on_push_users_clicked() {
 }
 
 void SecondDialog::on_push_images_clicked() {
-  MyImagesDialog secd;
+  MyImagesDialog secd(this, peer);
   secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
                       Qt::CustomizeWindowHint);
   secd.setModal(true);
@@ -63,7 +64,7 @@ void SecondDialog::on_push_upload_clicked() {
     ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
   } else if (upload_stat == 6) {
     ui->lbl_upload_successful->setVisible(true);
-    ui->lbl_upload_successful->setText(QString("Fill all info!"));
+    ui->lbl_upload_successful->setText(QString("Please, choose a file!"));
     ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
   } else if (upload_stat == 3) {
     ui->lbl_upload_successful->setVisible(true);
@@ -79,4 +80,13 @@ void SecondDialog::on_push_upload_clicked() {
     ui->lbl_upload_successful->setText(QString("Something Wrong here!"));
     ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
   }
+}
+
+void SecondDialog::on_push_shared_clicked()
+{
+    SharedImagesDialog secd(this, peer);
+    secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
+                        Qt::CustomizeWindowHint);
+    secd.setModal(true);
+    secd.exec();
 }

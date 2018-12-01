@@ -13,6 +13,7 @@ UsersDialog::UsersDialog(QWidget *parent, Peer *peer)
   int i = 0;
   for (peer->it = peer->users.begin(); peer->it != peer->users.end();
        peer->it++) {
+      if(peer->username != peer->it->first){
     if (peer->it->second[0].at((0)) == '1') {
       ui->listWidget->addItem(QString::fromStdString(peer->it->first));
       ui->listWidget->item(i)->setTextColor(Qt::green);
@@ -22,11 +23,7 @@ UsersDialog::UsersDialog(QWidget *parent, Peer *peer)
     }
     i = i + 1;
   }
-  /*
-  ui->listWidget->addItem("User 1");
-  ui->listWidget->addItem("User 2");
-  ui->listWidget->addItem("User 3");
-  */
+  }
 }
 
 UsersDialog::~UsersDialog() { delete ui; }
@@ -53,6 +50,7 @@ void UsersDialog::on_push_refresh_clicked() {
   int i = 0;
   for (peer->it = peer->users.begin(); peer->it != peer->users.end();
        peer->it++) {
+      if(peer->username != peer->it->first){
     if (peer->it->second[0].at((0)) == '1') {
       ui->listWidget->addItem(QString::fromStdString(peer->it->first));
       ui->listWidget->item(i)->setTextColor(Qt::green);
@@ -61,5 +59,6 @@ void UsersDialog::on_push_refresh_clicked() {
       ui->listWidget->item(i)->setTextColor(Qt::red);
     }
     i = i + 1;
+  }
   }
 }

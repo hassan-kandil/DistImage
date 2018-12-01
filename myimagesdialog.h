@@ -1,6 +1,6 @@
 #ifndef MYIMAGESDIALOG_H
 #define MYIMAGESDIALOG_H
-
+#include "Peer.h"
 #include <QDialog>
 
 namespace Ui {
@@ -11,7 +11,7 @@ class MyImagesDialog : public QDialog {
   Q_OBJECT
 
 public:
-  explicit MyImagesDialog(QWidget *parent = nullptr);
+  explicit MyImagesDialog(QWidget *parent = nullptr, Peer *peer = nullptr);
   ~MyImagesDialog();
 
 private slots:
@@ -19,6 +19,7 @@ private slots:
 
 private:
   Ui::MyImagesDialog *ui;
+  Peer *peer;
 };
 
 #endif // MYIMAGESDIALOG_H
