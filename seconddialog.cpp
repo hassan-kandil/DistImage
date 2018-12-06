@@ -1,7 +1,7 @@
 #include "myimagesdialog.h"
-#include "sharedimagesdialog.h"
 #include "notificationdialog.h"
 #include "seconddialog.h"
+#include "sharedimagesdialog.h"
 #include "ui_seconddialog.h"
 #include "usersdialog.h"
 #include <qfiledialog.h>
@@ -10,6 +10,7 @@
 SecondDialog::SecondDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::SecondDialog), peer(peer) {
   ui->setupUi(this);
+  peer->readfile();
   ui->lbl_upload_successful->setVisible(false);
   cout << "This is user " << peer->username << endl;
   cout << "The thread is starting!! " << endl;
@@ -21,6 +22,7 @@ SecondDialog::~SecondDialog() { delete ui; }
 
 void SecondDialog::on_push_logout_clicked() {
   peer->logout();
+  peer->updatefile();
   this->close();
 }
 
@@ -82,11 +84,10 @@ void SecondDialog::on_push_upload_clicked() {
   }
 }
 
-void SecondDialog::on_push_shared_clicked()
-{
-    SharedImagesDialog secd(this, peer);
-    secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
-                        Qt::CustomizeWindowHint);
-    secd.setModal(true);
-    secd.exec();
+void SecondDialog::on_push_shared_clicked() {
+  SharedImagesDialog secd(this, peer);
+  secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
+                      Qt::CustomizeWindowHint);
+  secd.setModal(true);
+  secd.exec();
 }

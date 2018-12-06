@@ -28,6 +28,11 @@ using namespace std;
 #ifndef PEER_H
 #define PEER_H
 #define LITTLE_BUFFER_SIZE 50000
+#define PATH_MAX 500
+
+#include <limits.h>
+#include <string>
+#include <unistd.h>
 
 using namespace std;
 
@@ -37,6 +42,12 @@ private:
   uint16_t sender_port;
 
 public:
+  struct image {
+    int viewsnum = 0;
+    string ownername;
+  };
+  map<string, image> sharedimgs;
+  fstream imgfile;
   UDPSocketClient *sv;
   //  UDPSocketServer *sv;
   char *dos_ip;
@@ -64,6 +75,11 @@ public:
   Peer() {
     this->sv = new UDPSocketClient(); // UDPSocketServer(0); // dos_port
     this->sc = new UDPSocketClient();
+
+    imgfile.open("imagefile.txt", fstream::out | fstream::in | fstream::app);
+
+    if (imgfile.fail())
+      cout << "imagefile.txt open failed!";
   }
   ~Peer() {}
 
@@ -213,13 +229,12 @@ public:
       int MF = requestMsg.getMoreFrag();
       int fragc = requestMsg.getFragCount();
       int fraglength = requestMsg.getMessageSize();
+      string image_owner = requestMsg.getImageOwner();
+      string image_name = requestMsg.getImageName();
 
-      // string y(msg,fraglength);
-      //
-      //
-      //   char * imfirstfrag = requestMsg.getMessage();
+      string newFileName = image_owner + "_" + image_name;
+
       cout << "Received Successfully!! " << endl;
-      // cout<<Serverbuffer<<endl;
       cout << "Received Message Length = \n"
            << strlen((const char *)Serverbuffer);
       cout << "imfirstfrag length " << fraglength << endl;
@@ -262,7 +277,7 @@ public:
 
       // refaay: should get ownername and imagename with the send
       // string steg_image_name = this->username + "_" + selectedImage;
-      std::ofstream os("new.jpeg"); // refaay should change
+      std::ofstream os(newFileName);
 
       if (r > 0) {
         os << msg;
@@ -311,7 +326,7 @@ public:
           int n = x_reply.length();
           strncpy(marshalled_message_reply, x_reply.c_str(), n + 1);
 
-          if (rpcid_request == rpcid_new && (fragc++) == fragc_new) {
+          if (rpcid_request == rpcid_new && (++fragc) == fragc_new) {
 
             MF = imageFrag.getMoreFrag();
 
@@ -343,13 +358,53 @@ public:
       }
       os.close();
 
-      string extract_command, defaultPath = "new.jpeg";
-      extract_command = "steghide extract -sf " + defaultPath + " -p hk";
+      cout << "newFileName: " << newFileName << endl;
+
+      string extract_command;
+
+      extract_command = "steghide extract -sf " + newFileName +
+                        " -p hk"; // + " -xf " + newViewsName
+
       QProcess::execute(QString::fromStdString(extract_command));
-      /*int nn = extract_command.length();
-      char char_array[nn + 1];
-      strcpy(char_array, extract_command.c_str());
-      system(char_array);*/
+
+      string imagenodot;
+      for (int j = image_name.length() - 1; j > 0; j--) {
+
+        if (image_name[j] == '.') {
+          imagenodot = image_name.substr(0, j);
+          break;
+        }
+      }
+
+      string newViewsName =
+          this->username + "_" + imagenodot + "_" + "views.txt";
+
+      string views_extractcommand =
+          "steghide extract -sf " + image_name + " -p hk";
+
+      QProcess::execute(QString::fromStdString(views_extractcommand));
+
+      // deleting the extracted image from the receiver's folder after
+      // extracting the number of views
+      string deletecommand = "rm " + image_name;
+
+      QProcess::execute(QString::fromStdString(deletecommand));
+
+      int views = 0;
+
+      ifstream views_is(newViewsName);
+
+      if (views_is) {
+
+        views_is >> views;
+        cout << "Image_name " << image_name << " image_owner " << image_owner
+             << " views " << views << endl;
+        this->newimg(image_name, image_owner, views);
+        views_is.close();
+
+      } else {
+        cout << "couldn't open views file! " << endl;
+      }
     }
 
     default:
@@ -400,7 +455,7 @@ public:
       strcpy(msg_char, msg.c_str());
 
       Message sign_up_request(Request, msg_char, strlen(msg_char), 1001,
-                              requestID++, 0, 0, 0);
+                              ++requestID, 0, 0, 0);
 
       char marshalled_message[BUFFER_SIZE];
 
@@ -466,7 +521,7 @@ public:
       cout << msg_char << endl;
 
       Message login_request(Request, msg_char, strlen(msg_char), 1002,
-                            requestID++, 0, 0, 0);
+                            ++requestID, 0, 0, 0);
       //  char * marshalled_message = login_request.marshal();
 
       char marshalled_message[BUFFER_SIZE];
@@ -523,7 +578,7 @@ public:
     strcpy(msg_char, msg.c_str());
 
     Message logout_request(Request, msg_char, strlen(msg_char), 1003,
-                           requestID++, 0, 0, 0);
+                           ++requestID, 0, 0, 0);
     // char * marshalled_message = logout_request.marshal();
 
     char marshalled_message[BUFFER_SIZE];
@@ -564,7 +619,14 @@ public:
       return 0;
   }
 
+  std::string getexepath() {
+    char result[PATH_MAX];
+    ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
+    return std::string(result, (count > 0) ? count : 0);
+  }
+
   int upload(string imagepath) {
+    cout << imagepath << endl;
     if (imagepath == "")
       return 6;
 
@@ -577,6 +639,7 @@ public:
         break;
       }
     }
+
     bool nospecial = true;
 
     for (int i = 0; i < imagename.length() && nospecial; i++) {
@@ -593,7 +656,7 @@ public:
       strcpy(msg_char, msg.c_str());
 
       Message upload_request(Request, msg_char, strlen(msg_char), 2001,
-                             requestID++, 0, 0, 0);
+                             ++requestID, 0, 0, 0);
 
       //  char * marshalled_message = upload_request.marshal();
 
@@ -628,15 +691,32 @@ public:
                         (struct sockaddr *)&tempSocketAddress, &tempAddrlen)) <
           0)
         perror("Receive Failed");
+
+      string projectpath = this->getexepath();
+
+      for (int j = projectpath.length() - 1; j > 0; j--) {
+
+        if (projectpath[j] == '/') {
+          projectpath = projectpath.substr(0, j);
+          break;
+        }
+      }
+
+      cout << "projectpath " << projectpath << endl;
       if (little_buffer[0] == '1') {
 
         QProcess::execute(QString::fromStdString(
-            "cp " + pathname + "/default.jpeg " + pathname + "/" +
+            "cp " + projectpath + "/default.jpeg " + projectpath + "/" +
             this->username + "_" + imagename));
 
-        QProcess::execute(QString::fromStdString(
-            "steghide embed -cf " + pathname + "/" + this->username + "_" +
-            imagename + " -ef " + pathname + "/" + imagename + " -p hk "));
+        if (pathname != projectpath)
+          QProcess::execute(QString::fromStdString(
+              "cp " + imagepath + " " + projectpath + "/" + imagename));
+
+        //        QProcess::execute(QString::fromStdString(
+        //            "steghide embed -cf " + projectpath + "/" + this->username
+        //            + "_" + imagename + " -ef " + pathname + "/" + imagename +
+        //            " -p hk "));
 
         return 1;
 
@@ -670,7 +750,7 @@ public:
     strcpy(msg_char, msg.c_str());
 
     Message image_request(Request, msg_char, strlen(msg_char), 2002,
-                          requestID++, 0, 0, 0);
+                          ++requestID, 0, 0, 0);
     //  char * marshalled_message = image_request.marshal();
 
     char marshalled_message[BUFFER_SIZE];
@@ -704,6 +784,15 @@ public:
       string msg_view_request_reply =
           reply_view_request.getUnmarshalledMessage();
 
+      // Hassan's resend if lost
+      int rpc_id_new = reply_view_request.getRPCId();
+
+      if (rpc_id_new != requestID) // check if the request matches the reply
+      {
+        // if not resend the request
+        int i = request_image(selectedUser, selectedImage);
+      }
+
       cout << "msg_received_length " << msg_view_request_reply << endl;
       if (msg_view_request_reply[0] == '1')
         return 1;
@@ -712,20 +801,6 @@ public:
       else
         return 2;
     }
-
-    /* Hassan's resend if lost
-        int rpc_id_new = reply_view_request.getRPCId();
-
-
-    if (rpc_id_new != requestID) // check if the request matches the reply
-    {
-      // if not resend the request
-      if ((n = sendto(sc->s, marshalled_message,
-                      strlen((const char *)marshalled_message), 0,
-                      (struct sockaddr *)&ownerSocket,
-                      sizeof(struct sockaddr_in))) < 0)
-        perror("Send failed\n");
-    }*/
   }
 
   void approve_image(string selectedUser, string selectedImage) {
@@ -759,7 +834,7 @@ public:
     strcpy(msg_char, msg.c_str());
 
     Message sendimage_request(Request, msg_char, strlen(msg_char), 2003,
-                              requestID++, 0, 0, 0);
+                              ++requestID, 0, 0, 0);
     // char * marshalled_message = sendimage_request.marshal();
 
     char marshalled_message[BUFFER_SIZE];
@@ -786,9 +861,11 @@ public:
       perror("Receive Failed");
   }
 
-  void send_image(string viewerName, string selectedImage) {
+  void send_image(string viewerName, string selectedImage, int nViews) {
     UDPSocketClient *newSock = new UDPSocketClient();
     vector<string> images;
+    const int imageFrag_size = 20000;
+
     images = this->users[viewerName]; // Saving the vector of the selected
                                       // user image names & socket addresses
                                       // inside the variable images
@@ -825,6 +902,35 @@ public:
 
     std::ifstream is(string(cwd) + "/" + steg_image_name,
                      std::ifstream::binary);*/
+
+    // Embedding the views txt file in the image
+
+    string imagenodot;
+    for (int j = selectedImage.length() - 1; j > 0; j--) {
+
+      if (selectedImage[j] == '.') {
+        imagenodot = selectedImage.substr(0, j);
+        break;
+      }
+    }
+
+    string viewsFilename = viewerName + "_" + imagenodot + "_" + "views.txt";
+    ofstream views_os(viewsFilename);
+
+    if (views_os.is_open()) {
+      views_os << nViews;
+    }
+
+    views_os.close();
+
+    QProcess::execute(QString::fromStdString("steghide embed -cf " +
+                                             selectedImage + " -ef " +
+                                             viewsFilename + " -p hk "));
+
+    QProcess::execute(QString::fromStdString("steghide embed -cf " +
+                                             steg_image_name + " -ef " +
+                                             selectedImage + " -p hk "));
+
     std::ifstream is(steg_image_name, std::ifstream::binary);
 
     if (is) {
@@ -846,7 +952,7 @@ public:
       string x;
       int current_length = 0;
       int current_length_before_marshalling = 0;
-      unsigned long fakka = length % 10000; // last image chunk
+      unsigned long fakka = length % imageFrag_size; // last image chunk
 
       unsigned char little_buffer[2000];
       memset(little_buffer, 0, sizeof(little_buffer));
@@ -855,7 +961,7 @@ public:
       int fragc = 0;
       int MF = 1;
       int fragd = 0;
-      if (length > 10000)
+      if (length > imageFrag_size)
         fragd = 1;
 
       // Preparing a temp socket address to store the address of the receiver
@@ -869,22 +975,24 @@ public:
       // Start Sending Image
       while (current_length_before_marshalling < length) {
         printf("%s\n", "Loop Start:");
-        if (current_length_before_marshalling + 10000 < length) {
+        if (current_length_before_marshalling + imageFrag_size < length) {
 
-          // memcpy (char_array, message+(current_length), 10000);
+          // memcpy (char_array, message+(current_length), imageFrag_size);
 
-          // char_array[10000] = '\0';
+          // char_array[imageFrag_size] = '\0';
           // cout<<"char_array "<<char_array<<endl;
 
-          Message imageFrag(Request,
-                            (newbuffer + current_length_before_marshalling),
-                            10000, 2004, requestID, fragd, ++fragc, MF);
+          Message imageFrag(
+              Request, (newbuffer + current_length_before_marshalling),
+              imageFrag_size, 2004, requestID, fragd, ++fragc, MF);
+          imageFrag.setImageOwner(this->username);
+          imageFrag.setImageName(selectedImage);
 
           x = imageFrag.marshal();
           int n = x.length();
           strncpy(message, x.c_str(), n + 1);
           current_length += n;
-          current_length_before_marshalling += 10000;
+          current_length_before_marshalling += imageFrag_size;
 
           //  cout<<message<<endl;
           if ((n = sendto(newSock->s, message, strlen(message), 0,
@@ -921,7 +1029,8 @@ public:
             // if not reset the current_length_before_marshalling in order to
             // resend the packet
             perror("Dropped packets! received_length != current_length.");
-            current_length_before_marshalling -= 10000; // Drop Tolerance
+            current_length_before_marshalling -=
+                imageFrag_size; // Drop Tolerance
           }
 
           printf("Current Received Total %d.\n", current_length);
@@ -937,7 +1046,9 @@ public:
                                 fakka, 2004, requestID, fragd, ++fragc, MF);
           x = imageLastFrag.marshal();
           int n = x.length();
+
           strncpy(message_fakka, x.c_str(), n + 1);
+
           current_length += n;
           current_length_before_marshalling += fakka;
 
@@ -988,7 +1099,7 @@ public:
 
     char *msg_char = new char[1];
     msg_char[0] = ' ';
-    Message view_request(Request, msg_char, strlen(msg_char), 1100, requestID++,
+    Message view_request(Request, msg_char, strlen(msg_char), 1100, ++requestID,
                          0, 0, 0);
 
     // char * marshalled_message = view_request.marshal();
@@ -1056,6 +1167,60 @@ public:
       s = s.erase(0, 1);
     }
     return mymap;
+  }
+
+  bool newimg(string img, string owner,
+              int views) { // call on every receive message
+    // insert a new image in the map
+    bool flag = true; // if there is a duplicate of the image name and owner
+                      // name, change the flag to false.
+    for (auto const &x : sharedimgs) {
+      cout << (x.first == img) << "" << (x.second.ownername == owner) << endl;
+      if (x.first == img && x.second.ownername == owner) {
+        return false;
+      }
+    }
+
+    sharedimgs[img].viewsnum = views;
+    sharedimgs[img].ownername = owner;
+    return true;
+  }
+
+  void updatefile() { // call in logout
+    // call this function when the user is signing out, to update the file
+    imgfile.close();
+    imgfile.open("imagefile.txt", fstream::out | fstream::in);
+
+    for (auto const &x : sharedimgs) {
+      imgfile << x.first << " " << x.second.ownername << " "
+              << x.second.viewsnum << endl;
+    }
+  }
+
+  void readfile() { // call in login
+    // call this function once, when the user logs in to fill in the map from
+    // what is in the file
+    imgfile.seekp(0);
+    while (!imgfile.eof()) {
+      string line;
+      getline(imgfile, line);
+      if (line != "") {
+        int name_len, owner_len, view_len;
+        name_len = line.find(" ");
+        string img = line.substr(0, name_len);
+        line = line.erase(0, name_len + 1);
+        owner_len = line.find(" ");
+        string owner = line.substr(0, owner_len);
+        line = line.erase(0, owner_len + 1);
+        view_len = line.find(" ");
+        string views = line.substr(0, view_len);
+        line = line.erase(0, view_len + 1);
+        sharedimgs[img].ownername = owner;
+        int view = stoi(views);
+        sharedimgs[img].viewsnum = view;
+      }
+    }
+    imgfile.clear();
   }
 };
 

@@ -16,7 +16,7 @@ MyImagesDialog::MyImagesDialog(QWidget *parent, Peer *peer)
 
       ui->listWidget->addItem(QString::fromStdString(images[i]));
     }
-}
+  }
 }
 MyImagesDialog::~MyImagesDialog() { delete ui; }
 

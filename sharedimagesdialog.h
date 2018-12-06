@@ -7,17 +7,16 @@ namespace Ui {
 class SharedImagesDialog;
 }
 
-class SharedImagesDialog : public QDialog
-{
-    Q_OBJECT
+class SharedImagesDialog : public QDialog {
+  Q_OBJECT
 
 public:
-    explicit SharedImagesDialog(QWidget *parent = nullptr, Peer *peer = nullptr);
-    ~SharedImagesDialog();
+  explicit SharedImagesDialog(QWidget *parent = nullptr, Peer *peer = nullptr);
+  ~SharedImagesDialog();
 
 private:
-    Ui::SharedImagesDialog *ui;
-    Peer *peer;
+  Ui::SharedImagesDialog *ui;
+  Peer *peer;
 };
 
 #endif // SHAREDIMAGESDIALOG_H

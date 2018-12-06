@@ -33,6 +33,9 @@ private:
   int frag_count; // A unique id for each fragment
   int more_frag;  // A variable indicating if there are more fragments
 
+  string image_owner = " ";
+  string image_name = " ";
+
 public:
   static std::string base64_encode(unsigned char const *bytes_to_encode,
                                    unsigned int in_len) {
@@ -158,31 +161,13 @@ public:
 
     int len = decoded_msg.length();
 
-    // converting the decoded_msg sring into an array of chars
-    /*
-      int len = n+1;
-      char * decoded_msg_char = new char[len];
-      cout<<"Before: "<<decoded_msg<<endl;
-
-      strcpy(decoded_msg_char, decoded_msg.c_str());
-      // for(int i = 0; i<len-1; i++)
-      //   decoded_msg_char[i] = decoded_msg.at(i);
-      //
-      // decoded_msg_char[len-1]='\0';
-
-      cout<<"After: ";
-
-      for(int i=0; i<len;i++)
-        cout<<decoded_msg_char[i];
-
-      */
-
     this->unmarshalledmessage = decoded_msg;
     this->message_size = len;
   }
   void parseMsgHeader(string decoded_header) {
 
     string msgtype, op, rpcid, msgsize, fragd, fragc, mfrag;
+    string owner, filename;
     int i = 0;
     while (decoded_header[i] != '-') {
       msgtype.append(1, decoded_header[i]);
@@ -214,8 +199,18 @@ public:
       i++;
     }
     i++;
-    while (decoded_header[i] != '*') {
+    while (decoded_header[i] != '-') {
       mfrag.append(1, decoded_header[i]);
+      i++;
+    }
+    i++;
+    while (decoded_header[i] != '-') {
+      owner.append(1, decoded_header[i]);
+      i++;
+    }
+    i++;
+    while (decoded_header[i] != '*') {
+      filename.append(1, decoded_header[i]);
       i++;
     }
 
@@ -230,14 +225,16 @@ public:
     this->didfrag = stoi(fragd);
     this->frag_count = stoi(fragc);
     this->more_frag = stoi(mfrag);
+    this->image_owner = owner;
+    this->image_name = filename;
   }
   string marshal() {
     string encoded_msg = "";
-    string headerinfo = to_string(message_type) + "-" + to_string(operation) +
-                        "-" + to_string(rpc_id) + "-" +
-                        to_string(message_size) + "-" + to_string(didfrag) +
-                        "-" + to_string(frag_count) + "-" +
-                        to_string(more_frag) + "*";
+    string headerinfo =
+        to_string(message_type) + "-" + to_string(operation) + "-" +
+        to_string(rpc_id) + "-" + to_string(message_size) + "-" +
+        to_string(didfrag) + "-" + to_string(frag_count) + "-" +
+        to_string(more_frag) + "-" + image_owner + "-" + image_name + "*";
 
     int n = headerinfo.length();
     unsigned int len = n + 1;
@@ -265,16 +262,19 @@ public:
 
     return encoded_msg;
   }
+
   int getOperation() { return operation; }
   int getRPCId() { return rpc_id; }
   char *getMessage() { return message; }
   string getUnmarshalledMessage() { return unmarshalledmessage; }
   size_t getMessageSize() { return message_size; }
   MessageType getMessageType() { return message_type; }
-
   int getDidFrag() { return didfrag; }
   int getFragCount() { return frag_count; }
   int getMoreFrag() { return more_frag; }
+  string getImageOwner() { return image_owner; }
+  string getImageName() { return image_name; }
+
   void setOperation(int _operation) { this->operation = _operation; }
   void setMessage(char *message, size_t message_size) {
     this->message = message;
@@ -286,6 +286,10 @@ public:
   void setDidFrag(int p_didfrag) { this->didfrag = p_didfrag; }
   void setFragCount(int p_frag_count) { this->frag_count = p_frag_count; }
   void setMoreFrag(int p_more_frag) { this->more_frag = p_more_frag; }
+  void setImageOwner(string p_image_owner) {
+    this->image_owner = p_image_owner;
+  }
+  void setImageName(string p_image_name) { this->image_name = p_image_name; }
   ~Message() {}
 };
 #endif
