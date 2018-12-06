@@ -208,16 +208,16 @@ int main(int argc, const char *argv[]) {
   cout << users_map["Hassan"].img[0] << users_map["Hassan"].img[1] << endl;
   cout << users_map["Lotfy"].img[0] << users_map["Lotfy"].img[1] << endl;
 
-     sign_up("Yasser", "No5", auth, users);
-     upload("Yasser", "hello.jpg", users);
-     upload("Yasser", "hi.jpg", users);
-     upload("Hassan", "new.jpg", users);
-     cout<<auth_map["Yasser"];
+  //    sign_up("Yasser", "No5", auth, users);
+  //    upload("Yasser", "hello.jpg", users);
+  //    upload("Yasser", "hi.jpg", users);
+  //    upload("Hassan", "new.jpg", users);
+  //    cout<<auth_map["Yasser"];
   cout << login("Yasser", "No5", "1000", "8080", auth) << endl;
   //    cout<<login("Yasser", "No", "1000", "8080", auth)<<endl;
 
   cout << users_map["Yasser"].online << " " << users_map["Yasser"].port << endl;
-//  show_online();
+  show_online();
   // logout("Yasser");
   // cout<<users_map["Yasser"].online<<" "<<users_map["Yasser"].port<<endl;
   // view();

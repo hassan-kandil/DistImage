@@ -31,21 +31,20 @@ void NotificationDialog::on_push_approve_clicked() {
   string imname =
       peer->requests_buffer[ui->listWidget->currentRow()].second.second;
   int noViews = ui->line_views->text().toInt();
-  if(noViews == 0){
-      ui->lbl_result->setVisible(true);
-      ui->lbl_result->setText("Please, add the number of views > 0");
-      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-  }
-  else{
-      cout << "ApprovedUser " << usname << " imagename " << imname << endl;
-      std::thread SendImageThread(&Peer::send_image, peer,usname,imname,noViews);
-      SendImageThread.detach();
+  if (noViews == 0) {
+    ui->lbl_result->setVisible(true);
+    ui->lbl_result->setText("Please, add the number of views > 0");
+    ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+  } else {
+    cout << "ApprovedUser " << usname << " imagename " << imname << endl;
+    std::thread SendImageThread(&Peer::send_image, peer, usname, imname,
+                                noViews);
+    SendImageThread.detach();
     //  peer->send_image(usname, imname, noViews);
-      ui->lbl_result->setVisible(true);
-      ui->lbl_result->setText("Approved!");
-      ui->lbl_result->setStyleSheet("QLabel { color : green; }");
+    ui->lbl_result->setVisible(true);
+    ui->lbl_result->setText("Approved!");
+    ui->lbl_result->setStyleSheet("QLabel { color : green; }");
   }
-
 }
 
 void NotificationDialog::on_push_refresh_clicked() {

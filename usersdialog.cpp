@@ -13,16 +13,16 @@ UsersDialog::UsersDialog(QWidget *parent, Peer *peer)
   int i = 0;
   for (peer->it = peer->users.begin(); peer->it != peer->users.end();
        peer->it++) {
-      if(peer->username != peer->it->first){
-    if (peer->it->second[0].at((0)) == '1') {
-      ui->listWidget->addItem(QString::fromStdString(peer->it->first));
-      ui->listWidget->item(i)->setTextColor(Qt::green);
-    } else {
-      ui->listWidget->addItem(QString::fromStdString(peer->it->first));
-      ui->listWidget->item(i)->setTextColor(Qt::red);
+    if (peer->username != peer->it->first) {
+      if (peer->it->second[0].at((0)) == '1') {
+        ui->listWidget->addItem(QString::fromStdString(peer->it->first));
+        ui->listWidget->item(i)->setTextColor(Qt::green);
+      } else {
+        ui->listWidget->addItem(QString::fromStdString(peer->it->first));
+        ui->listWidget->item(i)->setTextColor(Qt::red);
+      }
+      i = i + 1;
     }
-    i = i + 1;
-  }
   }
 }
 
@@ -50,15 +50,15 @@ void UsersDialog::on_push_refresh_clicked() {
   int i = 0;
   for (peer->it = peer->users.begin(); peer->it != peer->users.end();
        peer->it++) {
-      if(peer->username != peer->it->first){
-    if (peer->it->second[0].at((0)) == '1') {
-      ui->listWidget->addItem(QString::fromStdString(peer->it->first));
-      ui->listWidget->item(i)->setTextColor(Qt::green);
-    } else {
-      ui->listWidget->addItem(QString::fromStdString(peer->it->first));
-      ui->listWidget->item(i)->setTextColor(Qt::red);
+    if (peer->username != peer->it->first) {
+      if (peer->it->second[0].at((0)) == '1') {
+        ui->listWidget->addItem(QString::fromStdString(peer->it->first));
+        ui->listWidget->item(i)->setTextColor(Qt::green);
+      } else {
+        ui->listWidget->addItem(QString::fromStdString(peer->it->first));
+        ui->listWidget->item(i)->setTextColor(Qt::red);
+      }
+      i = i + 1;
     }
-    i = i + 1;
-  }
   }
 }

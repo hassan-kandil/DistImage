@@ -435,10 +435,16 @@ public:
           }
         }
       } else {
+        users.close();
+        users.open("users.txt", fstream::out | fstream::in);
+        users << Final;
         return 9;
       }
     } else {
       cout << "Username not found \n";
+      users.close();
+      users.open("users.txt", fstream::out | fstream::in);
+      users << Final;
       return 0;
     }
     users.close();
@@ -448,36 +454,21 @@ public:
   }
 
   string view() {
-
     string ret = "";
-
     for (auto const &x : users_map) {
-
       ret += x.first + "*";
-
       if (x.second.online) {
-
         ret += "1&";
-
         ret += x.second.currentIP + "&";
-
         ret += x.second.port + "&";
-
-      }
-
-      else {
-
+      } else {
         ret += "0&&&";
       }
-
       for (int i = 0; i < x.second.img.size(); i++) {
-
         ret += x.second.img[i] + "#";
       }
-
       ret += "@";
     }
-
     return ret;
   }
 

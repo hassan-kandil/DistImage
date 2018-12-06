@@ -30,11 +30,9 @@ using namespace std;
 #define LITTLE_BUFFER_SIZE 50000
 #define PATH_MAX 500
 
-#include <string>
 #include <limits.h>
+#include <string>
 #include <unistd.h>
-
-
 
 using namespace std;
 
@@ -78,9 +76,9 @@ public:
     this->sv = new UDPSocketClient(); // UDPSocketServer(0); // dos_port
     this->sc = new UDPSocketClient();
 
-   imgfile.open("imagefile.txt", fstream::out | fstream::in | fstream::app);
+    imgfile.open("imagefile.txt", fstream::out | fstream::in | fstream::app);
 
-   if (imgfile.fail())
+    if (imgfile.fail())
       cout << "imagefile.txt open failed!";
   }
   ~Peer() {}
@@ -360,54 +358,53 @@ public:
       }
       os.close();
 
-      cout<<"newFileName: "<<newFileName<<endl;
+      cout << "newFileName: " << newFileName << endl;
 
       string extract_command;
 
-      extract_command = "steghide extract -sf " + newFileName  + " -p hk"; // + " -xf " + newViewsName
+      extract_command = "steghide extract -sf " + newFileName +
+                        " -p hk"; // + " -xf " + newViewsName
 
       QProcess::execute(QString::fromStdString(extract_command));
 
       string imagenodot;
       for (int j = image_name.length() - 1; j > 0; j--) {
 
-         if (image_name[j] == '.') {
-              imagenodot = image_name.substr(0, j);
-              break;
-         }
+        if (image_name[j] == '.') {
+          imagenodot = image_name.substr(0, j);
+          break;
+        }
       }
 
-      string newViewsName = this->username+"_" +imagenodot +"_" + "views.txt";
+      string newViewsName =
+          this->username + "_" + imagenodot + "_" + "views.txt";
 
-      string views_extractcommand = "steghide extract -sf " + image_name  + " -p hk";
+      string views_extractcommand =
+          "steghide extract -sf " + image_name + " -p hk";
 
       QProcess::execute(QString::fromStdString(views_extractcommand));
 
-      //deleting the extracted image from the receiver's folder after extracting the number of views
-      string deletecommand = "rm "+ image_name;
+      // deleting the extracted image from the receiver's folder after
+      // extracting the number of views
+      string deletecommand = "rm " + image_name;
 
       QProcess::execute(QString::fromStdString(deletecommand));
-
 
       int views = 0;
 
       ifstream views_is(newViewsName);
 
-      if(views_is){
+      if (views_is) {
 
-          views_is >> views;
-          cout << "Image_name " << image_name << " image_owner " << image_owner << " views " << views << endl;
-          this->newimg(image_name,image_owner,views);
-          views_is.close();
+        views_is >> views;
+        cout << "Image_name " << image_name << " image_owner " << image_owner
+             << " views " << views << endl;
+        this->newimg(image_name, image_owner, views);
+        views_is.close();
 
-      }else
-      {
-          cout<<"couldn't open views file! "<<endl;
+      } else {
+        cout << "couldn't open views file! " << endl;
       }
-
-
-
-
     }
 
     default:
@@ -622,16 +619,14 @@ public:
       return 0;
   }
 
-
-  std::string getexepath()
-  {
-    char result[ PATH_MAX ];
-    ssize_t count = readlink( "/proc/self/exe", result, PATH_MAX );
-    return std::string( result, (count > 0) ? count : 0 );
+  std::string getexepath() {
+    char result[PATH_MAX];
+    ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
+    return std::string(result, (count > 0) ? count : 0);
   }
 
   int upload(string imagepath) {
-    cout<<imagepath<<endl;
+    cout << imagepath << endl;
     if (imagepath == "")
       return 6;
 
@@ -697,8 +692,6 @@ public:
           0)
         perror("Receive Failed");
 
-
-
       string projectpath = this->getexepath();
 
       for (int j = projectpath.length() - 1; j > 0; j--) {
@@ -709,21 +702,21 @@ public:
         }
       }
 
-      cout<<"projectpath "<<projectpath<<endl;
+      cout << "projectpath " << projectpath << endl;
       if (little_buffer[0] == '1') {
-
 
         QProcess::execute(QString::fromStdString(
             "cp " + projectpath + "/default.jpeg " + projectpath + "/" +
             this->username + "_" + imagename));
 
-       if(pathname != projectpath)
-            QProcess::execute(QString::fromStdString( "cp " + imagepath + " " + projectpath + "/" + imagename));
+        if (pathname != projectpath)
+          QProcess::execute(QString::fromStdString(
+              "cp " + imagepath + " " + projectpath + "/" + imagename));
 
-
-//        QProcess::execute(QString::fromStdString(
-//            "steghide embed -cf " + projectpath + "/" + this->username + "_" +
-//            imagename + " -ef " + pathname + "/" + imagename + " -p hk "));
+        //        QProcess::execute(QString::fromStdString(
+        //            "steghide embed -cf " + projectpath + "/" + this->username
+        //            + "_" + imagename + " -ef " + pathname + "/" + imagename +
+        //            " -p hk "));
 
         return 1;
 
@@ -791,15 +784,13 @@ public:
       string msg_view_request_reply =
           reply_view_request.getUnmarshalledMessage();
 
-
-      //Hassan's resend if lost
-          int rpc_id_new = reply_view_request.getRPCId();
-
+      // Hassan's resend if lost
+      int rpc_id_new = reply_view_request.getRPCId();
 
       if (rpc_id_new != requestID) // check if the request matches the reply
       {
         // if not resend the request
-        int i = request_image(selectedUser,selectedImage);
+        int i = request_image(selectedUser, selectedImage);
       }
 
       cout << "msg_received_length " << msg_view_request_reply << endl;
@@ -809,11 +800,7 @@ public:
         return 0;
       else
         return 2;
-
-
     }
-
-
   }
 
   void approve_image(string selectedUser, string selectedImage) {
@@ -874,7 +861,7 @@ public:
       perror("Receive Failed");
   }
 
-  void send_image(string viewerName, string selectedImage,  int nViews) {
+  void send_image(string viewerName, string selectedImage, int nViews) {
     UDPSocketClient *newSock = new UDPSocketClient();
     vector<string> images;
     const int imageFrag_size = 20000;
@@ -916,30 +903,33 @@ public:
     std::ifstream is(string(cwd) + "/" + steg_image_name,
                      std::ifstream::binary);*/
 
-    //Embedding the views txt file in the image
+    // Embedding the views txt file in the image
 
     string imagenodot;
     for (int j = selectedImage.length() - 1; j > 0; j--) {
 
-       if (selectedImage[j] == '.') {
-            imagenodot = selectedImage.substr(0, j);
-            break;
-       }
+      if (selectedImage[j] == '.') {
+        imagenodot = selectedImage.substr(0, j);
+        break;
+      }
     }
 
-    string viewsFilename = viewerName + "_" +imagenodot+"_"+ "views.txt";
+    string viewsFilename = viewerName + "_" + imagenodot + "_" + "views.txt";
     ofstream views_os(viewsFilename);
 
-    if(views_os.is_open())
-    {
-        views_os << nViews;
+    if (views_os.is_open()) {
+      views_os << nViews;
     }
 
     views_os.close();
 
-    QProcess::execute(QString::fromStdString("steghide embed -cf " + selectedImage + " -ef " + viewsFilename + " -p hk "));
+    QProcess::execute(QString::fromStdString("steghide embed -cf " +
+                                             selectedImage + " -ef " +
+                                             viewsFilename + " -p hk "));
 
-    QProcess::execute(QString::fromStdString("steghide embed -cf " + steg_image_name + " -ef " + selectedImage + " -p hk "));
+    QProcess::execute(QString::fromStdString("steghide embed -cf " +
+                                             steg_image_name + " -ef " +
+                                             selectedImage + " -p hk "));
 
     std::ifstream is(steg_image_name, std::ifstream::binary);
 
@@ -992,9 +982,9 @@ public:
           // char_array[imageFrag_size] = '\0';
           // cout<<"char_array "<<char_array<<endl;
 
-          Message imageFrag(Request,
-                            (newbuffer + current_length_before_marshalling),
-                            imageFrag_size, 2004, requestID, fragd, ++fragc, MF);
+          Message imageFrag(
+              Request, (newbuffer + current_length_before_marshalling),
+              imageFrag_size, 2004, requestID, fragd, ++fragc, MF);
           imageFrag.setImageOwner(this->username);
           imageFrag.setImageName(selectedImage);
 
@@ -1039,7 +1029,8 @@ public:
             // if not reset the current_length_before_marshalling in order to
             // resend the packet
             perror("Dropped packets! received_length != current_length.");
-            current_length_before_marshalling -= imageFrag_size; // Drop Tolerance
+            current_length_before_marshalling -=
+                imageFrag_size; // Drop Tolerance
           }
 
           printf("Current Received Total %d.\n", current_length);
@@ -1178,12 +1169,11 @@ public:
     return mymap;
   }
 
-
   bool newimg(string img, string owner,
               int views) { // call on every receive message
     // insert a new image in the map
-    bool flag = true; // if there is a duplicate of the image name and owner name,
-                      // change the flag to false.
+    bool flag = true; // if there is a duplicate of the image name and owner
+                      // name, change the flag to false.
     for (auto const &x : sharedimgs) {
       cout << (x.first == img) << "" << (x.second.ownername == owner) << endl;
       if (x.first == img && x.second.ownername == owner) {
@@ -1202,14 +1192,14 @@ public:
     imgfile.open("imagefile.txt", fstream::out | fstream::in);
 
     for (auto const &x : sharedimgs) {
-      imgfile << x.first << " " << x.second.ownername << " " << x.second.viewsnum
-              << endl;
+      imgfile << x.first << " " << x.second.ownername << " "
+              << x.second.viewsnum << endl;
     }
   }
 
   void readfile() { // call in login
-    // call this function once, when the user logs in to fill in the map from what
-    // is in the file
+    // call this function once, when the user logs in to fill in the map from
+    // what is in the file
     imgfile.seekp(0);
     while (!imgfile.eof()) {
       string line;

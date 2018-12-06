@@ -37,7 +37,8 @@ private:
   string image_name = " ";
 
 public:
-  static std::string base64_encode(unsigned char const *bytes_to_encode, unsigned int in_len) {
+  static std::string base64_encode(unsigned char const *bytes_to_encode,
+                                   unsigned int in_len) {
     std::string ret;
     int i = 0;
     int j = 0;
@@ -123,7 +124,9 @@ public:
     return ret;
   }
 
-  Message(MessageType p_message_type, char *p_message, size_t p_message_size, int operation, int p_rpc_id, int p_didfrag, int p_frag_count,int p_more_frag) {
+  Message(MessageType p_message_type, char *p_message, size_t p_message_size,
+          int operation, int p_rpc_id, int p_didfrag, int p_frag_count,
+          int p_more_frag) {
     this->message_type = p_message_type;
     this->message = p_message;
     this->message_size = p_message_size;
@@ -211,7 +214,6 @@ public:
       i++;
     }
 
-
     if (msgtype == "0")
       this->message_type = Request;
     else
@@ -228,11 +230,11 @@ public:
   }
   string marshal() {
     string encoded_msg = "";
-    string headerinfo = to_string(message_type) + "-" + to_string(operation) +
-                        "-" + to_string(rpc_id) + "-" +
-                        to_string(message_size) + "-" + to_string(didfrag) +
-                        "-" + to_string(frag_count) + "-" +
-                        to_string(more_frag) + "-" + image_owner+ "-"+ image_name+ "*";
+    string headerinfo =
+        to_string(message_type) + "-" + to_string(operation) + "-" +
+        to_string(rpc_id) + "-" + to_string(message_size) + "-" +
+        to_string(didfrag) + "-" + to_string(frag_count) + "-" +
+        to_string(more_frag) + "-" + image_owner + "-" + image_name + "*";
 
     int n = headerinfo.length();
     unsigned int len = n + 1;
@@ -270,8 +272,8 @@ public:
   int getDidFrag() { return didfrag; }
   int getFragCount() { return frag_count; }
   int getMoreFrag() { return more_frag; }
-  string getImageOwner(){return image_owner;}
-  string getImageName(){return image_name;}
+  string getImageOwner() { return image_owner; }
+  string getImageName() { return image_name; }
 
   void setOperation(int _operation) { this->operation = _operation; }
   void setMessage(char *message, size_t message_size) {
@@ -284,10 +286,10 @@ public:
   void setDidFrag(int p_didfrag) { this->didfrag = p_didfrag; }
   void setFragCount(int p_frag_count) { this->frag_count = p_frag_count; }
   void setMoreFrag(int p_more_frag) { this->more_frag = p_more_frag; }
-  void setImageOwner(string p_image_owner){
-      this->image_owner = p_image_owner;
+  void setImageOwner(string p_image_owner) {
+    this->image_owner = p_image_owner;
   }
-  void setImageName(string p_image_name){ this->image_name = p_image_name; }
+  void setImageName(string p_image_name) { this->image_name = p_image_name; }
   ~Message() {}
 };
 #endif
