@@ -1,0 +1,4 @@
+q trump.jpeg yellow.jpeg apple.jpeg 
+r 
+w 
+lk 
