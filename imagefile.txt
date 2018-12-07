@@ -1,2 +1,1 @@
-apple.jpeg q 199
-trump.jpeg q 96
+q_trump.jpeg 0

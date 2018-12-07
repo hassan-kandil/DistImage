@@ -35,6 +35,13 @@ using namespace std;
 #include <unistd.h>
 
 using namespace std;
+/*
+struct imgnuser {
+    string image;
+    string ownername;
+    bool operator< ( imgnuser b ) { return std::make_pair(this->image,this->ownername) < std::make_pair(b.image,b.ownername) ; }
+};
+*/
 
 class Peer {
 private:
@@ -42,11 +49,7 @@ private:
   uint16_t sender_port;
 
 public:
-  struct image {
-    int viewsnum = 0;
-    string ownername;
-  };
-  map<string, image> sharedimgs;
+  map<string, int> sharedimgs;
   fstream imgfile;
   UDPSocketClient *sv;
   //  UDPSocketServer *sv;
@@ -1153,59 +1156,82 @@ public:
     return mymap;
   }
 
-  bool newimg(string img, string owner,
-              int views) { // call on every receive message
-    // insert a new image in the map
-    bool flag = true; // if there is a duplicate of the image name and owner
-                      // name, change the flag to false.
-    for (auto const &x : sharedimgs) {
-      // cout << (x.first == img) << "" << (x.second.ownername == owner) << endl;
-      if (x.first == img && x.second.ownername == owner) {
-        return false;
+  bool newimg (string img, string owner, int views){
+      // insert a new image in the map
+      // if there is a duplicate of the image name and owner name, change the flag to false.
+      string imagename, ownername, fullname;
+      for (auto const &x:sharedimgs){
+          fullname = x.first;
+          for (int j = fullname.length() - 1; j > 0; j--) {
+            if (fullname[j] == '_') {
+              ownername = fullname.substr(0, j);
+              imagename = fullname.substr(j+1, fullname.length() - 1);
+              break;
+            }
+          }
+          if (imagename==img && ownername== owner)
+          {
+              return false;
+          }
       }
-    }
-
-    sharedimgs[img].viewsnum = views;
-    sharedimgs[img].ownername = owner;
-    return true;
+      string newfullname = owner + "_" + img;
+      sharedimgs[newfullname]=views;
+      return true;
   }
 
-  void updatefile() { // call in logout
-    // call this function when the user is signing out, to update the file
-    imgfile.close();
-    imgfile.open("imagefile.txt", fstream::out | fstream::in);
-
-    for (auto const &x : sharedimgs) {
-      imgfile << x.first << " " << x.second.ownername << " "
-              << x.second.viewsnum << endl;
-    }
-  }
-
-  void readfile() { // call in login
-    // call this function once, when the user logs in to fill in the map from
-    // what is in the file
-    imgfile.seekp(0);
-    while (!imgfile.eof()) {
-      string line;
-      getline(imgfile, line);
-      if (line != "") {
-        int name_len, owner_len, view_len;
-        name_len = line.find(" ");
-        string img = line.substr(0, name_len);
-        line = line.erase(0, name_len + 1);
-        owner_len = line.find(" ");
-        string owner = line.substr(0, owner_len);
-        line = line.erase(0, owner_len + 1);
-        view_len = line.find(" ");
-        string views = line.substr(0, view_len);
-        line = line.erase(0, view_len + 1);
-        sharedimgs[img].ownername = owner;
-        int view = stoi(views);
-        sharedimgs[img].viewsnum = view;
+  bool updateimg (string img, string owner, int views){
+      string imagename, ownername, fullname;
+      for (auto const &x:sharedimgs){
+          fullname = x.first;
+          for (int j = fullname.length() - 1; j > 0; j--) {
+            if (fullname[j] == '_') {
+              ownername = fullname.substr(0, j);
+              imagename = fullname.substr(j+1, fullname.length() - 1);
+              break;
+            }
+          }
+          if (imagename==img && ownername== owner)
+          {
+              string newfullname = owner + "_" + img;
+              sharedimgs[newfullname]=views;
+              return true;
+          }
       }
-    }
-    imgfile.clear();
+      return false;
   }
+
+  void updatefile(){
+      //call this function when the user is signing out, to update the file
+      imgfile.close();
+      imgfile.open ("imagefile.txt", fstream::out | fstream::in);
+
+      for (auto const &x:sharedimgs){
+          imgfile<<x.first<<" "<<x.second<<endl;
+      }
+  }
+
+  void readfile(){
+      //call this function once, when the user logs in to fill in the map from what is in the file
+      imgfile.seekp(0);
+      while (!imgfile.eof()) {
+          string line;
+          getline (imgfile, line);
+          if(line!=""){
+              int name_len, owner_len, view_len;
+              name_len= line.find(" ");
+              string fullimagename = line.substr(0,name_len);
+              line= line.erase(0, name_len+1);
+              view_len= line.find(" ");
+              string views = line.substr(0,view_len);
+              line= line.erase(0, view_len+1);
+              int view=stoi(views);
+              sharedimgs[fullimagename]=view;
+          }
+      }
+      imgfile.clear();
+
+  }
+
 };
 
 #endif
