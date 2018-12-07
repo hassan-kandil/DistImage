@@ -14,6 +14,9 @@ public:
   explicit SharedImagesDialog(QWidget *parent = nullptr, Peer *peer = nullptr);
   ~SharedImagesDialog();
 
+private slots:
+    void on_push_view_clicked();
+
 private:
   Ui::SharedImagesDialog *ui;
   Peer *peer;

@@ -85,14 +85,13 @@ public:
 
   void listenPeer() {
     cout << "Ana Henaaaa Thread ba listen!! " << endl;
-    while (true) {
-      getRequest();
+    while (getRequest()) {
     }
   }
 
   // Server Functions Start HEREEE
 
-  void getRequest() {
+  bool getRequest() {
 
     cout << " user starts get request:" << endl;
 
@@ -272,11 +271,7 @@ public:
       }
 
       printf("%s.\n", "Start of image receive");
-      // std::ofstream os(
-      //    "/home/hkandil/Downloads/distributed_pro-master-latest/new.jpeg");
 
-      // refaay: should get ownername and imagename with the send
-      // string steg_image_name = this->username + "_" + selectedImage;
       std::ofstream os(newFileName);
 
       if (r > 0) {
@@ -400,6 +395,8 @@ public:
         cout << "Image_name " << image_name << " image_owner " << image_owner
              << " views " << views << endl;
         this->newimg(image_name, image_owner, views);
+        requests_buffer.push_back(
+            make_pair(2003, make_pair(image_owner, image_name)));
         views_is.close();
 
       } else {
@@ -408,9 +405,9 @@ public:
     }
 
     default:
-
-      break;
+          break;
     }
+    return true;
   }
 
   void sendReply(char *temp_buffer) {
@@ -632,7 +629,6 @@ public:
 
     string pathname, imagename;
     for (int j = imagepath.length() - 1; j > 0; j--) {
-
       if (imagepath[j] == '/') {
         pathname = imagepath.substr(0, j);
         imagename = imagepath.substr(j + 1, imagepath.length() - 1);
@@ -890,18 +886,6 @@ public:
     string steg_image_name = this->username + "_" + selectedImage;
     cout << "Image name " << selectedImage << " Steg name " << steg_image_name
          << endl;
-    /*
-    // Refaay: Qt needs path to open image!
-    char cwd[1000];
-    if (getcwd(cwd, sizeof(cwd)) != NULL) {
-      cout << "Current working dir: " << cwd << endl;
-    } else {
-      cout << "getcwd() error! Cannot get current path!" << endl;
-      // return 1;
-    }
-
-    std::ifstream is(string(cwd) + "/" + steg_image_name,
-                     std::ifstream::binary);*/
 
     // Embedding the views txt file in the image
 
@@ -1175,7 +1159,7 @@ public:
     bool flag = true; // if there is a duplicate of the image name and owner
                       // name, change the flag to false.
     for (auto const &x : sharedimgs) {
-      cout << (x.first == img) << "" << (x.second.ownername == owner) << endl;
+      // cout << (x.first == img) << "" << (x.second.ownername == owner) << endl;
       if (x.first == img && x.second.ownername == owner) {
         return false;
       }

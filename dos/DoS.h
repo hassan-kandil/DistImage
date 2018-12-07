@@ -472,6 +472,6 @@ public:
     return ret;
   }
 
-  ~DoS() {}
+  ~DoS() { users.close(); }
 };
 #endif

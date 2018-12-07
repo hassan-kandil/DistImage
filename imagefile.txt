@@ -1,1 +1,2 @@
-blue.jpg q 5
+batman.jpeg q 2
+trump.jpg q 5

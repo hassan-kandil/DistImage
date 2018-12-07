@@ -6,10 +6,12 @@
 #include "usersdialog.h"
 #include <qfiledialog.h>
 #include <thread>
-
+#include <QWindow>
 SecondDialog::SecondDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::SecondDialog), peer(peer) {
   ui->setupUi(this);
+  connect(this,SIGNAL(destroyed()),this->parent(),SLOT(close())); // to close all after logout
+  ui->lbl_user->setText(QString::fromStdString(peer->username));
   peer->readfile();
   ui->lbl_upload_successful->setVisible(false);
   cout << "This is user " << peer->username << endl;
@@ -24,6 +26,10 @@ void SecondDialog::on_push_logout_clicked() {
   peer->logout();
   peer->updatefile();
   this->close();
+  //QWindow* pa = qobject_cast<QWindow*>(this->parent()) ;
+  //pa->close();
+  //this->parent()->~QObject();
+  //
 }
 
 void SecondDialog::on_push_users_clicked() {

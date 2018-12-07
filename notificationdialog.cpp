@@ -44,10 +44,61 @@ void NotificationDialog::on_push_approve_clicked() {
     ui->lbl_result->setVisible(true);
     ui->lbl_result->setText("Approved!");
     ui->lbl_result->setStyleSheet("QLabel { color : green; }");
+
+    peer->requests_buffer.erase(peer->requests_buffer.begin() + ui->listWidget->currentRow());
+
+    ui->listWidget->clear();
+    for (int i = 0; i < peer->requests_buffer.size(); i++) {
+      string req;
+      if (peer->requests_buffer[i].first == 2002)
+        req = " wants to view ";
+      else if (peer->requests_buffer[i].first == 2003)
+        req = " approved you to view ";
+      else
+        req = " something wrong here ";
+      ui->listWidget->addItem(
+          QString::fromStdString(peer->requests_buffer[i].second.first + req +
+                                 peer->requests_buffer[i].second.second));
+    }
   }
 }
 
-void NotificationDialog::on_push_refresh_clicked() {
+void NotificationDialog::on_push_refresh_clicked() { // refill list
+  ui->lbl_result->setVisible(false);
+  ui->listWidget->clear();
   peer->getUsers(); // because approve needs IP & port
-  // refill list
+
+  for (int i = 0; i < peer->requests_buffer.size(); i++) {
+    string req;
+    if (peer->requests_buffer[i].first == 2002)
+      req = " wants to view ";
+    else if (peer->requests_buffer[i].first == 2003)
+      req = " approved you to view ";
+    else
+      req = " something wrong here ";
+    ui->listWidget->addItem(
+        QString::fromStdString(peer->requests_buffer[i].second.first + req +
+                               peer->requests_buffer[i].second.second));
+  }
+}
+
+void NotificationDialog::on_push_disapprove_clicked()
+{
+    // Refaay: should reply with request disapproved
+
+    peer->requests_buffer.erase(peer->requests_buffer.begin() + ui->listWidget->currentRow());
+
+    ui->listWidget->clear();
+    for (int i = 0; i < peer->requests_buffer.size(); i++) {
+      string req;
+      if (peer->requests_buffer[i].first == 2002)
+        req = " wants to view ";
+      else if (peer->requests_buffer[i].first == 2003)
+        req = " approved you to view ";
+      else
+        req = " something wrong here ";
+      ui->listWidget->addItem(
+          QString::fromStdString(peer->requests_buffer[i].second.first + req +
+                                 peer->requests_buffer[i].second.second));
+    }
 }

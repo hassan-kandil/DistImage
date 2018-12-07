@@ -1,2 +1,3 @@
-q batman.jpeg 
-r 
+q batman.jpeg apple.jpeg rooney.jpeg linux.jpeg 
+r
+w

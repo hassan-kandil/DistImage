@@ -19,6 +19,8 @@ private slots:
 
   void on_push_refresh_clicked();
 
+  void on_push_disapprove_clicked();
+
 private:
   Ui::NotificationDialog *ui;
   Peer *peer;

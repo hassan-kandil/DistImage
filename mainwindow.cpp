@@ -5,6 +5,12 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), peer(new Peer) {
+
+
+    //this->setWindowFlags(Qt::Window | Qt::WindowTitleHint |
+     //                     Qt::CustomizeWindowHint);
+
+
   ui->setupUi(this);
   ui->lbl_login_wrong->setVisible(false);
   ui->lbl_signup_welcome->setVisible(false);
@@ -42,7 +48,7 @@ void MainWindow::on_push_login_clicked() {
 
       int sign_result = peer->login(username, password);
 
-      if (sign_result == 1) { // Logged in correctly
+      if (sign_result == 1) { // Login correctly
         // peer->peerServer = new Server(peer->dos_port);
         peer->username = username;
         peer->password = password;
