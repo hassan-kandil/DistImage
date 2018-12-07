@@ -6,7 +6,7 @@ ViewImageDialog::ViewImageDialog(QWidget *parent, Peer *peer, string cover, stri
     : QDialog(parent), ui(new Ui::ViewImageDialog), peer(peer) {
   ui->setupUi(this);
   ui->lbl_error->setVisible(false);
-
+  connect(this,SIGNAL(destroyed()),this->parent(),SLOT(on_push_refresh_clicked())); // to close all after logout
 
   string extract_command;
 
@@ -25,3 +25,8 @@ ViewImageDialog::ViewImageDialog(QWidget *parent, Peer *peer, string cover, stri
 }
 
 ViewImageDialog::~ViewImageDialog() { delete ui; }
+
+void ViewImageDialog::on_push_back_clicked()
+{
+
+}

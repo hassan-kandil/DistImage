@@ -15,6 +15,9 @@ public:
   explicit ViewImageDialog(QWidget *parent = nullptr, Peer *peer = nullptr, string cover = "",string img = "");
   ~ViewImageDialog();
 
+private slots:
+    void on_push_back_clicked();
+
 private:
   Ui::ViewImageDialog *ui;
   Peer *peer;

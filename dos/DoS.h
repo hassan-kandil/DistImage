@@ -438,6 +438,8 @@ public:
         users.close();
         users.open("users.txt", fstream::out | fstream::in);
         users << Final;
+        users.close();
+        users.open("users.txt", fstream::out | fstream::in | fstream::app);
         return 9;
       }
     } else {
@@ -445,11 +447,15 @@ public:
       users.close();
       users.open("users.txt", fstream::out | fstream::in);
       users << Final;
+      users.close();
+      users.open("users.txt", fstream::out | fstream::in | fstream::app);
       return 0;
     }
     users.close();
     users.open("users.txt", fstream::out | fstream::in);
     users << Final;
+    users.close();
+    users.open("users.txt", fstream::out | fstream::in | fstream::app);
     return 1;
   }
 

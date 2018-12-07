@@ -106,7 +106,7 @@
      <item>
       <widget class="QPushButton" name="push_disapprove">
        <property name="text">
-        <string>Disapprove</string>
+        <string>Delete</string>
        </property>
       </widget>
      </item>

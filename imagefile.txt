@@ -1,2 +1,2 @@
-batman.jpeg q 2
-trump.jpg q 5
+apple.jpeg q 199
+trump.jpeg q 96

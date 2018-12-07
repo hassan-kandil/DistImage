@@ -1,3 +1,4 @@
-q batman.jpeg apple.jpeg rooney.jpeg linux.jpeg 
-r
-w
+q trump.jpeg yellow.jpeg apple.jpeg 
+r 
+w 
+lk 
