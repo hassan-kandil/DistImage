@@ -19,6 +19,8 @@ public:
 private slots:
   void on_push_update_views_clicked();
 
+  void on_push_refresh_clicked();
+
 private:
   Ui::editmyimageDialog *ui;
   Peer *peer;

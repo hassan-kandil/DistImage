@@ -5,6 +5,7 @@
 MyImagesDialog::MyImagesDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::MyImagesDialog), peer(peer) {
   ui->setupUi(this);
+  ui->lbl_result->setVisible(false);
   ui->lbl_user->setText(QString::fromStdString(peer->username));
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
@@ -30,6 +31,8 @@ void MyImagesDialog::on_push_view_clicked() {
                         Qt::CustomizeWindowHint);
     secd.setModal(true);
     secd.exec();
+
+    ui->lbl_result->setVisible(false);
   } else {
     ui->lbl_result->setVisible(true);
     ui->lbl_result->setStyleSheet("QLabel { color : red; }");

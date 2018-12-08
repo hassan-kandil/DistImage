@@ -9,7 +9,7 @@ ViewImageDialog::ViewImageDialog(QWidget *parent, Peer *peer, string cover,
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
   ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
-  ui->lbl_error->setVisible(false);
+  ui->lbl_result->setVisible(false);
   connect(this, SIGNAL(destroyed()), this->parent(),
           SLOT(on_push_refresh_clicked())); // to close all after logout
 

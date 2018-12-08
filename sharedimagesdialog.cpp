@@ -96,6 +96,7 @@ void SharedImagesDialog::on_push_view_clicked() {
 
 void SharedImagesDialog::on_push_refresh_clicked() {
   // get any updates
+    ui->lbl_result->setVisible(false);
   ui->listWidget->clear();
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));

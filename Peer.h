@@ -36,15 +36,6 @@ using namespace std;
 #include <unistd.h>
 
 using namespace std;
-/*
-struct imgnuser {
-    string image;
-    string ownername;
-    bool operator< ( imgnuser b ) { return
-std::make_pair(this->image,this->ownername) <
-std::make_pair(b.image,b.ownername) ; }
-};
-*/
 
 class Peer {
 private:
@@ -708,6 +699,9 @@ public:
     if ((r = recvfrom(sc->s, little_buffer, 10, 0,
                       (struct sockaddr *)&tempSocketAddress, &tempAddrlen)) < 0)
       perror("Receive Failed");
+    // close bound sockets
+    close(sc->s);
+    close(sv->s);
     if (little_buffer[0] == '1')
       return 1;
     else

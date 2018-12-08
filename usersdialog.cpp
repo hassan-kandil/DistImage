@@ -54,6 +54,7 @@ void UsersDialog::on_push_view_clicked() {
 
 void UsersDialog::on_push_refresh_clicked() {
   ui->listWidget->clear();
+  ui->lbl_result->setVisible(false);
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
   ui->lbl_time->setStyleSheet("QLabel { color : blue; }");

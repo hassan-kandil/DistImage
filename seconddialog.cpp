@@ -31,10 +31,6 @@ void SecondDialog::on_push_logout_clicked() {
   peer->updatefile();
   peer->update_my_images_file();
   this->close();
-  // QWindow* pa = qobject_cast<QWindow*>(this->parent()) ;
-  // pa->close();
-  // this->parent()->~QObject();
-  //
 }
 
 void SecondDialog::on_push_users_clicked() {

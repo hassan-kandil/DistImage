@@ -18,7 +18,6 @@ userimagesdialog::userimagesdialog(QWidget *parent, Peer *peer, QString s)
 
   for (int i = 0; i < images.size(); i++) {
     if (i > 2) {
-
       ui->listWidget->addItem(QString::fromStdString(images[i]));
     }
   }
@@ -66,10 +65,6 @@ void userimagesdialog::on_push_request_clicked() {
 
 void userimagesdialog::temp() {}
 
-void userimagesdialog::on_push_view_clicked() {
-  ViewImageDialog secd(this, peer);
-  secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
-                      Qt::CustomizeWindowHint);
-  secd.setModal(true);
-  secd.exec();
+void userimagesdialog::on_push_view_clicked() { // view from shared
+
 }

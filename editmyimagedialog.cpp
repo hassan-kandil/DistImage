@@ -33,12 +33,32 @@ void editmyimageDialog::on_push_update_views_clicked() {
       vector<pair<string, int>> selectedViewers =
           peer->myimages[imagename.toStdString()];
       string viewer = selectedViewers[ui->listWidget->currentRow()].first;
-      cout << imagename.toStdString() << viewer << noViews << endl;
+      //cout << imagename.toStdString() << viewer << noViews << endl;
       peer->update_views_by_owner(viewer, imagename.toStdString(), noViews);
+
+      ui->lbl_result->setVisible(true);
+      ui->lbl_result->setStyleSheet("QLabel { color : green; }");
+      ui->lbl_result->setText("Views updated!");
     }
   } else {
     ui->lbl_result->setVisible(true);
     ui->lbl_result->setStyleSheet("QLabel { color : red; }");
     ui->lbl_result->setText("Please, select a user!");
   }
+}
+
+void editmyimageDialog::on_push_refresh_clicked()
+{
+    ui->listWidget->clear();
+    ui->lbl_time->setText(
+        QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
+    ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
+    ui->lbl_result->setVisible(false);
+    vector<pair<string, int>> selectedViewers =
+        peer->myimages[imagename.toStdString()];
+    for (int i = 0; i < selectedViewers.size(); i++) {
+      ui->listWidget->addItem(QString::fromStdString(
+          "Viewer: " + selectedViewers[i].first +
+          ". Views Left: " + std::to_string(selectedViewers[i].second)));
+    }
 }

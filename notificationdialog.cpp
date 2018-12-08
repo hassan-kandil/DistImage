@@ -50,11 +50,8 @@ void NotificationDialog::on_push_approve_clicked() {
       peer->requests_buffer.erase(peer->requests_buffer.begin() +
                                   ui->listWidget->currentRow());
 
-      // refresh
+      // refill list
       ui->listWidget->clear();
-      ui->lbl_time->setText(QString::fromStdString("Last Time Refreshed: " +
-                                                   peer->getCurrentTime()));
-      ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
       for (int i = 0; i < peer->requests_buffer.size(); i++) {
         string req;
         if (peer->requests_buffer[i].first == 2002)
@@ -77,6 +74,9 @@ void NotificationDialog::on_push_approve_clicked() {
 
 void NotificationDialog::on_push_refresh_clicked() { // refill list
   ui->lbl_result->setVisible(false);
+  ui->lbl_time->setText(
+      QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
+  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
   ui->listWidget->clear();
   peer->getUsers(); // because approve needs IP & port
 
@@ -114,6 +114,9 @@ void NotificationDialog::on_push_disapprove_clicked() {
           QString::fromStdString(peer->requests_buffer[i].second.first + req +
                                  peer->requests_buffer[i].second.second));
     }
+    ui->lbl_result->setVisible(true);
+    ui->lbl_result->setStyleSheet("QLabel { color : green; }");
+    ui->lbl_result->setText("Notification deleted!");
   } else {
     ui->lbl_result->setVisible(true);
     ui->lbl_result->setStyleSheet("QLabel { color : red; }");
