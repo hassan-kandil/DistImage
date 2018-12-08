@@ -20,65 +20,98 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_ViewImageDialog {
+class Ui_ViewImageDialog
+{
 public:
-  QVBoxLayout *verticalLayout;
-  QHBoxLayout *horizontalLayout_2;
-  QSpacerItem *horizontalSpacer;
-  QPushButton *push_back;
-  QLabel *lbl_image;
-  QLabel *lbl_error;
+    QVBoxLayout *verticalLayout_2;
+    QHBoxLayout *horizontalLayout_2;
+    QSpacerItem *horizontalSpacer;
+    QPushButton *push_back;
+    QVBoxLayout *verticalLayout;
+    QSpacerItem *verticalSpacer;
+    QHBoxLayout *horizontalLayout;
+    QSpacerItem *horizontalSpacer_2;
+    QLabel *lbl_image;
+    QSpacerItem *horizontalSpacer_3;
+    QSpacerItem *verticalSpacer_2;
+    QLabel *lbl_error;
 
-  void setupUi(QDialog *ViewImageDialog) {
-    if (ViewImageDialog->objectName().isEmpty())
-      ViewImageDialog->setObjectName(QStringLiteral("ViewImageDialog"));
-    ViewImageDialog->resize(500, 500);
-    verticalLayout = new QVBoxLayout(ViewImageDialog);
-    verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-    horizontalLayout_2 = new QHBoxLayout();
-    horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-    horizontalSpacer =
-        new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    void setupUi(QDialog *ViewImageDialog)
+    {
+        if (ViewImageDialog->objectName().isEmpty())
+            ViewImageDialog->setObjectName(QStringLiteral("ViewImageDialog"));
+        ViewImageDialog->resize(500, 500);
+        verticalLayout_2 = new QVBoxLayout(ViewImageDialog);
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    horizontalLayout_2->addItem(horizontalSpacer);
+        horizontalLayout_2->addItem(horizontalSpacer);
 
-    push_back = new QPushButton(ViewImageDialog);
-    push_back->setObjectName(QStringLiteral("push_back"));
+        push_back = new QPushButton(ViewImageDialog);
+        push_back->setObjectName(QStringLiteral("push_back"));
 
-    horizontalLayout_2->addWidget(push_back);
+        horizontalLayout_2->addWidget(push_back);
 
-    verticalLayout->addLayout(horizontalLayout_2);
 
-    lbl_image = new QLabel(ViewImageDialog);
-    lbl_image->setObjectName(QStringLiteral("lbl_image"));
+        verticalLayout_2->addLayout(horizontalLayout_2);
 
-    verticalLayout->addWidget(lbl_image);
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-    lbl_error = new QLabel(ViewImageDialog);
-    lbl_error->setObjectName(QStringLiteral("lbl_error"));
+        verticalLayout->addItem(verticalSpacer);
 
-    verticalLayout->addWidget(lbl_error);
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    retranslateUi(ViewImageDialog);
-    QObject::connect(push_back, SIGNAL(clicked()), ViewImageDialog,
-                     SLOT(close()));
+        horizontalLayout->addItem(horizontalSpacer_2);
 
-    QMetaObject::connectSlotsByName(ViewImageDialog);
-  } // setupUi
+        lbl_image = new QLabel(ViewImageDialog);
+        lbl_image->setObjectName(QStringLiteral("lbl_image"));
 
-  void retranslateUi(QDialog *ViewImageDialog) {
-    ViewImageDialog->setWindowTitle(
-        QApplication::translate("ViewImageDialog", "DistImage", nullptr));
-    push_back->setText(
-        QApplication::translate("ViewImageDialog", "Back", nullptr));
-    lbl_image->setText(QString());
-    lbl_error->setText(
-        QApplication::translate("ViewImageDialog", "Image Error!", nullptr));
-  } // retranslateUi
+        horizontalLayout->addWidget(lbl_image);
+
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout->addItem(horizontalSpacer_3);
+
+
+        verticalLayout->addLayout(horizontalLayout);
+
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_2);
+
+
+        verticalLayout_2->addLayout(verticalLayout);
+
+        lbl_error = new QLabel(ViewImageDialog);
+        lbl_error->setObjectName(QStringLiteral("lbl_error"));
+
+        verticalLayout_2->addWidget(lbl_error);
+
+
+        retranslateUi(ViewImageDialog);
+        QObject::connect(push_back, SIGNAL(clicked()), ViewImageDialog, SLOT(close()));
+
+        QMetaObject::connectSlotsByName(ViewImageDialog);
+    } // setupUi
+
+    void retranslateUi(QDialog *ViewImageDialog)
+    {
+        ViewImageDialog->setWindowTitle(QApplication::translate("ViewImageDialog", "DistImage", nullptr));
+        push_back->setText(QApplication::translate("ViewImageDialog", "Back", nullptr));
+        lbl_image->setText(QApplication::translate("ViewImageDialog", "Image", nullptr));
+        lbl_error->setText(QApplication::translate("ViewImageDialog", "Image Error!", nullptr));
+    } // retranslateUi
+
 };
 
 namespace Ui {
-class ViewImageDialog : public Ui_ViewImageDialog {};
+    class ViewImageDialog: public Ui_ViewImageDialog {};
 } // namespace Ui
 
 QT_END_NAMESPACE

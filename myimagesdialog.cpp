@@ -36,9 +36,16 @@ void MyImagesDialog::on_push_request_clicked() {}
 
 void MyImagesDialog::on_push_view_clicked()
 {
+    if(ui->listWidget->currentRow() >= 0){
     editmyimageDialog secd(this, peer, ui->listWidget->currentItem()->text());
     secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
                         Qt::CustomizeWindowHint);
     secd.setModal(true);
     secd.exec();
+    }
+    else{
+        ui->lbl_result->setVisible(true);
+        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+        ui->lbl_result->setText("Please, select an image!");
+    }
 }

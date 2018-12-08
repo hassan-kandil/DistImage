@@ -24,14 +24,13 @@ NotificationDialog::NotificationDialog(QWidget *parent, Peer *peer)
 NotificationDialog::~NotificationDialog() { delete ui; }
 
 void NotificationDialog::on_push_approve_clicked() {
-  cout << "Approve button clicked" << endl;
-
+  if(ui->listWidget->currentRow() >= 0){
   string usname =
       peer->requests_buffer[ui->listWidget->currentRow()].second.first;
   string imname =
       peer->requests_buffer[ui->listWidget->currentRow()].second.second;
   int noViews = ui->line_views->text().toInt();
-  if (noViews == 0) {
+  if (noViews <= 0) {
     ui->lbl_result->setVisible(true);
     ui->lbl_result->setText("Please, add the number of views > 0");
     ui->lbl_result->setStyleSheet("QLabel { color : red; }");
@@ -62,6 +61,12 @@ void NotificationDialog::on_push_approve_clicked() {
     }
   }
 }
+else{
+      ui->lbl_result->setVisible(true);
+      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_result->setText("Please, select a notification!");
+}
+}
 
 void NotificationDialog::on_push_refresh_clicked() { // refill list
   ui->lbl_result->setVisible(false);
@@ -84,6 +89,7 @@ void NotificationDialog::on_push_refresh_clicked() { // refill list
 
 void NotificationDialog::on_push_disapprove_clicked()
 {
+    if(ui->listWidget->currentRow() >= 0){
     // Refaay: should reply with request disapproved
 
     peer->requests_buffer.erase(peer->requests_buffer.begin() + ui->listWidget->currentRow());
@@ -100,5 +106,11 @@ void NotificationDialog::on_push_disapprove_clicked()
       ui->listWidget->addItem(
           QString::fromStdString(peer->requests_buffer[i].second.first + req +
                                  peer->requests_buffer[i].second.second));
+    }
+    }
+    else{
+        ui->lbl_result->setVisible(true);
+        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+        ui->lbl_result->setText("Please, select a notification!");
     }
 }

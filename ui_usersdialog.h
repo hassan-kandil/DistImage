@@ -21,99 +21,98 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_UsersDialog {
+class Ui_UsersDialog
+{
 public:
-  QVBoxLayout *verticalLayout;
-  QHBoxLayout *horizontalLayout_2;
-  QPushButton *push_refresh;
-  QSpacerItem *horizontalSpacer;
-  QPushButton *push_back;
-  QListWidget *listWidget;
-  QHBoxLayout *horizontalLayout;
-  QSpacerItem *horizontalSpacer_2;
-  QPushButton *push_view;
-  QSpacerItem *horizontalSpacer_5;
-  QLabel *lbl_offline;
+    QVBoxLayout *verticalLayout;
+    QHBoxLayout *horizontalLayout_2;
+    QPushButton *push_refresh;
+    QSpacerItem *horizontalSpacer;
+    QPushButton *push_back;
+    QListWidget *listWidget;
+    QHBoxLayout *horizontalLayout;
+    QSpacerItem *horizontalSpacer_2;
+    QPushButton *push_view;
+    QSpacerItem *horizontalSpacer_5;
+    QLabel *lbl_result;
 
-  void setupUi(QDialog *UsersDialog) {
-    if (UsersDialog->objectName().isEmpty())
-      UsersDialog->setObjectName(QStringLiteral("UsersDialog"));
-    UsersDialog->resize(500, 500);
-    verticalLayout = new QVBoxLayout(UsersDialog);
-    verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-    horizontalLayout_2 = new QHBoxLayout();
-    horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-    push_refresh = new QPushButton(UsersDialog);
-    push_refresh->setObjectName(QStringLiteral("push_refresh"));
+    void setupUi(QDialog *UsersDialog)
+    {
+        if (UsersDialog->objectName().isEmpty())
+            UsersDialog->setObjectName(QStringLiteral("UsersDialog"));
+        UsersDialog->resize(500, 500);
+        verticalLayout = new QVBoxLayout(UsersDialog);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        push_refresh = new QPushButton(UsersDialog);
+        push_refresh->setObjectName(QStringLiteral("push_refresh"));
 
-    horizontalLayout_2->addWidget(push_refresh);
+        horizontalLayout_2->addWidget(push_refresh);
 
-    horizontalSpacer =
-        new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    horizontalLayout_2->addItem(horizontalSpacer);
+        horizontalLayout_2->addItem(horizontalSpacer);
 
-    push_back = new QPushButton(UsersDialog);
-    push_back->setObjectName(QStringLiteral("push_back"));
+        push_back = new QPushButton(UsersDialog);
+        push_back->setObjectName(QStringLiteral("push_back"));
 
-    horizontalLayout_2->addWidget(push_back);
+        horizontalLayout_2->addWidget(push_back);
 
-    verticalLayout->addLayout(horizontalLayout_2);
 
-    listWidget = new QListWidget(UsersDialog);
-    listWidget->setObjectName(QStringLiteral("listWidget"));
+        verticalLayout->addLayout(horizontalLayout_2);
 
-    verticalLayout->addWidget(listWidget);
+        listWidget = new QListWidget(UsersDialog);
+        listWidget->setObjectName(QStringLiteral("listWidget"));
 
-    horizontalLayout = new QHBoxLayout();
-    horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-    horizontalSpacer_2 =
-        new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        verticalLayout->addWidget(listWidget);
 
-    horizontalLayout->addItem(horizontalSpacer_2);
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    push_view = new QPushButton(UsersDialog);
-    push_view->setObjectName(QStringLiteral("push_view"));
+        horizontalLayout->addItem(horizontalSpacer_2);
 
-    horizontalLayout->addWidget(push_view);
+        push_view = new QPushButton(UsersDialog);
+        push_view->setObjectName(QStringLiteral("push_view"));
 
-    horizontalSpacer_5 =
-        new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalLayout->addWidget(push_view);
 
-    horizontalLayout->addItem(horizontalSpacer_5);
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    verticalLayout->addLayout(horizontalLayout);
+        horizontalLayout->addItem(horizontalSpacer_5);
 
-    lbl_offline = new QLabel(UsersDialog);
-    lbl_offline->setObjectName(QStringLiteral("lbl_offline"));
 
-    verticalLayout->addWidget(lbl_offline);
+        verticalLayout->addLayout(horizontalLayout);
 
-    QWidget::setTabOrder(listWidget, push_view);
-    QWidget::setTabOrder(push_view, push_refresh);
-    QWidget::setTabOrder(push_refresh, push_back);
+        lbl_result = new QLabel(UsersDialog);
+        lbl_result->setObjectName(QStringLiteral("lbl_result"));
 
-    retranslateUi(UsersDialog);
-    QObject::connect(push_back, SIGNAL(clicked()), UsersDialog, SLOT(close()));
+        verticalLayout->addWidget(lbl_result);
 
-    QMetaObject::connectSlotsByName(UsersDialog);
-  } // setupUi
+        QWidget::setTabOrder(listWidget, push_view);
+        QWidget::setTabOrder(push_view, push_refresh);
+        QWidget::setTabOrder(push_refresh, push_back);
 
-  void retranslateUi(QDialog *UsersDialog) {
-    UsersDialog->setWindowTitle(
-        QApplication::translate("UsersDialog", "DistImage", nullptr));
-    push_refresh->setText(
-        QApplication::translate("UsersDialog", "Refresh", nullptr));
-    push_back->setText(QApplication::translate("UsersDialog", "Back", nullptr));
-    push_view->setText(QApplication::translate(
-        "UsersDialog", "View Selected User Images", nullptr));
-    lbl_offline->setText(QApplication::translate(
-        "UsersDialog", "Selected User is Offline!", nullptr));
-  } // retranslateUi
+        retranslateUi(UsersDialog);
+        QObject::connect(push_back, SIGNAL(clicked()), UsersDialog, SLOT(close()));
+
+        QMetaObject::connectSlotsByName(UsersDialog);
+    } // setupUi
+
+    void retranslateUi(QDialog *UsersDialog)
+    {
+        UsersDialog->setWindowTitle(QApplication::translate("UsersDialog", "DistImage", nullptr));
+        push_refresh->setText(QApplication::translate("UsersDialog", "Refresh", nullptr));
+        push_back->setText(QApplication::translate("UsersDialog", "Back", nullptr));
+        push_view->setText(QApplication::translate("UsersDialog", "View Selected User Images", nullptr));
+        lbl_result->setText(QApplication::translate("UsersDialog", "Selected User is Offline!", nullptr));
+    } // retranslateUi
+
 };
 
 namespace Ui {
-class UsersDialog : public Ui_UsersDialog {};
+    class UsersDialog: public Ui_UsersDialog {};
 } // namespace Ui
 
 QT_END_NAMESPACE

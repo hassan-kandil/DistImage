@@ -23,15 +23,22 @@ editmyimageDialog::~editmyimageDialog()
 
 void editmyimageDialog::on_push_update_views_clicked()
 {
+    if(ui->listWidget->currentRow() >= 0){
     int noViews = ui->line_reqviews->text().toInt();
-//    if (noViews == 0) {
-//      ui->lbl_result->setVisible(true);
-//      ui->lbl_result->setText("Please, add the number of views > 0");
-//      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-//    }else{
+    if (noViews < 0) {
+      ui->lbl_result->setVisible(true);
+      ui->lbl_result->setText("Please, add the number of views >= 0");
+      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+    }else{
         vector<pair<string, int>> selectedViewers = peer->myimages[imagename.toStdString()];
         string viewer = selectedViewers[ui->listWidget->currentRow()].first;
         cout << imagename.toStdString() << viewer << noViews << endl;
        peer->update_views_by_owner(viewer, imagename.toStdString(), noViews);
-   // }
+    }
+    }
+    else{
+        ui->lbl_result->setVisible(true);
+        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+        ui->lbl_result->setText("Please, select a user!");
+    }
 }

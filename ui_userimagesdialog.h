@@ -22,151 +22,144 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_userimagesdialog {
+class Ui_userimagesdialog
+{
 public:
-  QVBoxLayout *verticalLayout;
-  QHBoxLayout *horizontalLayout_2;
-  QLabel *lbl_us;
-  QSpacerItem *horizontalSpacer;
-  QPushButton *push_back;
-  QListWidget *listWidget;
-  QHBoxLayout *horizontalLayout;
-  QSpacerItem *horizontalSpacer_2;
-  QPushButton *push_request;
-  QSpacerItem *horizontalSpacer_3;
-  QLineEdit *line_request;
-  QSpacerItem *horizontalSpacer_4;
-  QPushButton *push_view;
-  QSpacerItem *horizontalSpacer_6;
-  QLabel *lbl_rem;
-  QSpacerItem *horizontalSpacer_5;
-  QHBoxLayout *horizontalLayout_3;
-  QLabel *lbl_request_done;
-  QSpacerItem *horizontalSpacer_7;
+    QVBoxLayout *verticalLayout;
+    QHBoxLayout *horizontalLayout_2;
+    QLabel *lbl_us;
+    QSpacerItem *horizontalSpacer;
+    QPushButton *push_back;
+    QListWidget *listWidget;
+    QHBoxLayout *horizontalLayout;
+    QSpacerItem *horizontalSpacer_2;
+    QPushButton *push_request;
+    QSpacerItem *horizontalSpacer_3;
+    QLineEdit *line_request;
+    QSpacerItem *horizontalSpacer_4;
+    QPushButton *push_view;
+    QSpacerItem *horizontalSpacer_6;
+    QLabel *lbl_rem;
+    QSpacerItem *horizontalSpacer_5;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *lbl_result;
+    QSpacerItem *horizontalSpacer_7;
 
-  void setupUi(QDialog *userimagesdialog) {
-    if (userimagesdialog->objectName().isEmpty())
-      userimagesdialog->setObjectName(QStringLiteral("userimagesdialog"));
-    userimagesdialog->resize(500, 500);
-    verticalLayout = new QVBoxLayout(userimagesdialog);
-    verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-    horizontalLayout_2 = new QHBoxLayout();
-    horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-    lbl_us = new QLabel(userimagesdialog);
-    lbl_us->setObjectName(QStringLiteral("lbl_us"));
+    void setupUi(QDialog *userimagesdialog)
+    {
+        if (userimagesdialog->objectName().isEmpty())
+            userimagesdialog->setObjectName(QStringLiteral("userimagesdialog"));
+        userimagesdialog->resize(500, 500);
+        verticalLayout = new QVBoxLayout(userimagesdialog);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        lbl_us = new QLabel(userimagesdialog);
+        lbl_us->setObjectName(QStringLiteral("lbl_us"));
 
-    horizontalLayout_2->addWidget(lbl_us);
+        horizontalLayout_2->addWidget(lbl_us);
 
-    horizontalSpacer =
-        new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    horizontalLayout_2->addItem(horizontalSpacer);
+        horizontalLayout_2->addItem(horizontalSpacer);
 
-    push_back = new QPushButton(userimagesdialog);
-    push_back->setObjectName(QStringLiteral("push_back"));
+        push_back = new QPushButton(userimagesdialog);
+        push_back->setObjectName(QStringLiteral("push_back"));
 
-    horizontalLayout_2->addWidget(push_back);
+        horizontalLayout_2->addWidget(push_back);
 
-    verticalLayout->addLayout(horizontalLayout_2);
 
-    listWidget = new QListWidget(userimagesdialog);
-    listWidget->setObjectName(QStringLiteral("listWidget"));
+        verticalLayout->addLayout(horizontalLayout_2);
 
-    verticalLayout->addWidget(listWidget);
+        listWidget = new QListWidget(userimagesdialog);
+        listWidget->setObjectName(QStringLiteral("listWidget"));
 
-    horizontalLayout = new QHBoxLayout();
-    horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-    horizontalSpacer_2 =
-        new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        verticalLayout->addWidget(listWidget);
 
-    horizontalLayout->addItem(horizontalSpacer_2);
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    push_request = new QPushButton(userimagesdialog);
-    push_request->setObjectName(QStringLiteral("push_request"));
+        horizontalLayout->addItem(horizontalSpacer_2);
 
-    horizontalLayout->addWidget(push_request);
+        push_request = new QPushButton(userimagesdialog);
+        push_request->setObjectName(QStringLiteral("push_request"));
 
-    horizontalSpacer_3 =
-        new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalLayout->addWidget(push_request);
 
-    horizontalLayout->addItem(horizontalSpacer_3);
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    line_request = new QLineEdit(userimagesdialog);
-    line_request->setObjectName(QStringLiteral("line_request"));
+        horizontalLayout->addItem(horizontalSpacer_3);
 
-    horizontalLayout->addWidget(line_request);
+        line_request = new QLineEdit(userimagesdialog);
+        line_request->setObjectName(QStringLiteral("line_request"));
 
-    horizontalSpacer_4 =
-        new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalLayout->addWidget(line_request);
 
-    horizontalLayout->addItem(horizontalSpacer_4);
+        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    push_view = new QPushButton(userimagesdialog);
-    push_view->setObjectName(QStringLiteral("push_view"));
+        horizontalLayout->addItem(horizontalSpacer_4);
 
-    horizontalLayout->addWidget(push_view);
+        push_view = new QPushButton(userimagesdialog);
+        push_view->setObjectName(QStringLiteral("push_view"));
 
-    horizontalSpacer_6 =
-        new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalLayout->addWidget(push_view);
 
-    horizontalLayout->addItem(horizontalSpacer_6);
+        horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    lbl_rem = new QLabel(userimagesdialog);
-    lbl_rem->setObjectName(QStringLiteral("lbl_rem"));
+        horizontalLayout->addItem(horizontalSpacer_6);
 
-    horizontalLayout->addWidget(lbl_rem);
+        lbl_rem = new QLabel(userimagesdialog);
+        lbl_rem->setObjectName(QStringLiteral("lbl_rem"));
 
-    horizontalSpacer_5 =
-        new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalLayout->addWidget(lbl_rem);
 
-    horizontalLayout->addItem(horizontalSpacer_5);
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    verticalLayout->addLayout(horizontalLayout);
+        horizontalLayout->addItem(horizontalSpacer_5);
 
-    horizontalLayout_3 = new QHBoxLayout();
-    horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-    lbl_request_done = new QLabel(userimagesdialog);
-    lbl_request_done->setObjectName(QStringLiteral("lbl_request_done"));
 
-    horizontalLayout_3->addWidget(lbl_request_done);
+        verticalLayout->addLayout(horizontalLayout);
 
-    horizontalSpacer_7 =
-        new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        lbl_result = new QLabel(userimagesdialog);
+        lbl_result->setObjectName(QStringLiteral("lbl_result"));
 
-    horizontalLayout_3->addItem(horizontalSpacer_7);
+        horizontalLayout_3->addWidget(lbl_result);
 
-    verticalLayout->addLayout(horizontalLayout_3);
+        horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-    QWidget::setTabOrder(listWidget, push_view);
-    QWidget::setTabOrder(push_view, push_back);
+        horizontalLayout_3->addItem(horizontalSpacer_7);
 
-    retranslateUi(userimagesdialog);
-    QObject::connect(push_back, SIGNAL(clicked()), userimagesdialog,
-                     SLOT(close()));
 
-    QMetaObject::connectSlotsByName(userimagesdialog);
-  } // setupUi
+        verticalLayout->addLayout(horizontalLayout_3);
 
-  void retranslateUi(QDialog *userimagesdialog) {
-    userimagesdialog->setWindowTitle(
-        QApplication::translate("userimagesdialog", "DistImage", nullptr));
-    lbl_us->setText(
-        QApplication::translate("userimagesdialog", "User", nullptr));
-    push_back->setText(
-        QApplication::translate("userimagesdialog", "Back", nullptr));
-    push_request->setText(
-        QApplication::translate("userimagesdialog", "Request", nullptr));
-    line_request->setText(QString());
-    push_view->setText(
-        QApplication::translate("userimagesdialog", "View", nullptr));
-    lbl_rem->setText(QApplication::translate("userimagesdialog", "0", nullptr));
-    lbl_request_done->setText(
-        QApplication::translate("userimagesdialog", "Request Done", nullptr));
-  } // retranslateUi
+        QWidget::setTabOrder(listWidget, push_view);
+        QWidget::setTabOrder(push_view, push_back);
+
+        retranslateUi(userimagesdialog);
+        QObject::connect(push_back, SIGNAL(clicked()), userimagesdialog, SLOT(close()));
+
+        QMetaObject::connectSlotsByName(userimagesdialog);
+    } // setupUi
+
+    void retranslateUi(QDialog *userimagesdialog)
+    {
+        userimagesdialog->setWindowTitle(QApplication::translate("userimagesdialog", "DistImage", nullptr));
+        lbl_us->setText(QApplication::translate("userimagesdialog", "User", nullptr));
+        push_back->setText(QApplication::translate("userimagesdialog", "Back", nullptr));
+        push_request->setText(QApplication::translate("userimagesdialog", "Request", nullptr));
+        line_request->setText(QString());
+        push_view->setText(QApplication::translate("userimagesdialog", "View", nullptr));
+        lbl_rem->setText(QApplication::translate("userimagesdialog", "0", nullptr));
+        lbl_result->setText(QApplication::translate("userimagesdialog", "Request Done", nullptr));
+    } // retranslateUi
+
 };
 
 namespace Ui {
-class userimagesdialog : public Ui_userimagesdialog {};
+    class userimagesdialog: public Ui_userimagesdialog {};
 } // namespace Ui
 
 QT_END_NAMESPACE

@@ -23,8 +23,8 @@ SharedImagesDialog::SharedImagesDialog(QWidget *parent, Peer *peer)
 
 SharedImagesDialog::~SharedImagesDialog() { delete ui; }
 
-void SharedImagesDialog::on_push_view_clicked()
-{
+void SharedImagesDialog::on_push_view_clicked() {
+    if(ui->listWidget->currentRow() >= 0){
     int i=0;
     int views = 0;
     string imagename, ownername, fullname, img, cover;
@@ -70,6 +70,12 @@ void SharedImagesDialog::on_push_view_clicked()
             }
             ui->listWidget->addItem(QString::fromStdString("Owner: " + ownername + ". Img: " + imagename + ". Views Left: " + std::to_string(x.second)));
         }
+    }
+}
+    else{
+        ui->lbl_result->setVisible(true);
+        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+        ui->lbl_result->setText("Please, select an image!");
     }
 }
 

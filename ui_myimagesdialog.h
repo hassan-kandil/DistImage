@@ -41,6 +41,9 @@ public:
     QSpacerItem *horizontalSpacer_7;
     QLabel *lbl_rem;
     QSpacerItem *horizontalSpacer_9;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *lbl_result;
+    QSpacerItem *horizontalSpacer_3;
 
     void setupUi(QDialog *MyImagesDialog)
     {
@@ -118,6 +121,20 @@ public:
 
         verticalLayout->addLayout(horizontalLayout);
 
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        lbl_result = new QLabel(MyImagesDialog);
+        lbl_result->setObjectName(QStringLiteral("lbl_result"));
+
+        horizontalLayout_3->addWidget(lbl_result);
+
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_3->addItem(horizontalSpacer_3);
+
+
+        verticalLayout->addLayout(horizontalLayout_3);
+
         QWidget::setTabOrder(listWidget, push_request);
         QWidget::setTabOrder(push_request, push_back);
 
@@ -135,6 +152,7 @@ public:
         push_request->setText(QApplication::translate("MyImagesDialog", "Request", nullptr));
         push_view->setText(QApplication::translate("MyImagesDialog", "Show Viewers", nullptr));
         lbl_rem->setText(QApplication::translate("MyImagesDialog", "0", nullptr));
+        lbl_result->setText(QApplication::translate("MyImagesDialog", "TextLabel", nullptr));
     } // retranslateUi
 
 };
