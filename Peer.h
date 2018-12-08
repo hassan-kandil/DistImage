@@ -635,7 +635,7 @@ public:
                       sizeof(struct sockaddr_in))) < 0)
         perror("Send failed\n");
 
-      /*  // Receive Timeout
+        // Receive Timeout
 
         struct pollfd ss;
         ss.fd = sc->s;
@@ -646,7 +646,7 @@ public:
           return 2;
         }
 
-        else {*/
+        else {
       unsigned char little_buffer[10];
       memset(little_buffer, 0, sizeof(little_buffer));
       struct sockaddr_in tempSocketAddress;
@@ -662,6 +662,7 @@ public:
         return 5;
       else
         return 8;
+    }
     }
   }
 
@@ -702,7 +703,7 @@ public:
                       sizeof(struct sockaddr_in))) < 0)
         perror("Send failed\n");
 
-      /*   // Receive Timeout
+         // Receive Timeout
 
          struct pollfd ss;
          ss.fd = sv->s;
@@ -713,7 +714,7 @@ public:
            return 2;
 
 
-         } else { */
+         } else {
       unsigned char little_buffer[10];
       memset(little_buffer, 0, sizeof(little_buffer));
       struct sockaddr_in tempSocketAddress;
@@ -733,6 +734,7 @@ public:
       else
         return 8;
     }
+  }
   }
 
   int logout() {
@@ -761,14 +763,14 @@ public:
 
     // Receive Timeout
 
-    /*   struct pollfd ss;
+       struct pollfd ss;
        ss.fd = sc->s;
        ss.events = POLLIN;
        int npoll = poll(&ss, 1, 1);
        if (npoll == 0 || npoll == -1) {
          ////printf("Timeout!!\n");
          return 2;
-       } else { */
+       } else {
 
     unsigned char little_buffer[10];
     memset(little_buffer, 0, sizeof(little_buffer));
@@ -784,6 +786,7 @@ public:
       return 1;
     else
       return 0;
+       }
   }
 
   std::string getexepath() {
@@ -840,15 +843,15 @@ public:
                       sizeof(struct sockaddr_in))) < 0)
         perror("Send failed\n");
 
-      // Receive Timeout
+       //Receive Timeout
 
-      //      struct pollfd ss;
-      //      ss.fd = sc->s;
-      //      ss.events = POLLIN;
-      //      int npoll = poll(&ss, 1, 1);
-      //      if (npoll == 0 || npoll == -1) {
-      //        return 2; ////printf("Timeout!!\n");
-      //      } else {
+        struct pollfd ss;
+        ss.fd = sc->s;
+        ss.events = POLLIN;
+        int npoll = poll(&ss, 1, 1);
+        if (npoll == 0 || npoll == -1) {
+          return 2; ////printf("Timeout!!\n");
+        } else {
       unsigned char little_buffer[10];
       memset(little_buffer, 0, sizeof(little_buffer));
       struct sockaddr_in tempSocketAddress;
@@ -879,10 +882,6 @@ public:
           QProcess::execute(QString::fromStdString(
               "cp " + imagepath + " " + projectpath + "/" + imagename));
 
-        //        QProcess::execute(QString::fromStdString(
-        //            "steghide embed -cf " + projectpath + "/" + this->username
-        //            + "_" + imagename + " -ef " + pathname + "/" + imagename +
-        //            " -p hk "));
         vector<pair<string, int>> newimage;
         myimages[imagename] = newimage;
 
@@ -895,6 +894,7 @@ public:
       } else
         return 8;
     }
+  }
   }
 
   int notify_views_by_viewer(string owner, string selectedImage,

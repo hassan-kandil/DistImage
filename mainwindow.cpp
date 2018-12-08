@@ -120,6 +120,14 @@ void MainWindow::on_push_signup_clicked() {
       ui->lbl_signup_welcome->setVisible(true);
       ui->lbl_signup_welcome->setText(QString("You are already a member!"));
       ui->lbl_signup_welcome->setStyleSheet("QLabel { color : red; }");
+    } else if (sign_result == 7) {
+      ui->lbl_signup_welcome->setVisible(true);
+      ui->lbl_signup_welcome->setText(QString("Select error!"));
+      ui->lbl_signup_welcome->setStyleSheet("QLabel { color : red; }");
+    } else if (sign_result == 6) {
+      ui->lbl_signup_welcome->setVisible(true);
+      ui->lbl_signup_welcome->setText(QString("Socket not in rfds!"));
+      ui->lbl_signup_welcome->setStyleSheet("QLabel { color : red; }");
     } else { // Timeout
       ui->lbl_signup_welcome->setVisible(true);
       ui->lbl_signup_welcome->setText(QString("DoS Offline!"));
