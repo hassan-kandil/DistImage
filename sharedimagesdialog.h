@@ -19,6 +19,8 @@ private slots:
 
   void on_push_refresh_clicked();
 
+  void on_push_request_clicked();
+
 private:
   Ui::SharedImagesDialog *ui;
   Peer *peer;

@@ -32,7 +32,7 @@ void userimagesdialog::on_push_request_clicked() {
     const QString &s = ui->listWidget->currentItem()->text();
 
     int result = peer->request_image(selectedUser.toUtf8().constData(),
-                                     s.toUtf8().constData());
+                                     s.toUtf8().constData(), ui->line_request->text().toInt());
     if (result == 1) {
       ui->lbl_result->setStyleSheet("QLabel { color : green; }");
       ui->lbl_result->setText(QString("Request sent!"));
