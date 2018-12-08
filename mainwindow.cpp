@@ -93,6 +93,7 @@ void MainWindow::on_push_login_clicked() {
   }
 }
 
+
 void MainWindow::on_push_signup_clicked() {
   // Fill DoS info
   string dos_ip_string = ui->line_dos_ip->text().toStdString();

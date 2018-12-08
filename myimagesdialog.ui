@@ -102,7 +102,7 @@
      <item>
       <widget class="QPushButton" name="push_view">
        <property name="text">
-        <string>View</string>
+        <string>Show Viewers</string>
        </property>
       </widget>
      </item>

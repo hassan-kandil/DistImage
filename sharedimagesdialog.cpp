@@ -41,8 +41,11 @@ void SharedImagesDialog::on_push_view_clicked()
         else i++;
     }
     if(views > 0){
+        peer->getUsers();
         ui->lbl_result->setVisible(false);
         peer->sharedimgs[cover]--;
+        cout<<ownername << " "<< imagename <<" "<< peer->sharedimgs[cover]<<endl;
+        peer->notify_views_by_viewer(ownername, imagename, peer->sharedimgs[cover]);
         ViewImageDialog secd(this, peer, cover, img);
         secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
                             Qt::CustomizeWindowHint);

@@ -25,6 +25,7 @@ SecondDialog::~SecondDialog() { delete ui; }
 void SecondDialog::on_push_logout_clicked() {
   peer->logout();
   peer->updatefile();
+  peer->update_my_images_file();
   this->close();
   //QWindow* pa = qobject_cast<QWindow*>(this->parent()) ;
   //pa->close();
@@ -44,6 +45,7 @@ void SecondDialog::on_push_images_clicked() {
   MyImagesDialog secd(this, peer);
   secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
                       Qt::CustomizeWindowHint);
+  peer->read_my_images_file();
   secd.setModal(true);
   secd.exec();
 }
