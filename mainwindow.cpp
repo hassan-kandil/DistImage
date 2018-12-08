@@ -5,19 +5,14 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), peer(new Peer) {
-
-
-    //this->setWindowFlags(Qt::Window | Qt::WindowTitleHint |
-     //                     Qt::CustomizeWindowHint);
-
-
   ui->setupUi(this);
+  ui->lbl_time->setText(
+      QString::fromStdString("Program Launched: " + peer->getCurrentTime()));
+  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
   ui->lbl_login_wrong->setVisible(false);
   ui->lbl_signup_welcome->setVisible(false);
   ui->lbl_dos_error->setVisible(false);
   ui->line_dos_port->setValidator(new QIntValidator); // only numbers
-
-  // peer->sc = new UDPSocketClient();// already done in peer
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -92,7 +87,6 @@ void MainWindow::on_push_login_clicked() {
     }
   }
 }
-
 
 void MainWindow::on_push_signup_clicked() {
   // Fill DoS info

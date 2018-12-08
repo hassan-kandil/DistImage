@@ -34,7 +34,12 @@ public:
     QLabel *lbl_image;
     QSpacerItem *horizontalSpacer_3;
     QSpacerItem *verticalSpacer_2;
+    QHBoxLayout *horizontalLayout_3;
     QLabel *lbl_error;
+    QSpacerItem *horizontalSpacer_4;
+    QHBoxLayout *horizontalLayout_7;
+    QLabel *lbl_time;
+    QSpacerItem *horizontalSpacer_8;
 
     void setupUi(QDialog *ViewImageDialog)
     {
@@ -88,10 +93,33 @@ public:
 
         verticalLayout_2->addLayout(verticalLayout);
 
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
         lbl_error = new QLabel(ViewImageDialog);
         lbl_error->setObjectName(QStringLiteral("lbl_error"));
 
-        verticalLayout_2->addWidget(lbl_error);
+        horizontalLayout_3->addWidget(lbl_error);
+
+        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_3->addItem(horizontalSpacer_4);
+
+
+        verticalLayout_2->addLayout(horizontalLayout_3);
+
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
+        lbl_time = new QLabel(ViewImageDialog);
+        lbl_time->setObjectName(QStringLiteral("lbl_time"));
+
+        horizontalLayout_7->addWidget(lbl_time);
+
+        horizontalSpacer_8 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_7->addItem(horizontalSpacer_8);
+
+
+        verticalLayout_2->addLayout(horizontalLayout_7);
 
 
         retranslateUi(ViewImageDialog);
@@ -106,6 +134,7 @@ public:
         push_back->setText(QApplication::translate("ViewImageDialog", "Back", nullptr));
         lbl_image->setText(QApplication::translate("ViewImageDialog", "Image", nullptr));
         lbl_error->setText(QApplication::translate("ViewImageDialog", "Image Error!", nullptr));
+        lbl_time->setText(QApplication::translate("ViewImageDialog", "Time", nullptr));
     } // retranslateUi
 
 };

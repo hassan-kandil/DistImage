@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <locale>
@@ -39,7 +40,9 @@ using namespace std;
 struct imgnuser {
     string image;
     string ownername;
-    bool operator< ( imgnuser b ) { return std::make_pair(this->image,this->ownername) < std::make_pair(b.image,b.ownername) ; }
+    bool operator< ( imgnuser b ) { return
+std::make_pair(this->image,this->ownername) <
+std::make_pair(b.image,b.ownername) ; }
 };
 */
 
@@ -61,7 +64,7 @@ public:
   struct sockaddr_in dosSocket;
   int requestID = 0;
   pair<string, int> viewer;
-  map <string, vector<pair<string,int>>> myimages;
+  map<string, vector<pair<string, int>>> myimages;
 
   int n;
 
@@ -85,7 +88,6 @@ public:
 
     imgfile.open("imagefile.txt", fstream::out | fstream::in | fstream::app);
     Myimgsfile.open("my_images.txt", fstream::out | fstream::in | fstream::app);
-
 
     if (imgfile.fail())
       cout << "imagefile.txt open failed!";
@@ -179,51 +181,6 @@ public:
                  strlen((const char *)marshalled_message_reply), 0,
                  (struct sockaddr *)&tempSocketAddress, tempAddrlen) < 0) {
         perror("View Request reply sendto failed");
-      }
-
-      // End of changes
-
-    } break; // end of view
-
-    case 2003: // view approved
-    {
-      cout << "2003 request by owner to send the image recieved" << endl;
-      int cc = 0;
-      string username = "", imageName = "";
-      while (msg[cc] != '*') {
-        username.append(1, msg[cc]);
-        cc++;
-      }
-      cc++;
-      while (msg[cc] != '*') {
-        imageName.append(1, msg[cc]);
-        cc++;
-      }
-      cout << "User: " << username << endl;
-      cout << "Approved Image Name: " << imageName << endl;
-      requests_buffer.push_back(
-          make_pair(2003, make_pair(username, imageName)));
-
-      // Hassan Changes
-      // this->sendReply(reinterpret_cast<char*>(this->Serverbuffer));
-
-      // Marshal the reply and then send it
-      char *msg_char = reinterpret_cast<char *>(this->Serverbuffer);
-
-      Message login_request_reply(Reply, msg_char, strlen(msg_char),
-                                  op_id_request, rpcid_request, 0, 0, 0);
-
-      string x_reply = login_request_reply.marshal();
-
-      char marshalled_message_reply[BUFFER_SIZE];
-
-      int n = x_reply.length();
-      strncpy(marshalled_message_reply, x_reply.c_str(), n + 1);
-
-      if (sendto(sv->s, marshalled_message_reply,
-                 strlen(marshalled_message_reply), 0,
-                 (struct sockaddr *)&tempSocketAddress, tempAddrlen) < 0) {
-        perror("send to reply failed");
       }
 
       // End of changes
@@ -392,8 +349,8 @@ public:
 
       // deleting the extracted image from the receiver's folder after
       // extracting the number of views
-      string deletecommand = "rm " + image_name;  vector<string> images;
-
+      string deletecommand = "rm " + image_name;
+      vector<string> images;
 
       QProcess::execute(QString::fromStdString(deletecommand));
 
@@ -440,28 +397,26 @@ public:
       cout << "New Requested No of Views: " << NewNoViews << endl;
       vector<pair<string, int>> v_vectors;
       v_vectors = myimages[imageName];
-      for (int i = 0; i < v_vectors.size();i++){
-         if (v_vectors[i].first == username)
-             v_vectors[i].second = stoi(NewNoViews);
-
+      for (int i = 0; i < v_vectors.size(); i++) {
+        if (v_vectors[i].first == username)
+          v_vectors[i].second = stoi(NewNoViews);
       }
 
       myimages[imageName] = v_vectors;
       memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
 
-//      pair<int, pair<string, string>> pair_temp =
-//          make_pair(2002, make_pair(username, imageName));
-//      bool pair_found = false;
-//      for (int e = 0; e < requests_buffer.size() && !pair_found; e++) {
-//        pair_found = requests_buffer[e] == pair_temp;
-//      }
-//      if (!pair_found) {
-//        requests_buffer.push_back(pair_temp);
-//        Serverlittle_buffer[0] = '1';
-//      } else {
-//        Serverlittle_buffer[0] = '0';
-//      }
-
+      //      pair<int, pair<string, string>> pair_temp =
+      //          make_pair(2002, make_pair(username, imageName));
+      //      bool pair_found = false;
+      //      for (int e = 0; e < requests_buffer.size() && !pair_found; e++) {
+      //        pair_found = requests_buffer[e] == pair_temp;
+      //      }
+      //      if (!pair_found) {
+      //        requests_buffer.push_back(pair_temp);
+      //        Serverlittle_buffer[0] = '1';
+      //      } else {
+      //        Serverlittle_buffer[0] = '0';
+      //      }
 
       Serverlittle_buffer[0] = '1';
       Serverlittle_buffer[1] = 0;
@@ -507,25 +462,24 @@ public:
       cout << "User: " << username << endl;
       cout << "Requested Image Name: " << imageName << endl;
       cout << "New Requested No of Views: " << NewNoViews << endl;
-//      vector<pair<string, int>> v_vectors;
-//      v_vectors = myimages[imageName];
-//      for (int i = 0; i < v_vectors.size();i++){
-//         if (v_vectors[i].first == username)
-//             v_vectors[i].second = stoi(NewNoViews);
+      //      vector<pair<string, int>> v_vectors;
+      //      v_vectors = myimages[imageName];
+      //      for (int i = 0; i < v_vectors.size();i++){
+      //         if (v_vectors[i].first == username)
+      //             v_vectors[i].second = stoi(NewNoViews);
 
-//      }
+      //      }
 
-//      myimages[imageName] = v_vectors;
-//      memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
+      //      myimages[imageName] = v_vectors;
+      //      memset(Serverlittle_buffer, 0, sizeof(Serverlittle_buffer));
 
-   bool c =  updateimg(imageName, username, stoi(NewNoViews));
-   if (!c)
-      {
-         Serverlittle_buffer[0] = '0';
-       cout << "Views failed to update"<< endl;
-   }
+      bool c = updateimg(imageName, username, stoi(NewNoViews));
+      if (!c) {
+        Serverlittle_buffer[0] = '0';
+        cout << "Views failed to update" << endl;
+      }
 
-      cout <<"Views Updated Successfully!"<< endl;
+      cout << "Views Updated Successfully!" << endl;
       Serverlittle_buffer[0] = '1';
       Serverlittle_buffer[1] = 0;
 
@@ -548,9 +502,8 @@ public:
 
     } break; // end of view
 
-
     default:
-          break;
+      break;
     }
     return true;
   }
@@ -858,9 +811,8 @@ public:
         //            "steghide embed -cf " + projectpath + "/" + this->username
         //            + "_" + imagename + " -ef " + pathname + "/" + imagename +
         //            " -p hk "));
-        vector<pair<string,int>> newimage;
+        vector<pair<string, int>> newimage;
         myimages[imagename] = newimage;
-
 
         return 1;
 
@@ -873,8 +825,8 @@ public:
     }
   }
 
-
-  int notify_views_by_viewer(string owner, string selectedImage, int NewNoViews) {
+  int notify_views_by_viewer(string owner, string selectedImage,
+                             int NewNoViews) {
 
     vector<string> images;
     map<string, vector<string>> new_users;
@@ -882,10 +834,10 @@ public:
     images = new_users[owner];
     struct sockaddr_in ownerSocket;
 
-    cout<< images[1] <<endl;
+    cout << images[1] << endl;
 
     string temp_ip = images[1];
-    cout<<images[2]<<endl;
+    cout << images[2] << endl;
     int remote_peer_port = std::stoi(images[2], nullptr, 0); // Refaay
     cout << "Remote IP " << temp_ip << ", port " << remote_peer_port << endl;
     char remote_peer_address[1024];
@@ -895,12 +847,13 @@ public:
     makeDestSA(&ownerSocket, remote_peer_address, remote_peer_port);
 
     // string image_with_full_path = path_full + "/" + selectedImage;
-    string msg = this->username + "*" + selectedImage + "*" + to_string(NewNoViews) + "*";
+    string msg = this->username + "*" + selectedImage + "*" +
+                 to_string(NewNoViews) + "*";
     char *msg_char = new char[msg.length() + 1];
     strcpy(msg_char, msg.c_str());
 
     Message notify_views_message(Request, msg_char, strlen(msg_char), 2005,
-                          ++requestID, 0, 0, 0);
+                                 ++requestID, 0, 0, 0);
     //  char * marshalled_message = image_request.marshal();
 
     char marshalled_message[BUFFER_SIZE];
@@ -952,86 +905,87 @@ public:
         return 2;
     }
   }
-  int update_views_by_owner(string viewer, string selectedImage, int NewNoViews) {
-        cout << "Update Views Invoked" <<endl;
-      vector<string> images;
-      map<string, vector<string>> new_users;
-      new_users = this->getUsers();
-      images = new_users[viewer];
-      struct sockaddr_in viewerSocket;
+  int update_views_by_owner(string viewer, string selectedImage,
+                            int NewNoViews) {
+    cout << "Update Views Invoked" << endl;
+    vector<string> images;
+    map<string, vector<string>> new_users;
+    new_users = this->getUsers();
+    images = new_users[viewer];
+    struct sockaddr_in viewerSocket;
 
-      cout<< images[1] <<endl;
+    cout << images[1] << endl;
 
-      string temp_ip = images[1];
-      cout<<images[2]<<endl;
-      int remote_peer_port = std::stoi(images[2], nullptr, 0); // Refaay
-      cout << "Remote IP " << temp_ip << ", port " << remote_peer_port << endl;
-      char remote_peer_address[1024];
-      char little_buffer[100];
-      strcpy(remote_peer_address, temp_ip.c_str());
+    string temp_ip = images[1];
+    cout << images[2] << endl;
+    int remote_peer_port = std::stoi(images[2], nullptr, 0); // Refaay
+    cout << "Remote IP " << temp_ip << ", port " << remote_peer_port << endl;
+    char remote_peer_address[1024];
+    char little_buffer[100];
+    strcpy(remote_peer_address, temp_ip.c_str());
 
-      makeDestSA(&viewerSocket, remote_peer_address, remote_peer_port);
+    makeDestSA(&viewerSocket, remote_peer_address, remote_peer_port);
 
-      // string image_with_full_path = path_full + "/" + selectedImage;
-      string msg = this->username + "*" + selectedImage + "*" + to_string(NewNoViews) + "*";
-      char *msg_char = new char[msg.length() + 1];
-      strcpy(msg_char, msg.c_str());
+    // string image_with_full_path = path_full + "/" + selectedImage;
+    string msg = this->username + "*" + selectedImage + "*" +
+                 to_string(NewNoViews) + "*";
+    char *msg_char = new char[msg.length() + 1];
+    strcpy(msg_char, msg.c_str());
 
-      Message update_views_message(Request, msg_char, strlen(msg_char), 2006,
-                            ++requestID, 0, 0, 0);
-      //  char * marshalled_message = image_request.marshal();
+    Message update_views_message(Request, msg_char, strlen(msg_char), 2006,
+                                 ++requestID, 0, 0, 0);
+    //  char * marshalled_message = image_request.marshal();
 
-      char marshalled_message[BUFFER_SIZE];
+    char marshalled_message[BUFFER_SIZE];
 
-      string x = update_views_message.marshal();
-      int n = x.length();
-      strncpy(marshalled_message, x.c_str(), n + 1);
+    string x = update_views_message.marshal();
+    int n = x.length();
+    strncpy(marshalled_message, x.c_str(), n + 1);
 
-      if ((n = sendto(sc->s, marshalled_message,
-                      strlen((const char *)marshalled_message), 0,
-                      (struct sockaddr *)&viewerSocket,
-                      sizeof(struct sockaddr_in))) < 0)
-        perror("Send failed\n");
+    if ((n = sendto(sc->s, marshalled_message,
+                    strlen((const char *)marshalled_message), 0,
+                    (struct sockaddr *)&viewerSocket,
+                    sizeof(struct sockaddr_in))) < 0)
+      perror("Send failed\n");
 
-      memset(little_buffer, 0, sizeof(little_buffer));
+    memset(little_buffer, 0, sizeof(little_buffer));
 
-      // Preparing a temp socket address to store the address of the receiver
-      // sending the reply in
-      struct sockaddr_in tempSocketAddress;
-      socklen_t tempAddrlen = sizeof(tempSocketAddress);
+    // Preparing a temp socket address to store the address of the receiver
+    // sending the reply in
+    struct sockaddr_in tempSocketAddress;
+    socklen_t tempAddrlen = sizeof(tempSocketAddress);
 
-      if ((r = recvfrom(sc->s, little_buffer, sizeof(little_buffer), 0,
-                        (struct sockaddr *)&tempSocketAddress, &tempAddrlen)) <
-          0) {
-        cout << "Receive Failed! " << endl;
-        return 3;
-      } else {
-        // unmarshal the reply
-        Message reply_update_request(reinterpret_cast<char *>(little_buffer));
+    if ((r = recvfrom(sc->s, little_buffer, sizeof(little_buffer), 0,
+                      (struct sockaddr *)&tempSocketAddress, &tempAddrlen)) <
+        0) {
+      cout << "Receive Failed! " << endl;
+      return 3;
+    } else {
+      // unmarshal the reply
+      Message reply_update_request(reinterpret_cast<char *>(little_buffer));
 
-        string msg_view_request_reply =
-            reply_update_request.getUnmarshalledMessage();
+      string msg_view_request_reply =
+          reply_update_request.getUnmarshalledMessage();
 
-        // Hassan's resend if lost
-        int rpc_id_new = reply_update_request.getRPCId();
+      // Hassan's resend if lost
+      int rpc_id_new = reply_update_request.getRPCId();
 
-        if (rpc_id_new != requestID) // check if the request matches the reply
-        {
-          // if not resend the request
-          int i = notify_views_by_viewer(viewer, selectedImage, NewNoViews);
-        }
-
-        cout << "msg_received_length " << msg_view_request_reply << endl;
-        if (msg_view_request_reply[0] == '1'){
-            update_my_img(selectedImage, viewer, NewNoViews);
-          return 1;
-        }
-        else if (msg_view_request_reply[0] == '0')
-          return 0;
-        else
-          return 2;
+      if (rpc_id_new != requestID) // check if the request matches the reply
+      {
+        // if not resend the request
+        int i = notify_views_by_viewer(viewer, selectedImage, NewNoViews);
       }
+
+      cout << "msg_received_length " << msg_view_request_reply << endl;
+      if (msg_view_request_reply[0] == '1') {
+        update_my_img(selectedImage, viewer, NewNoViews);
+        return 1;
+      } else if (msg_view_request_reply[0] == '0')
+        return 0;
+      else
+        return 2;
     }
+  }
 
   int request_image(string selectedUser, string selectedImage) {
 
@@ -1108,65 +1062,6 @@ public:
     }
   }
 
-
-  void approve_image(string selectedUser, string selectedImage) {
-
-    vector<string> images;
-    images = this->users[selectedUser]; // Saving the vector of the selected
-                                        // user image names & socket addresses
-                                        // inside the variable images
-
-    struct sockaddr_in
-        receiverSocket; // instantiating the receiver socket address (the user
-                        // who has requested my image)
-
-    string remote_peer_ip = images[1]; // retriveing the ip of the receiver
-    int remote_peer_port =
-        std::stoi(images[2], nullptr,
-                  0); // Refaay //Retreiving the port no of the receiver
-    cout << "Remote IP " << remote_peer_ip << ", port " << remote_peer_port
-         << endl;
-
-    // Preparing the receiver (remote peer) socket address
-    char remote_peer_address[1024];
-    strcpy(remote_peer_address, remote_peer_ip.c_str());
-    makeDestSA(&receiverSocket, remote_peer_address, remote_peer_port);
-
-    // Sending a request to the receiver telling him to start receiving an image
-    // Marshalling the message
-
-    string msg = this->username + "*" + selectedImage + "*";
-    char *msg_char = new char[msg.length() + 1];
-    strcpy(msg_char, msg.c_str());
-
-    Message sendimage_request(Request, msg_char, strlen(msg_char), 2003,
-                              ++requestID, 0, 0, 0);
-    // char * marshalled_message = sendimage_request.marshal();
-
-    char marshalled_message[BUFFER_SIZE];
-
-    string x = sendimage_request.marshal();
-    int n = x.length();
-    strncpy(marshalled_message, x.c_str(), n + 1);
-
-    int r = 1;
-
-    if ((n = sendto(sc->s, marshalled_message,
-                    strlen((const char *)marshalled_message), 0,
-                    (struct sockaddr *)&receiverSocket,
-                    sizeof(struct sockaddr_in))) < 0)
-      perror("Send failed\n");
-
-    // receive reply
-    unsigned char little_buffer[10];
-    memset(little_buffer, 0, sizeof(little_buffer));
-    struct sockaddr_in tempSocketAddress;
-    socklen_t tempAddrlen = sizeof(tempSocketAddress);
-    if ((r = recvfrom(sc->s, little_buffer, 10, 0,
-                      (struct sockaddr *)&tempSocketAddress, &tempAddrlen)) < 0)
-      perror("Receive Failed");
-  }
-
   void send_image(string viewerName, string selectedImage, int nViews) {
     UDPSocketClient *newSock = new UDPSocketClient();
     vector<string> images;
@@ -1176,11 +1071,10 @@ public:
                                       // user image names & socket addresses
                                       // inside the variable images
 
-    pair<string,int> newviewer;
+    pair<string, int> newviewer;
     newviewer.first = viewerName;
     newviewer.second = nViews;
     myimages[selectedImage].push_back(newviewer);
-
 
     struct sockaddr_in
         receiverSocket; // instantiating the receiver socket address (the user
@@ -1470,138 +1364,146 @@ public:
     return mymap;
   }
 
-  bool newimg (string img, string owner, int views){
-      // insert a new image in the map
-      // if there is a duplicate of the image name and owner name, change the flag to false.
-      string imagename, ownername, fullname;
-      for (auto const &x:sharedimgs){
-          fullname = x.first;
-          for (int j = fullname.length() - 1; j > 0; j--) {
-            if (fullname[j] == '_') {
-              ownername = fullname.substr(0, j);
-              imagename = fullname.substr(j+1, fullname.length() - 1);
-              break;
-            }
-          }
-          if (imagename==img && ownername== owner)
-          {
-              return false;
-          }
+  bool newimg(string img, string owner, int views) {
+    // insert a new image in the map
+    // if there is a duplicate of the image name and owner name, change the flag
+    // to false.
+    string imagename, ownername, fullname;
+    for (auto const &x : sharedimgs) {
+      fullname = x.first;
+      for (int j = fullname.length() - 1; j > 0; j--) {
+        if (fullname[j] == '_') {
+          ownername = fullname.substr(0, j);
+          imagename = fullname.substr(j + 1, fullname.length() - 1);
+          break;
+        }
       }
-      string newfullname = owner + "_" + img;
-      sharedimgs[newfullname]=views;
-      return true;
+      if (imagename == img && ownername == owner) {
+        return false;
+      }
+    }
+    string newfullname = owner + "_" + img;
+    sharedimgs[newfullname] = views;
+    return true;
   }
 
-  bool updateimg (string img, string owner, int views){
-      string imagename, ownername, fullname;
-      for (auto const &x:sharedimgs){
-          fullname = x.first;
-          for (int j = fullname.length() - 1; j > 0; j--) {
-            if (fullname[j] == '_') {
-              ownername = fullname.substr(0, j);
-              imagename = fullname.substr(j+1, fullname.length() - 1);
-              break;
-            }
-          }
-          if (imagename==img && ownername== owner)
-          {
-              string newfullname = owner + "_" + img;
-              sharedimgs[newfullname]=views;
-              return true;
-          }
+  bool updateimg(string img, string owner, int views) {
+    string imagename, ownername, fullname;
+    for (auto const &x : sharedimgs) {
+      fullname = x.first;
+      for (int j = fullname.length() - 1; j > 0; j--) {
+        if (fullname[j] == '_') {
+          ownername = fullname.substr(0, j);
+          imagename = fullname.substr(j + 1, fullname.length() - 1);
+          break;
+        }
       }
-      return false;
+      if (imagename == img && ownername == owner) {
+        string newfullname = owner + "_" + img;
+        sharedimgs[newfullname] = views;
+        return true;
+      }
+    }
+    return false;
   }
 
-  bool update_my_img (string img, string viewer, int views){
-      vector<pair<string, int>> v_vectors;
-      v_vectors = myimages[img];
-      for (int i = 0; i < v_vectors.size();i++){
-         if (v_vectors[i].first == viewer)
-             v_vectors[i].second = views;
+  bool update_my_img(string img, string viewer, int views) {
+    vector<pair<string, int>> v_vectors;
+    v_vectors = myimages[img];
+    for (int i = 0; i < v_vectors.size(); i++) {
+      if (v_vectors[i].first == viewer)
+        v_vectors[i].second = views;
+    }
 
-      }
-
-      myimages[img] = v_vectors;
-      return false;
+    myimages[img] = v_vectors;
+    return false;
   }
 
-  void updatefile(){
-      //call this function when the user is signing out, to update the file
-      imgfile.close();
-      imgfile.open ("imagefile.txt", fstream::out | fstream::in);
+  void updatefile() {
+    // call this function when the user is signing out, to update the file
+    imgfile.close();
+    imgfile.open("imagefile.txt", fstream::out | fstream::in);
 
-      for (auto const &x:sharedimgs){
-          imgfile<<x.first<<" "<<x.second<<endl;
-      }
+    for (auto const &x : sharedimgs) {
+      imgfile << x.first << " " << x.second << endl;
+    }
   }
 
-  void update_my_images_file(){
-      //call this function when the user is signing out, to update the file
-      Myimgsfile.close();
-      Myimgsfile.open ("my_images.txt", fstream::out | fstream::in);
+  void update_my_images_file() {
+    // call this function when the user is signing out, to update the file
+    Myimgsfile.close();
+    Myimgsfile.open("my_images.txt", fstream::out | fstream::in);
 
-      for (auto const &x:myimages){
-          Myimgsfile<<x.first<<" ";
-          for (int i = 0; i <x.second.size(); i++)
-            Myimgsfile <<x.second[i].first << " " << x.second[i].second<<endl;
-      }
+    for (auto const &x : myimages) {
+      Myimgsfile << x.first << " ";
+      for (int i = 0; i < x.second.size(); i++)
+        Myimgsfile << x.second[i].first << " " << x.second[i].second << endl;
+    }
   }
 
-
-  void readfile(){
-      //call this function once, when the user logs in to fill in the map from what is in the file
-      imgfile.seekp(0);
-      while (!imgfile.eof()) {
-          string line;
-          getline (imgfile, line);
-          if(line!=""){
-              int name_len, owner_len, view_len;
-              name_len= line.find(" ");
-              string fullimagename = line.substr(0,name_len);
-              line= line.erase(0, name_len+1);
-              view_len= line.find(" ");
-              string views = line.substr(0,view_len);
-              line= line.erase(0, view_len+1);
-              int view=stoi(views);
-              sharedimgs[fullimagename]=view;
-          }
+  void readfile() {
+    // call this function once, when the user logs in to fill in the map from
+    // what is in the file
+    imgfile.seekp(0);
+    while (!imgfile.eof()) {
+      string line;
+      getline(imgfile, line);
+      if (line != "") {
+        int name_len, owner_len, view_len;
+        name_len = line.find(" ");
+        string fullimagename = line.substr(0, name_len);
+        line = line.erase(0, name_len + 1);
+        view_len = line.find(" ");
+        string views = line.substr(0, view_len);
+        line = line.erase(0, view_len + 1);
+        int view = stoi(views);
+        sharedimgs[fullimagename] = view;
       }
-      imgfile.clear();
-
+    }
+    imgfile.clear();
   }
 
-  void read_my_images_file(){
-      //call this function once, when the user logs in to fill in the map from what is in the file
-      Myimgsfile.seekp(0);
-      while (!Myimgsfile.eof()) {
-          string line;
-          getline (Myimgsfile, line);
-          if(line!=""){
-              int name_len, viewer_len, view_len;
-              name_len= line.find(" ");
-              string fullimagename = line.substr(0,name_len);
-              line= line.erase(0, name_len+1);
+  void read_my_images_file() {
+    // call this function once, when the user logs in to fill in the map from
+    // what is in the file
+    Myimgsfile.seekp(0);
+    while (!Myimgsfile.eof()) {
+      string line;
+      getline(Myimgsfile, line);
+      if (line != "") {
+        int name_len, viewer_len, view_len;
+        name_len = line.find(" ");
+        string fullimagename = line.substr(0, name_len);
+        line = line.erase(0, name_len + 1);
 
-              viewer_len= line.find(" ");
-              string viewer = line.substr(0,viewer_len);
-              line= line.erase(0, viewer_len+1);
-              view_len= line.find(" ");
-              string views = line.substr(0,view_len);
-              line= line.erase(0, view_len+1);
-              int view=stoi(views);
-              pair <string, int> p;
-              p.first = viewer;
-              p.second = view;
-             myimages[fullimagename].push_back(p);
-          }
+        viewer_len = line.find(" ");
+        string viewer = line.substr(0, viewer_len);
+        line = line.erase(0, viewer_len + 1);
+        view_len = line.find(" ");
+        string views = line.substr(0, view_len);
+        line = line.erase(0, view_len + 1);
+        int view = stoi(views);
+        pair<string, int> p;
+        p.first = viewer;
+        p.second = view;
+        myimages[fullimagename].push_back(p);
       }
-      Myimgsfile.clear();
-
+    }
+    Myimgsfile.clear();
   }
 
+  string getCurrentTime() {
+    time_t rawtime;
+    struct tm *timeinfo;
+    char buffer[80];
 
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
+    std::string str(buffer);
+    return str;
+  }
 };
 
 #endif

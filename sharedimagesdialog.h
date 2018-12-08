@@ -15,9 +15,9 @@ public:
   ~SharedImagesDialog();
 
 private slots:
-    void on_push_view_clicked();
+  void on_push_view_clicked();
 
-    void on_push_refresh_clicked();
+  void on_push_refresh_clicked();
 
 private:
   Ui::SharedImagesDialog *ui;

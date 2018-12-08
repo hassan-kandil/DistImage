@@ -46,6 +46,9 @@ public:
     QHBoxLayout *horizontalLayout_3;
     QLabel *lbl_result;
     QSpacerItem *horizontalSpacer_3;
+    QHBoxLayout *horizontalLayout_7;
+    QLabel *lbl_time;
+    QSpacerItem *horizontalSpacer_8;
 
     void setupUi(QDialog *SharedImagesDialog)
     {
@@ -146,6 +149,20 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_3);
 
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
+        lbl_time = new QLabel(SharedImagesDialog);
+        lbl_time->setObjectName(QStringLiteral("lbl_time"));
+
+        horizontalLayout_7->addWidget(lbl_time);
+
+        horizontalSpacer_8 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_7->addItem(horizontalSpacer_8);
+
+
+        verticalLayout->addLayout(horizontalLayout_7);
+
         QWidget::setTabOrder(listWidget, push_request);
         QWidget::setTabOrder(push_request, push_back);
 
@@ -165,6 +182,7 @@ public:
         push_view->setText(QApplication::translate("SharedImagesDialog", "View", nullptr));
         lbl_rem->setText(QApplication::translate("SharedImagesDialog", "0", nullptr));
         lbl_result->setText(QApplication::translate("SharedImagesDialog", "Error", nullptr));
+        lbl_time->setText(QApplication::translate("SharedImagesDialog", "Time", nullptr));
     } // retranslateUi
 
 };

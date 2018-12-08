@@ -52,6 +52,9 @@ public:
     QHBoxLayout *horizontalLayout_6;
     QLabel *lbl_upload_successful;
     QSpacerItem *horizontalSpacer_9;
+    QHBoxLayout *horizontalLayout_7;
+    QLabel *lbl_time;
+    QSpacerItem *horizontalSpacer_8;
 
     void setupUi(QDialog *SecondDialog)
     {
@@ -187,6 +190,20 @@ public:
 
         verticalLayout_4->addLayout(horizontalLayout_6);
 
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
+        lbl_time = new QLabel(SecondDialog);
+        lbl_time->setObjectName(QStringLiteral("lbl_time"));
+
+        horizontalLayout_7->addWidget(lbl_time);
+
+        horizontalSpacer_8 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_7->addItem(horizontalSpacer_8);
+
+
+        verticalLayout_4->addLayout(horizontalLayout_7);
+
         QWidget::setTabOrder(push_users, push_images);
         QWidget::setTabOrder(push_images, push_notifications);
         QWidget::setTabOrder(push_notifications, push_logout);
@@ -207,6 +224,7 @@ public:
         push_upload->setText(QApplication::translate("SecondDialog", "Upload", nullptr));
         push_logout->setText(QApplication::translate("SecondDialog", "Logout", nullptr));
         lbl_upload_successful->setText(QApplication::translate("SecondDialog", "Uploaded Successfully!", nullptr));
+        lbl_time->setText(QApplication::translate("SecondDialog", "Time", nullptr));
     } // retranslateUi
 
 };

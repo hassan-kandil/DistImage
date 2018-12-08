@@ -46,6 +46,9 @@ public:
     QHBoxLayout *horizontalLayout_3;
     QLabel *lbl_result;
     QSpacerItem *horizontalSpacer_3;
+    QHBoxLayout *horizontalLayout_4;
+    QLabel *lbl_time;
+    QSpacerItem *horizontalSpacer_8;
 
     void setupUi(QDialog *editmyimageDialog)
     {
@@ -146,6 +149,20 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_3);
 
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
+        lbl_time = new QLabel(editmyimageDialog);
+        lbl_time->setObjectName(QStringLiteral("lbl_time"));
+
+        horizontalLayout_4->addWidget(lbl_time);
+
+        horizontalSpacer_8 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_4->addItem(horizontalSpacer_8);
+
+
+        verticalLayout->addLayout(horizontalLayout_4);
+
         QWidget::setTabOrder(listWidget, push_update_views);
         QWidget::setTabOrder(push_update_views, push_back);
 
@@ -165,6 +182,7 @@ public:
         push_view->setText(QApplication::translate("editmyimageDialog", "View", nullptr));
         lbl_rem->setText(QApplication::translate("editmyimageDialog", "0", nullptr));
         lbl_result->setText(QApplication::translate("editmyimageDialog", "Error", nullptr));
+        lbl_time->setText(QApplication::translate("editmyimageDialog", "TextLabel", nullptr));
     } // retranslateUi
 
 };

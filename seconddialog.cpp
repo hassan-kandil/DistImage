@@ -4,13 +4,17 @@
 #include "sharedimagesdialog.h"
 #include "ui_seconddialog.h"
 #include "usersdialog.h"
+#include <QWindow>
 #include <qfiledialog.h>
 #include <thread>
-#include <QWindow>
 SecondDialog::SecondDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::SecondDialog), peer(peer) {
   ui->setupUi(this);
-  connect(this,SIGNAL(destroyed()),this->parent(),SLOT(close())); // to close all after logout
+  ui->lbl_time->setText(
+      QString::fromStdString("Login Time: " + peer->getCurrentTime()));
+  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
+  connect(this, SIGNAL(destroyed()), this->parent(),
+          SLOT(close())); // to close all after logout
   ui->lbl_user->setText(QString::fromStdString(peer->username));
   peer->readfile();
   ui->lbl_upload_successful->setVisible(false);
@@ -27,9 +31,9 @@ void SecondDialog::on_push_logout_clicked() {
   peer->updatefile();
   peer->update_my_images_file();
   this->close();
-  //QWindow* pa = qobject_cast<QWindow*>(this->parent()) ;
-  //pa->close();
-  //this->parent()->~QObject();
+  // QWindow* pa = qobject_cast<QWindow*>(this->parent()) ;
+  // pa->close();
+  // this->parent()->~QObject();
   //
 }
 

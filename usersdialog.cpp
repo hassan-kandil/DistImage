@@ -7,6 +7,9 @@ string selected;
 UsersDialog::UsersDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::UsersDialog), peer(peer) {
   ui->setupUi(this);
+  ui->lbl_time->setText(
+      QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
+  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
   ui->lbl_result->setVisible(false);
 
   peer->getUsers();
@@ -29,31 +32,31 @@ UsersDialog::UsersDialog(QWidget *parent, Peer *peer)
 UsersDialog::~UsersDialog() { delete ui; }
 
 void UsersDialog::on_push_view_clicked() {
-    if(ui->listWidget->currentRow() >= 0){
-        if (ui->listWidget->currentItem()->textColor() == Qt::red) {
-          ui->lbl_result->setVisible(true);
-          ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-        } else {
-          ui->lbl_result->setVisible(false);
-          const QString &s = ui->listWidget->currentItem()->text();
-          secdia = new userimagesdialog(this, peer, s); // if want to distroy secdia
-                                                        // with the main, put (this)
-          secdia->setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
-                                 Qt::CustomizeWindowHint);
-          secdia->show();
-        }
+  if (ui->listWidget->currentRow() >= 0) {
+    if (ui->listWidget->currentItem()->textColor() == Qt::red) {
+      ui->lbl_result->setVisible(true);
+      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+    } else {
+      ui->lbl_result->setVisible(false);
+      const QString &s = ui->listWidget->currentItem()->text();
+      secdia = new userimagesdialog(this, peer, s); // if want to distroy secdia
+                                                    // with the main, put (this)
+      secdia->setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
+                             Qt::CustomizeWindowHint);
+      secdia->show();
     }
-    else{
-        ui->lbl_result->setVisible(true);
-        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-        ui->lbl_result->setText("Please, select a user!");
-    }
-
+  } else {
+    ui->lbl_result->setVisible(true);
+    ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_result->setText("Please, select a user!");
+  }
 }
 
 void UsersDialog::on_push_refresh_clicked() {
   ui->listWidget->clear();
-
+  ui->lbl_time->setText(
+      QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
+  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
   peer->getUsers();
   int i = 0;
   for (peer->it = peer->users.begin(); peer->it != peer->users.end();
