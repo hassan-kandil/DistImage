@@ -6,9 +6,12 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), peer(new Peer) {
   ui->setupUi(this);
+  QPixmap pm("logo.png");
+  ui->label->setPixmap(
+      pm.scaled(200, 200, Qt::IgnoreAspectRatio, Qt::FastTransformation));
   ui->lbl_time->setText(
       QString::fromStdString("Program Launched: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
+  ui->lbl_time->setStyleSheet("QLabel { color : white; }");
   ui->lbl_login_wrong->setVisible(false);
   ui->lbl_signup_welcome->setVisible(false);
   ui->lbl_dos_error->setVisible(false);
@@ -126,7 +129,7 @@ void MainWindow::on_push_signup_clicked() {
       ui->lbl_signup_welcome->setStyleSheet("QLabel { color : red; }");
     } else if (sign_result == 6) {
       ui->lbl_signup_welcome->setVisible(true);
-      ui->lbl_signup_welcome->setText(QString("Socket not in rfds!"));
+      ui->lbl_signup_welcome->setText(QString("Signup Send Failed!"));
       ui->lbl_signup_welcome->setStyleSheet("QLabel { color : red; }");
     } else { // Timeout
       ui->lbl_signup_welcome->setVisible(true);

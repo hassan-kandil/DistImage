@@ -12,7 +12,7 @@ editmyimageDialog::editmyimageDialog(QWidget *parent, Peer *peer,
       pm.scaled(200, 200, Qt::IgnoreAspectRatio, Qt::FastTransformation));
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
+  ui->lbl_time->setStyleSheet("QLabel { color : white; }");
   ui->lbl_result->setVisible(false);
   vector<pair<string, int>> selectedViewers =
       peer->myimages[imagename.toStdString()];
@@ -39,11 +39,32 @@ void editmyimageDialog::on_push_update_views_clicked() {
           peer->myimages[imagename.toStdString()];
       string viewer = selectedViewers[ui->listWidget->currentRow()].first;
       //cout << imagename.toStdString() << viewer << noViews << endl;
-      peer->update_views_by_owner(viewer, imagename.toStdString(), noViews);
-
+      int resultUsers = peer->update_views_by_owner(viewer, imagename.toStdString(), noViews);
+    if(resultUsers == 1){
       ui->lbl_result->setVisible(true);
       ui->lbl_result->setStyleSheet("QLabel { color : green; }");
       ui->lbl_result->setText("Views updated!");
+    }
+    else if(resultUsers == 12){
+      ui->lbl_result->setVisible(true);
+      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_result->setText("DoS Offline!");
+    }
+    else if(resultUsers == 10){
+      ui->lbl_result->setVisible(true);
+      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_result->setText("Getusers send failed!");
+    }
+    else if(resultUsers == 0){
+      ui->lbl_result->setVisible(true);
+      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_result->setText("update_views_by_owner at viewer failed!");
+    }
+    else{
+      ui->lbl_result->setVisible(true);
+      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_result->setText("Something wrong getusers!");
+    }
     }
         } else{
             ui->lbl_result->setVisible(true);
@@ -63,7 +84,7 @@ void editmyimageDialog::on_push_refresh_clicked()
     ui->listWidget->clear();
     ui->lbl_time->setText(
         QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
-    ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
+    ui->lbl_time->setStyleSheet("QLabel { color : white; }");
     ui->lbl_result->setVisible(false);
     vector<pair<string, int>> selectedViewers =
         peer->myimages[imagename.toStdString()];

@@ -9,7 +9,7 @@ MyImagesDialog::MyImagesDialog(QWidget *parent, Peer *peer)
   ui->lbl_user->setText(QString::fromStdString(peer->username));
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
+  ui->lbl_time->setStyleSheet("QLabel { color : white; }");
 
   map<string, vector<pair<string, int>>> my_images_copy = peer->myimages;
 

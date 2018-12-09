@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>DistImage</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(46, 52, 54)
+</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -31,6 +35,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="push_back">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(238, 238, 236)</string>
+       </property>
        <property name="text">
         <string>Back</string>
        </property>
@@ -133,6 +140,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout_7">
      <item>
       <widget class="QLabel" name="lbl_time">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(238, 238, 236)</string>
+       </property>
        <property name="text">
         <string>Time</string>
        </property>

@@ -8,7 +8,7 @@ SharedImagesDialog::SharedImagesDialog(QWidget *parent, Peer *peer)
   ui->setupUi(this);
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
+  ui->lbl_time->setStyleSheet("QLabel { color : white; }");
   ui->lbl_result->setVisible(false);
   string imagename, ownername, fullname;
   for (auto const &x : peer->sharedimgs) {
@@ -51,18 +51,39 @@ void SharedImagesDialog::on_push_view_clicked() {
         i++;
     }
     if (views > 0) {
-      peer->getUsers();
       ui->lbl_result->setVisible(false);
       peer->sharedimgs[cover]--;
       cout << ownername << " " << imagename << " " << peer->sharedimgs[cover]
            << endl;
-      peer->notify_views_by_viewer(ownername, imagename,
+      int resultUsers = peer->notify_views_by_viewer(ownername, imagename,
                                    peer->sharedimgs[cover]);
+      if(resultUsers == 1){
       ViewImageDialog secd(this, peer, cover, img);
       secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
                           Qt::CustomizeWindowHint);
       secd.setModal(true);
       secd.exec();
+      }
+      else if(resultUsers == 12){
+        ui->lbl_result->setVisible(true);
+        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+        ui->lbl_result->setText("DoS Offline!");
+      }
+      else if(resultUsers == 10){
+        ui->lbl_result->setVisible(true);
+        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+        ui->lbl_result->setText("Getusers send failed!");
+      }
+      else if(resultUsers == 0){
+        ui->lbl_result->setVisible(true);
+        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+        ui->lbl_result->setText("notify_views_by_viewer at viewer failed!");
+      }
+      else{
+        ui->lbl_result->setVisible(true);
+        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+        ui->lbl_result->setText("Something wrong getusers!");
+      }
     } else {
       ui->lbl_result->setVisible(true);
       ui->lbl_result->setText(QString("You don't have enough views!"));
@@ -72,7 +93,7 @@ void SharedImagesDialog::on_push_view_clicked() {
       ui->listWidget->clear();
       ui->lbl_time->setText(QString::fromStdString("Last Time Refreshed: " +
                                                    peer->getCurrentTime()));
-      ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
+      ui->lbl_time->setStyleSheet("QLabel { color : white; }");
       for (auto const &x : peer->sharedimgs) {
         fullname = x.first;
         for (int j = fullname.length() - 1; j > 0; j--) {
@@ -100,7 +121,7 @@ void SharedImagesDialog::on_push_refresh_clicked() {
   ui->listWidget->clear();
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
+  ui->lbl_time->setStyleSheet("QLabel { color : white; }");
   string fullname, imagename, ownername;
   for (auto const &x : peer->sharedimgs) {
     fullname = x.first;
@@ -157,7 +178,18 @@ void SharedImagesDialog::on_push_request_clicked()
           ui->lbl_result->setText(
               QString("Something went wrong at peer->request_image!"));
           ui->lbl_result->setVisible(true);
-        } else {
+        }
+        else if(result == 12){
+          ui->lbl_result->setVisible(true);
+          ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+          ui->lbl_result->setText("DoS Offline!");
+        }
+        else if(result == 10){
+          ui->lbl_result->setVisible(true);
+          ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+          ui->lbl_result->setText("Getusers send failed!");
+        }
+        else {
           ui->lbl_result->setStyleSheet("QLabel { color : red; }");
           ui->lbl_result->setText(QString("Something went wrong here!"));
           ui->lbl_result->setVisible(true);

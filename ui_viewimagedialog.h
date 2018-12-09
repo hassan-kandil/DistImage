@@ -46,6 +46,8 @@ public:
         if (ViewImageDialog->objectName().isEmpty())
             ViewImageDialog->setObjectName(QStringLiteral("ViewImageDialog"));
         ViewImageDialog->resize(500, 500);
+        ViewImageDialog->setStyleSheet(QLatin1String("background-color: rgb(46, 52, 54)\n"
+""));
         verticalLayout_2 = new QVBoxLayout(ViewImageDialog);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         horizontalLayout_2 = new QHBoxLayout();
@@ -56,6 +58,7 @@ public:
 
         push_back = new QPushButton(ViewImageDialog);
         push_back->setObjectName(QStringLiteral("push_back"));
+        push_back->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_2->addWidget(push_back);
 
@@ -111,6 +114,7 @@ public:
         horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
         lbl_time = new QLabel(ViewImageDialog);
         lbl_time->setObjectName(QStringLiteral("lbl_time"));
+        lbl_time->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_7->addWidget(lbl_time);
 

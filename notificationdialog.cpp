@@ -6,10 +6,11 @@ NotificationDialog::NotificationDialog(QWidget *parent, Peer *peer)
   ui->setupUi(this);
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
+  ui->lbl_time->setStyleSheet("QLabel { color : white; }");
   ui->line_views->setPlaceholderText("No. of Views");
   ui->lbl_result->setVisible(false);
-  peer->getUsers(); // because approve needs IP & port
+  int resultUsers = peer->getUsers(); // because approve needs IP & port
+  if(resultUsers = 1){
   for (int i = 0; i < peer->requests_buffer.size(); i++) {
     string req;
     if (peer->requests_buffer[i].first == 2002)
@@ -24,6 +25,23 @@ NotificationDialog::NotificationDialog(QWidget *parent, Peer *peer)
         QString::fromStdString(peer->requests_buffer[i].second.name + req +
                                peer->requests_buffer[i].second.imagename + " "+to_string(peer->requests_buffer[i].second.views)+ " times"));
   }
+
+    }
+    else if(resultUsers == 2){
+      ui->lbl_result->setVisible(true);
+      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_result->setText("DoS Offline!");
+    }
+    else if(resultUsers == 0){
+      ui->lbl_result->setVisible(true);
+      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_result->setText("Getusers send failed!");
+    }
+    else{
+      ui->lbl_result->setVisible(true);
+      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_result->setText("Something wrong getusers!");
+    }
 }
 
 NotificationDialog::~NotificationDialog() { delete ui; }
@@ -71,11 +89,32 @@ void NotificationDialog::on_push_approve_clicked() {
               ui->lbl_result->setStyleSheet("QLabel { color : red; }");
             } else {
               cout << "Updating views of " << usname << " imagename " << imname << endl;
-              peer->update_views_by_owner(usname, imname, noViews);
-
+              int resultUsers = peer->update_views_by_owner(usname, imname, noViews);
+              if(resultUsers == 1){
               ui->lbl_result->setVisible(true);
               ui->lbl_result->setText("Updated!");
               ui->lbl_result->setStyleSheet("QLabel { color : green; }");
+              }
+              else if(resultUsers == 12){
+                ui->lbl_result->setVisible(true);
+                ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+                ui->lbl_result->setText("DoS Offline!");
+              }
+              else if(resultUsers == 10){
+                ui->lbl_result->setVisible(true);
+                ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+                ui->lbl_result->setText("Getusers send failed!");
+              }
+              else if(resultUsers == 0){
+                ui->lbl_result->setVisible(true);
+                ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+                ui->lbl_result->setText("update_views_by_owner at viewer failed!");
+              }
+              else{
+                ui->lbl_result->setVisible(true);
+                ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+                ui->lbl_result->setText("Something wrong getusers!");
+              }
             }
         }
         else{ // req = " something wrong here ";
@@ -118,10 +157,10 @@ void NotificationDialog::on_push_refresh_clicked() { // refill list
   ui->lbl_result->setVisible(false);
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
+  ui->lbl_time->setStyleSheet("QLabel { color : white; }");
   ui->listWidget->clear();
-  peer->getUsers(); // because approve needs IP & port
-
+  int resultUsers = peer->getUsers(); // because approve needs IP & port
+  if(resultUsers == 1){
   for (int i = 0; i < peer->requests_buffer.size(); i++) {
     string req;
     if (peer->requests_buffer[i].first == 2002)
@@ -136,6 +175,22 @@ void NotificationDialog::on_push_refresh_clicked() { // refill list
         QString::fromStdString(peer->requests_buffer[i].second.name + req +
                                peer->requests_buffer[i].second.imagename + " "+to_string(peer->requests_buffer[i].second.views)+ "times"));
 
+  }
+  }
+  else if(resultUsers == 2){
+    ui->lbl_result->setVisible(true);
+    ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_result->setText("DoS Offline!");
+  }
+  else if(resultUsers == 0){
+    ui->lbl_result->setVisible(true);
+    ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_result->setText("Getusers send failed!");
+  }
+  else{
+    ui->lbl_result->setVisible(true);
+    ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_result->setText("Something wrong getusers!");
   }
 }
 

@@ -12,7 +12,7 @@ SecondDialog::SecondDialog(QWidget *parent, Peer *peer)
   ui->setupUi(this);
   ui->lbl_time->setText(
       QString::fromStdString("Login Time: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
+  ui->lbl_time->setStyleSheet("QLabel { color : white; }");
   connect(this, SIGNAL(destroyed()), this->parent(),
           SLOT(close())); // to close all after logout
   ui->lbl_user->setText(QString::fromStdString(peer->username));

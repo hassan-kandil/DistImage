@@ -9,10 +9,11 @@ UsersDialog::UsersDialog(QWidget *parent, Peer *peer)
   ui->setupUi(this);
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
+  //ui->lbl_time->setStyleSheet("QLabel { color : white; }");
   ui->lbl_result->setVisible(false);
 
-  peer->getUsers();
+  int resultUsers = peer->getUsers();
+  if(resultUsers == 1){
   int i = 0;
   for (peer->it = peer->users.begin(); peer->it != peer->users.end();
        peer->it++) {
@@ -27,6 +28,22 @@ UsersDialog::UsersDialog(QWidget *parent, Peer *peer)
       i = i + 1;
     }
   }
+}
+else if(resultUsers == 2){
+  ui->lbl_result->setVisible(true);
+  ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+  ui->lbl_result->setText("DoS Offline!");
+}
+else if(resultUsers == 0){
+  ui->lbl_result->setVisible(true);
+  ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+  ui->lbl_result->setText("Getusers send failed!");
+}
+else{
+  ui->lbl_result->setVisible(true);
+  ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+  ui->lbl_result->setText("Something wrong getusers!");
+}
 }
 
 UsersDialog::~UsersDialog() { delete ui; }
@@ -57,8 +74,9 @@ void UsersDialog::on_push_refresh_clicked() {
   ui->lbl_result->setVisible(false);
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
-  peer->getUsers();
+  ui->lbl_time->setStyleSheet("QLabel { color : white; }");
+  int resultUsers = peer->getUsers();
+  if(resultUsers == 1){
   int i = 0;
   for (peer->it = peer->users.begin(); peer->it != peer->users.end();
        peer->it++) {
@@ -73,4 +91,20 @@ void UsersDialog::on_push_refresh_clicked() {
       i = i + 1;
     }
   }
+}
+else if(resultUsers == 2){
+  ui->lbl_result->setVisible(true);
+  ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+  ui->lbl_result->setText("DoS Offline!");
+}
+else if(resultUsers == 0){
+  ui->lbl_result->setVisible(true);
+  ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+  ui->lbl_result->setText("Getusers send failed!");
+}
+else{
+  ui->lbl_result->setVisible(true);
+  ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+  ui->lbl_result->setText("Something wrong getusers!");
+}
 }

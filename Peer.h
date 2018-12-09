@@ -51,9 +51,7 @@ public:
   map<string, int> sharedimgs;
   fstream imgfile;
   fstream Myimgsfile;
-
   UDPSocketClient *sv;
-  //  UDPSocketServer *sv;
   char *dos_ip;
   int dos_port;
   UDPSocketClient *sc;
@@ -61,7 +59,7 @@ public:
   int requestID = 0;
   pair<string, int> viewer;
   map<string, vector<pair<string, int>>> myimages;
-
+  const int timeout_loop = 10, timeout_time_ms = 1;
   int n;
 
   string username, password;
@@ -69,8 +67,7 @@ public:
   int r;
   struct sockaddr_in recievedAddr;
   socklen_t addresslength = sizeof(recievedAddr);
-  vector<pair<int, three_element_group>>
-      requests_buffer; // <request_code, <user, image>>
+  vector<pair<int, three_element_group>> requests_buffer;
 
   unsigned char Serverbuffer[BUFFER_SIZE];
   unsigned char Serverlittle_buffer[LITTLE_BUFFER_SIZE];
@@ -510,6 +507,7 @@ public:
       // End of changes
 
     } break; // end of view
+
     case 2007: // view request
     {
       cout << "2007 request recieved" << endl;
@@ -630,23 +628,25 @@ public:
 
       int r = 1;
 
-      if ((n = sendto(sc->s, marshalled_message,
-                      strlen((const char *)marshalled_message), 0,
-                      (struct sockaddr *)&dosSocketAddress,
-                      sizeof(struct sockaddr_in))) < 0)
-        perror("Send failed\n");
+      // Timeout Tolerance
+      int npoll = 0, no_tries = 0;
+      struct pollfd ss;
+      ss.fd = sc->s;
+      ss.events = POLLIN;
 
-        // Receive Timeout
-
-        struct pollfd ss;
-        ss.fd = sc->s;
-        ss.events = POLLIN;
-        int npoll = poll(&ss, 1, 1);
-        if (npoll == 0 || npoll == -1) {
-          ////printf("Timeout!!\n");
+      while(no_tries <= timeout_loop && (npoll == 0 || npoll == -1)){ // while timeout, resend
+          if ((n = sendto(sc->s, marshalled_message,
+                          strlen((const char *)marshalled_message), 0,
+                          (struct sockaddr *)&dosSocketAddress,
+                          sizeof(struct sockaddr_in))) < 0){
+              return 6; // send failed
+          }
+          npoll = poll(&ss, 1, timeout_time_ms);
+          no_tries++;
+      }
+        if (npoll == 0 || npoll == -1) { // timeout
           return 2;
         }
-
         else {
       unsigned char little_buffer[10];
       memset(little_buffer, 0, sizeof(little_buffer));
@@ -688,7 +688,6 @@ public:
 
       Message login_request(Request, msg_char, strlen(msg_char), 1002,
                             ++requestID, 0, 0, 0);
-      //  char * marshalled_message = login_request.marshal();
 
       char marshalled_message[BUFFER_SIZE];
 
@@ -698,23 +697,24 @@ public:
 
       int r = 1;
 
-      if ((n = sendto(sv->s, marshalled_message, // sc->s
-                      strlen((const char *)marshalled_message), 0,
-                      (struct sockaddr *)&(this->dosSocket),
-                      sizeof(struct sockaddr_in))) < 0)
-        perror("Send failed\n");
+      // Timeout Tolerance
+      int npoll = 0, no_tries = 0;
+      struct pollfd ss;
+      ss.fd = sv->s;
+      ss.events = POLLIN;
 
-         // Receive Timeout
-
-         struct pollfd ss;
-         ss.fd = sv->s;
-         ss.events = POLLIN;
-         int npoll = poll(&ss, 1, 1);
+      while(no_tries <= timeout_loop && (npoll == 0 || npoll == -1)){ // while timeout, resend
+          if ((n = sendto(sv->s, marshalled_message, // sc->s
+                          strlen((const char *)marshalled_message), 0,
+                          (struct sockaddr *)&(this->dosSocket),
+                          sizeof(struct sockaddr_in))) < 0){
+              return 6; // send failed
+          }
+          npoll = poll(&ss, 1, timeout_time_ms);
+          no_tries++;
+      }
          if (npoll == 0 || npoll == -1) {
-           ////printf("Timeout!!\n");
            return 2;
-
-
          } else {
       unsigned char little_buffer[10];
       memset(little_buffer, 0, sizeof(little_buffer));
@@ -746,8 +746,6 @@ public:
 
     Message logout_request(Request, msg_char, strlen(msg_char), 1003,
                            ++requestID, 0, 0, 0);
-    // char * marshalled_message = logout_request.marshal();
-
     char marshalled_message[BUFFER_SIZE];
 
     string x = logout_request.marshal();
@@ -756,20 +754,24 @@ public:
 
     int r = 1;
 
-    if ((n = sendto(sc->s, marshalled_message,
-                    strlen((const char *)marshalled_message), 0,
-                    (struct sockaddr *)&(this->dosSocket),
-                    sizeof(struct sockaddr_in))) < 0)
-      perror("Send failed\n");
+    // Timeout Tolerance
+    int npoll = 0, no_tries = 0;
+    struct pollfd ss;
+    ss.fd = sc->s;
+    ss.events = POLLIN;
 
-    // Receive Timeout
+    while(no_tries <= timeout_loop && (npoll == 0 || npoll == -1)){ // while timeout, resend
+        if ((n = sendto(sc->s, marshalled_message,
+                        strlen((const char *)marshalled_message), 0,
+                        (struct sockaddr *)&(this->dosSocket),
+                        sizeof(struct sockaddr_in))) < 0){
+            return 6; // send failed
+        }
+        npoll = poll(&ss, 1, timeout_time_ms);
+        no_tries++;
+    }
 
-       struct pollfd ss;
-       ss.fd = sc->s;
-       ss.events = POLLIN;
-       int npoll = poll(&ss, 1, 1);
        if (npoll == 0 || npoll == -1) {
-         ////printf("Timeout!!\n");
          return 2;
        } else {
 
@@ -828,8 +830,6 @@ public:
       Message upload_request(Request, msg_char, strlen(msg_char), 2001,
                              ++requestID, 0, 0, 0);
 
-      //  char * marshalled_message = upload_request.marshal();
-
       char marshalled_message[BUFFER_SIZE];
 
       string x = upload_request.marshal();
@@ -838,20 +838,24 @@ public:
 
       int r = 1;
 
-      if ((n = sendto(sc->s, marshalled_message,
-                      strlen((const char *)marshalled_message), 0,
-                      (struct sockaddr *)&(this->dosSocket),
-                      sizeof(struct sockaddr_in))) < 0)
-        perror("Send failed\n");
+      // Timeout Tolerance
+      int npoll = 0, no_tries = 0;
+      struct pollfd ss;
+      ss.fd = sc->s;
+      ss.events = POLLIN;
 
-       //Receive Timeout
-
-        struct pollfd ss;
-        ss.fd = sc->s;
-        ss.events = POLLIN;
-        int npoll = poll(&ss, 1, 1);
+      while(no_tries <= timeout_loop && (npoll == 0 || npoll == -1)){ // while timeout, resend
+          if ((n = sendto(sc->s, marshalled_message,
+                          strlen((const char *)marshalled_message), 0,
+                          (struct sockaddr *)&(this->dosSocket),
+                          sizeof(struct sockaddr_in))) < 0){
+              return 6; // send failed
+          }
+          npoll = poll(&ss, 1, timeout_time_ms);
+          no_tries++;
+      }
         if (npoll == 0 || npoll == -1) {
-          return 2; ////printf("Timeout!!\n");
+          return 2;
         } else {
       unsigned char little_buffer[10];
       memset(little_buffer, 0, sizeof(little_buffer));
@@ -900,91 +904,99 @@ public:
 
   int notify_views_by_viewer(string owner, string selectedImage,
                              int NewNoViews) {
-
     vector<string> images;
-    map<string, vector<string>> new_users;
-    new_users = this->getUsers();
-    images = new_users[owner];
-    struct sockaddr_in ownerSocket;
+    int resultUsers = this->getUsers();
+    if(resultUsers == 1){
+        images = this->users[owner];
+        struct sockaddr_in ownerSocket;
+        cout << images[1] << endl;
+        string temp_ip = images[1];
+        cout << images[2] << endl;
+        int remote_peer_port = std::stoi(images[2], nullptr, 0); // Refaay
+        cout << "Remote IP " << temp_ip << ", port " << remote_peer_port << endl;
+        char remote_peer_address[1024];
+        char little_buffer[100];
+        strcpy(remote_peer_address, temp_ip.c_str());
 
-    cout << images[1] << endl;
+        makeDestSA(&ownerSocket, remote_peer_address, remote_peer_port);
 
-    string temp_ip = images[1];
-    cout << images[2] << endl;
-    int remote_peer_port = std::stoi(images[2], nullptr, 0); // Refaay
-    cout << "Remote IP " << temp_ip << ", port " << remote_peer_port << endl;
-    char remote_peer_address[1024];
-    char little_buffer[100];
-    strcpy(remote_peer_address, temp_ip.c_str());
+        // string image_with_full_path = path_full + "/" + selectedImage;
+        string msg = this->username + "*" + selectedImage + "*" +
+                     to_string(NewNoViews) + "*";
+        char *msg_char = new char[msg.length() + 1];
+        strcpy(msg_char, msg.c_str());
 
-    makeDestSA(&ownerSocket, remote_peer_address, remote_peer_port);
+        Message notify_views_message(Request, msg_char, strlen(msg_char), 2005,
+                                     ++requestID, 0, 0, 0);
+        //  char * marshalled_message = image_request.marshal();
 
-    // string image_with_full_path = path_full + "/" + selectedImage;
-    string msg = this->username + "*" + selectedImage + "*" +
-                 to_string(NewNoViews) + "*";
-    char *msg_char = new char[msg.length() + 1];
-    strcpy(msg_char, msg.c_str());
+        char marshalled_message[BUFFER_SIZE];
 
-    Message notify_views_message(Request, msg_char, strlen(msg_char), 2005,
-                                 ++requestID, 0, 0, 0);
-    //  char * marshalled_message = image_request.marshal();
+        string x = notify_views_message.marshal();
+        int n = x.length();
+        strncpy(marshalled_message, x.c_str(), n + 1);
 
-    char marshalled_message[BUFFER_SIZE];
+        if ((n = sendto(sc->s, marshalled_message,
+                        strlen((const char *)marshalled_message), 0,
+                        (struct sockaddr *)&ownerSocket,
+                        sizeof(struct sockaddr_in))) < 0)
+          perror("Send failed\n");
 
-    string x = notify_views_message.marshal();
-    int n = x.length();
-    strncpy(marshalled_message, x.c_str(), n + 1);
+        memset(little_buffer, 0, sizeof(little_buffer));
 
-    if ((n = sendto(sc->s, marshalled_message,
-                    strlen((const char *)marshalled_message), 0,
-                    (struct sockaddr *)&ownerSocket,
-                    sizeof(struct sockaddr_in))) < 0)
-      perror("Send failed\n");
+        // Preparing a temp socket address to store the address of the receiver
+        // sending the reply in
+        struct sockaddr_in tempSocketAddress;
+        socklen_t tempAddrlen = sizeof(tempSocketAddress);
 
-    memset(little_buffer, 0, sizeof(little_buffer));
+        if ((r = recvfrom(sc->s, little_buffer, sizeof(little_buffer), 0,
+                          (struct sockaddr *)&tempSocketAddress, &tempAddrlen)) <
+            0) {
+          cout << "Receive Failed! " << endl;
+          return 3;
+        } else {
+          // unmarshal the reply
+          Message reply_view_request(reinterpret_cast<char *>(little_buffer));
 
-    // Preparing a temp socket address to store the address of the receiver
-    // sending the reply in
-    struct sockaddr_in tempSocketAddress;
-    socklen_t tempAddrlen = sizeof(tempSocketAddress);
+          string msg_view_request_reply =
+              reply_view_request.getUnmarshalledMessage();
 
-    if ((r = recvfrom(sc->s, little_buffer, sizeof(little_buffer), 0,
-                      (struct sockaddr *)&tempSocketAddress, &tempAddrlen)) <
-        0) {
-      cout << "Receive Failed! " << endl;
-      return 3;
-    } else {
-      // unmarshal the reply
-      Message reply_view_request(reinterpret_cast<char *>(little_buffer));
+          // Hassan's resend if lost
+          int rpc_id_new = reply_view_request.getRPCId();
 
-      string msg_view_request_reply =
-          reply_view_request.getUnmarshalledMessage();
+          if (rpc_id_new != requestID) // check if the request matches the reply
+          {
+            // if not resend the request
+            int i = notify_views_by_viewer(owner, selectedImage, NewNoViews);
+          }
 
-      // Hassan's resend if lost
-      int rpc_id_new = reply_view_request.getRPCId();
-
-      if (rpc_id_new != requestID) // check if the request matches the reply
-      {
-        // if not resend the request
-        int i = notify_views_by_viewer(owner, selectedImage, NewNoViews);
-      }
-
-      cout << "msg_received_length " << msg_view_request_reply << endl;
-      if (msg_view_request_reply[0] == '1')
-        return 1;
-      else if (msg_view_request_reply[0] == '0')
-        return 0;
-      else
-        return 2;
+          cout << "msg_received_length " << msg_view_request_reply << endl;
+          if (msg_view_request_reply[0] == '1')
+            return 1;
+          else if (msg_view_request_reply[0] == '0')
+            return 0;
+          else
+            return 2;
+        }
     }
+    else if(resultUsers == 2){
+        return 12;
+    }
+    else if(resultUsers == 0){
+        return 10;
+    }
+    else{
+        return 15;
+    }
+
   }
   int update_views_by_owner(string viewer, string selectedImage,
                             int NewNoViews) {
     cout << "Update Views Invoked" << endl;
     vector<string> images;
-    map<string, vector<string>> new_users;
-    new_users = this->getUsers();
-    images = new_users[viewer];
+    int resultUsers = this->getUsers();
+    if(resultUsers == 1){
+    images = this->users[viewer];
     struct sockaddr_in viewerSocket;
 
     cout << images[1] << endl;
@@ -1058,16 +1070,25 @@ public:
       else
         return 2;
     }
+          }
+        else if(resultUsers == 2){
+          return 12;
+        }
+        else if(resultUsers == 0){
+          return 10;
+        }
+        else{
+          return 15;
+        }
   }
-
 
   int update_views_request_by_viewer(string owner, string selectedImage,
                             int NewNoViews) {
     cout << "Update Views Request by Viewer Invoked" << endl;
     vector<string> images;
-    map<string, vector<string>> new_users;
-    new_users = this->getUsers();
-    images = new_users[owner];
+    int resultUsers = this->getUsers();
+    if(resultUsers == 1){
+    images = this->users[owner];
     struct sockaddr_in viewerSocket;
 
     cout << images[1] << endl;
@@ -1141,8 +1162,17 @@ public:
       else
         return 2;
     }
+    }
+  else if(resultUsers == 2){
+    return 12;
   }
-
+  else if(resultUsers == 0){
+    return 10;
+  }
+  else{
+    return 15;
+  }
+  }
 
   int request_image(string selectedUser, string selectedImage, int views) {
 
@@ -1446,15 +1476,11 @@ public:
       cout << "could'nt open file" << endl;
   }
 
-  map<string, vector<string>> getUsers() {
-
+  int getUsers() {
     char *msg_char = new char[1];
     msg_char[0] = ' ';
     Message view_request(Request, msg_char, strlen(msg_char), 1100, ++requestID,
                          0, 0, 0);
-
-    // char * marshalled_message = view_request.marshal();
-
     char marshalled_message[BUFFER_SIZE];
 
     string x = view_request.marshal();
@@ -1463,13 +1489,28 @@ public:
 
     int r = 1;
 
-    if ((n = sendto(sc->s, marshalled_message,
-                    strlen((const char *)marshalled_message), 0,
-                    (struct sockaddr *)&(this->dosSocket),
-                    sizeof(struct sockaddr_in))) < 0)
-      perror("Send failed\n");
+    // Timeout Tolerance
+    int npoll = 0, no_tries = 0;
+    struct pollfd ss;
+    ss.fd = sc->s;
+    ss.events = POLLIN;
+    map<string, vector<string>> temp_m; // for empty return
+    while(no_tries <= timeout_loop && (npoll == 0 || npoll == -1)){ // while timeout, resend
+        if ((n = sendto(sc->s, marshalled_message,
+                        strlen((const char *)marshalled_message), 0,
+                        (struct sockaddr *)&(this->dosSocket),
+                        sizeof(struct sockaddr_in))) < 0){
+            return 0; // send failed
+        }
+        npoll = poll(&ss, 1, timeout_time_ms);
+        no_tries++;
+    }
 
-    // Receive Timeout
+       if (npoll == 0 || npoll == -1) { // return empty map
+           map<string, vector<string>> temp_m;
+         return 2;
+       } else {
+
     cout << "getusers sent" << endl;
     unsigned char little_buffer[LITTLE_BUFFER_SIZE];
     memset(little_buffer, 0, sizeof(little_buffer));
@@ -1489,7 +1530,8 @@ public:
     }
 
     this->users = retmap(temp);
-    return retmap(temp);
+    return 1;
+  }
   }
 
   map<string, vector<string>> retmap(string s) {

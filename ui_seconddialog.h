@@ -61,6 +61,8 @@ public:
         if (SecondDialog->objectName().isEmpty())
             SecondDialog->setObjectName(QStringLiteral("SecondDialog"));
         SecondDialog->resize(500, 500);
+        SecondDialog->setStyleSheet(QLatin1String("background-color: rgb(46, 52, 54)\n"
+""));
         verticalLayout_4 = new QVBoxLayout(SecondDialog);
         verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
         horizontalLayout_3 = new QHBoxLayout();
@@ -69,6 +71,7 @@ public:
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         lbl_user = new QLabel(SecondDialog);
         lbl_user->setObjectName(QStringLiteral("lbl_user"));
+        lbl_user->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout_3->addWidget(lbl_user);
 
@@ -91,6 +94,7 @@ public:
 
         push_users = new QPushButton(SecondDialog);
         push_users->setObjectName(QStringLiteral("push_users"));
+        push_users->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout->addWidget(push_users);
 
@@ -100,6 +104,7 @@ public:
 
         push_shared = new QPushButton(SecondDialog);
         push_shared->setObjectName(QStringLiteral("push_shared"));
+        push_shared->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout->addWidget(push_shared);
 
@@ -109,6 +114,7 @@ public:
 
         push_images = new QPushButton(SecondDialog);
         push_images->setObjectName(QStringLiteral("push_images"));
+        push_images->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout->addWidget(push_images);
 
@@ -127,6 +133,7 @@ public:
 
         push_notifications = new QPushButton(SecondDialog);
         push_notifications->setObjectName(QStringLiteral("push_notifications"));
+        push_notifications->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout->addWidget(push_notifications);
 
@@ -136,6 +143,7 @@ public:
 
         push_upload = new QPushButton(SecondDialog);
         push_upload->setObjectName(QStringLiteral("push_upload"));
+        push_upload->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout->addWidget(push_upload);
 
@@ -156,6 +164,7 @@ public:
 
         push_logout = new QPushButton(SecondDialog);
         push_logout->setObjectName(QStringLiteral("push_logout"));
+        push_logout->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout->addWidget(push_logout);
 
@@ -194,6 +203,7 @@ public:
         horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
         lbl_time = new QLabel(SecondDialog);
         lbl_time->setObjectName(QStringLiteral("lbl_time"));
+        lbl_time->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_7->addWidget(lbl_time);
 

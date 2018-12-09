@@ -52,12 +52,15 @@ public:
         if (SharedImagesDialog->objectName().isEmpty())
             SharedImagesDialog->setObjectName(QStringLiteral("SharedImagesDialog"));
         SharedImagesDialog->resize(500, 500);
+        SharedImagesDialog->setStyleSheet(QLatin1String("background-color: rgb(46, 52, 54)\n"
+""));
         verticalLayout = new QVBoxLayout(SharedImagesDialog);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         push_refresh = new QPushButton(SharedImagesDialog);
         push_refresh->setObjectName(QStringLiteral("push_refresh"));
+        push_refresh->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_2->addWidget(push_refresh);
 
@@ -67,6 +70,7 @@ public:
 
         lbl_user = new QLabel(SharedImagesDialog);
         lbl_user->setObjectName(QStringLiteral("lbl_user"));
+        lbl_user->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_2->addWidget(lbl_user);
 
@@ -76,6 +80,7 @@ public:
 
         push_back = new QPushButton(SharedImagesDialog);
         push_back->setObjectName(QStringLiteral("push_back"));
+        push_back->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_2->addWidget(push_back);
 
@@ -84,6 +89,7 @@ public:
 
         listWidget = new QListWidget(SharedImagesDialog);
         listWidget->setObjectName(QStringLiteral("listWidget"));
+        listWidget->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout->addWidget(listWidget);
 
@@ -91,6 +97,7 @@ public:
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         push_request = new QPushButton(SharedImagesDialog);
         push_request->setObjectName(QStringLiteral("push_request"));
+        push_request->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout->addWidget(push_request);
 
@@ -100,6 +107,7 @@ public:
 
         line_views = new QLineEdit(SharedImagesDialog);
         line_views->setObjectName(QStringLiteral("line_views"));
+        line_views->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout->addWidget(line_views);
 
@@ -109,6 +117,7 @@ public:
 
         push_view = new QPushButton(SharedImagesDialog);
         push_view->setObjectName(QStringLiteral("push_view"));
+        push_view->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout->addWidget(push_view);
 
@@ -137,6 +146,7 @@ public:
         horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
         lbl_time = new QLabel(SharedImagesDialog);
         lbl_time->setObjectName(QStringLiteral("lbl_time"));
+        lbl_time->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_7->addWidget(lbl_time);
 

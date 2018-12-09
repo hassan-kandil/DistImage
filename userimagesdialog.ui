@@ -13,11 +13,18 @@
   <property name="windowTitle">
    <string>DistImage</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(46, 52, 54)
+</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QLabel" name="lbl_us">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(238, 238, 236)</string>
+       </property>
        <property name="text">
         <string>User</string>
        </property>
@@ -38,6 +45,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="push_back">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(238, 238, 236)</string>
+       </property>
        <property name="text">
         <string>Back</string>
        </property>
@@ -46,12 +56,19 @@
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidget"/>
+    <widget class="QListWidget" name="listWidget">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(238, 238, 236)</string>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="push_request">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(238, 238, 236)</string>
+       </property>
        <property name="text">
         <string>Request</string>
        </property>
@@ -72,6 +89,9 @@
      </item>
      <item>
       <widget class="QLineEdit" name="line_views">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(238, 238, 236)</string>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -120,6 +140,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout_7">
      <item>
       <widget class="QLabel" name="lbl_time">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(238, 238, 236)</string>
+       </property>
        <property name="text">
         <string>Time</string>
        </property>

@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>DistImage</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(46, 52, 54)
+</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -20,6 +24,9 @@
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <widget class="QLabel" name="lbl_user">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(238, 238, 236)</string>
+         </property>
          <property name="text">
           <string>Username</string>
          </property>
@@ -70,6 +77,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="push_users">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(238, 238, 236)</string>
+         </property>
          <property name="text">
           <string>All Users</string>
          </property>
@@ -90,6 +100,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="push_shared">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(238, 238, 236)</string>
+         </property>
          <property name="text">
           <string>Shared Images</string>
          </property>
@@ -110,6 +123,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="push_images">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(238, 238, 236)</string>
+         </property>
          <property name="text">
           <string>My Images</string>
          </property>
@@ -147,6 +163,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="push_notifications">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(238, 238, 236)</string>
+         </property>
          <property name="text">
           <string>Notifications</string>
          </property>
@@ -167,6 +186,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="push_upload">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(238, 238, 236)</string>
+         </property>
          <property name="text">
           <string>Upload</string>
          </property>
@@ -206,6 +228,9 @@
          </item>
          <item>
           <widget class="QPushButton" name="push_logout">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(238, 238, 236)</string>
+           </property>
            <property name="text">
             <string>Logout</string>
            </property>
@@ -271,6 +296,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout_7">
      <item>
       <widget class="QLabel" name="lbl_time">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(238, 238, 236)</string>
+       </property>
        <property name="text">
         <string>Time</string>
        </property>

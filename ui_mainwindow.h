@@ -29,6 +29,7 @@ public:
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout_4;
     QVBoxLayout *verticalLayout_3;
+    QLabel *label;
     QLabel *lbl_dos_info;
     QSpacerItem *verticalSpacer_5;
     QHBoxLayout *horizontalLayout_5;
@@ -86,6 +87,8 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(587, 500);
+        MainWindow->setStyleSheet(QLatin1String("background-color: rgb(46, 52, 54)\n"
+""));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout_4 = new QVBoxLayout(centralWidget);
@@ -95,8 +98,17 @@ public:
         verticalLayout_3 = new QVBoxLayout();
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
+        label = new QLabel(centralWidget);
+        label->setObjectName(QStringLiteral("label"));
+        label->setScaledContents(false);
+        label->setAlignment(Qt::AlignCenter);
+        label->setWordWrap(true);
+
+        verticalLayout_3->addWidget(label);
+
         lbl_dos_info = new QLabel(centralWidget);
         lbl_dos_info->setObjectName(QStringLiteral("lbl_dos_info"));
+        lbl_dos_info->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout_3->addWidget(lbl_dos_info);
 
@@ -109,6 +121,7 @@ public:
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
         lbl_dos_ip = new QLabel(centralWidget);
         lbl_dos_ip->setObjectName(QStringLiteral("lbl_dos_ip"));
+        lbl_dos_ip->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_5->addWidget(lbl_dos_ip);
 
@@ -121,6 +134,7 @@ public:
 
         line_dos_ip = new QLineEdit(centralWidget);
         line_dos_ip->setObjectName(QStringLiteral("line_dos_ip"));
+        line_dos_ip->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout_3->addWidget(line_dos_ip);
 
@@ -133,6 +147,7 @@ public:
         horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
         lbl_dos_port = new QLabel(centralWidget);
         lbl_dos_port->setObjectName(QStringLiteral("lbl_dos_port"));
+        lbl_dos_port->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_6->addWidget(lbl_dos_port);
 
@@ -145,6 +160,7 @@ public:
 
         line_dos_port = new QLineEdit(centralWidget);
         line_dos_port->setObjectName(QStringLiteral("line_dos_port"));
+        line_dos_port->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout_3->addWidget(line_dos_port);
 
@@ -172,6 +188,7 @@ public:
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         lbl_login_already = new QLabel(centralWidget);
         lbl_login_already->setObjectName(QStringLiteral("lbl_login_already"));
+        lbl_login_already->setStyleSheet(QStringLiteral("color: rgb(114, 159, 207)"));
 
         verticalLayout->addWidget(lbl_login_already);
 
@@ -180,6 +197,7 @@ public:
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         lbl_login_usr = new QLabel(centralWidget);
         lbl_login_usr->setObjectName(QStringLiteral("lbl_login_usr"));
+        lbl_login_usr->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout->addWidget(lbl_login_usr);
 
@@ -192,6 +210,7 @@ public:
 
         line_login_usr = new QLineEdit(centralWidget);
         line_login_usr->setObjectName(QStringLiteral("line_login_usr"));
+        line_login_usr->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout->addWidget(line_login_usr);
 
@@ -204,6 +223,7 @@ public:
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         lbl_login_pass = new QLabel(centralWidget);
         lbl_login_pass->setObjectName(QStringLiteral("lbl_login_pass"));
+        lbl_login_pass->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_2->addWidget(lbl_login_pass);
 
@@ -216,6 +236,7 @@ public:
 
         line_login_pass = new QLineEdit(centralWidget);
         line_login_pass->setObjectName(QStringLiteral("line_login_pass"));
+        line_login_pass->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
         line_login_pass->setEchoMode(QLineEdit::Password);
 
         verticalLayout->addWidget(line_login_pass);
@@ -233,6 +254,7 @@ public:
 
         push_login = new QPushButton(centralWidget);
         push_login->setObjectName(QStringLiteral("push_login"));
+        push_login->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_3->addWidget(push_login);
 
@@ -252,6 +274,7 @@ public:
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         lbl_login_not_on_our_system = new QLabel(centralWidget);
         lbl_login_not_on_our_system->setObjectName(QStringLiteral("lbl_login_not_on_our_system"));
+        lbl_login_not_on_our_system->setStyleSheet(QStringLiteral("color: rgb(114, 159, 207)"));
         lbl_login_not_on_our_system->setWordWrap(false);
 
         verticalLayout_2->addWidget(lbl_login_not_on_our_system);
@@ -261,6 +284,7 @@ public:
         horizontalLayout_9->setObjectName(QStringLiteral("horizontalLayout_9"));
         lbl_signup_usr = new QLabel(centralWidget);
         lbl_signup_usr->setObjectName(QStringLiteral("lbl_signup_usr"));
+        lbl_signup_usr->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_9->addWidget(lbl_signup_usr);
 
@@ -273,6 +297,7 @@ public:
 
         line_signup_usr = new QLineEdit(centralWidget);
         line_signup_usr->setObjectName(QStringLiteral("line_signup_usr"));
+        line_signup_usr->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout_2->addWidget(line_signup_usr);
 
@@ -285,6 +310,7 @@ public:
         horizontalLayout_10->setObjectName(QStringLiteral("horizontalLayout_10"));
         lbl_signup_pass = new QLabel(centralWidget);
         lbl_signup_pass->setObjectName(QStringLiteral("lbl_signup_pass"));
+        lbl_signup_pass->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_10->addWidget(lbl_signup_pass);
 
@@ -297,6 +323,7 @@ public:
 
         line_signup_pass = new QLineEdit(centralWidget);
         line_signup_pass->setObjectName(QStringLiteral("line_signup_pass"));
+        line_signup_pass->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout_2->addWidget(line_signup_pass);
 
@@ -313,6 +340,7 @@ public:
 
         push_signup = new QPushButton(centralWidget);
         push_signup->setObjectName(QStringLiteral("push_signup"));
+        push_signup->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_11->addWidget(push_signup);
 
@@ -335,6 +363,7 @@ public:
         horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
         lbl_time = new QLabel(centralWidget);
         lbl_time->setObjectName(QStringLiteral("lbl_time"));
+        lbl_time->setStyleSheet(QStringLiteral("color: rgb(114, 159, 207)"));
 
         horizontalLayout_7->addWidget(lbl_time);
 
@@ -363,7 +392,8 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "DistImage", nullptr));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "InstaDist", nullptr));
+        label->setText(QString());
         lbl_dos_info->setText(QApplication::translate("MainWindow", "Directory of Service Connection Info", nullptr));
         lbl_dos_ip->setText(QApplication::translate("MainWindow", "IP Address", nullptr));
         lbl_dos_port->setText(QApplication::translate("MainWindow", "Port Number", nullptr));

@@ -46,12 +46,15 @@ public:
         if (UsersDialog->objectName().isEmpty())
             UsersDialog->setObjectName(QStringLiteral("UsersDialog"));
         UsersDialog->resize(500, 500);
+        UsersDialog->setStyleSheet(QLatin1String("background-color: rgb(46, 52, 54)\n"
+""));
         verticalLayout = new QVBoxLayout(UsersDialog);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         push_refresh = new QPushButton(UsersDialog);
         push_refresh->setObjectName(QStringLiteral("push_refresh"));
+        push_refresh->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_2->addWidget(push_refresh);
 
@@ -61,6 +64,7 @@ public:
 
         push_back = new QPushButton(UsersDialog);
         push_back->setObjectName(QStringLiteral("push_back"));
+        push_back->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_2->addWidget(push_back);
 
@@ -69,6 +73,7 @@ public:
 
         listWidget = new QListWidget(UsersDialog);
         listWidget->setObjectName(QStringLiteral("listWidget"));
+        listWidget->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout->addWidget(listWidget);
 
@@ -80,6 +85,7 @@ public:
 
         push_view = new QPushButton(UsersDialog);
         push_view->setObjectName(QStringLiteral("push_view"));
+        push_view->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout->addWidget(push_view);
 
@@ -108,6 +114,7 @@ public:
         horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
         lbl_time = new QLabel(UsersDialog);
         lbl_time->setObjectName(QStringLiteral("lbl_time"));
+        lbl_time->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_7->addWidget(lbl_time);
 

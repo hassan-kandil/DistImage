@@ -48,12 +48,15 @@ public:
         if (userimagesdialog->objectName().isEmpty())
             userimagesdialog->setObjectName(QStringLiteral("userimagesdialog"));
         userimagesdialog->resize(500, 500);
+        userimagesdialog->setStyleSheet(QLatin1String("background-color: rgb(46, 52, 54)\n"
+""));
         verticalLayout = new QVBoxLayout(userimagesdialog);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         lbl_us = new QLabel(userimagesdialog);
         lbl_us->setObjectName(QStringLiteral("lbl_us"));
+        lbl_us->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_2->addWidget(lbl_us);
 
@@ -63,6 +66,7 @@ public:
 
         push_back = new QPushButton(userimagesdialog);
         push_back->setObjectName(QStringLiteral("push_back"));
+        push_back->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_2->addWidget(push_back);
 
@@ -71,6 +75,7 @@ public:
 
         listWidget = new QListWidget(userimagesdialog);
         listWidget->setObjectName(QStringLiteral("listWidget"));
+        listWidget->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout->addWidget(listWidget);
 
@@ -78,6 +83,7 @@ public:
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         push_request = new QPushButton(userimagesdialog);
         push_request->setObjectName(QStringLiteral("push_request"));
+        push_request->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout->addWidget(push_request);
 
@@ -87,6 +93,7 @@ public:
 
         line_views = new QLineEdit(userimagesdialog);
         line_views->setObjectName(QStringLiteral("line_views"));
+        line_views->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout->addWidget(line_views);
 
@@ -115,6 +122,7 @@ public:
         horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
         lbl_time = new QLabel(userimagesdialog);
         lbl_time->setObjectName(QStringLiteral("lbl_time"));
+        lbl_time->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         horizontalLayout_7->addWidget(lbl_time);
 
