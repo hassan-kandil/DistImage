@@ -330,7 +330,7 @@ public:
       string extract_command;
 
       extract_command = "steghide extract -sf " + newFileName +
-                        " -p hk"; // + " -xf " + newViewsName
+                        " -p hk"; // get the embedded image
 
       QProcess::execute(QString::fromStdString(extract_command));
 
@@ -344,16 +344,16 @@ public:
       }
 
       string newViewsName =
-          this->username + "_" + imagenodot + "_" + "views.txt";
+          this->username + "_" + imagenodot + "_" + "views.txt"; // views file name
 
       string views_extractcommand =
-          "steghide extract -sf " + image_name + " -p hk";
+          "steghide extract -sf " + image_name + " -p hk"; // extract views file
 
       QProcess::execute(QString::fromStdString(views_extractcommand));
 
       // deleting the extracted image from the receiver's folder after
       // extracting the number of views
-      string deletecommand = "rm " + image_name;
+      string deletecommand = "rm " + image_name; // delete extracted image
       vector<string> images;
 
       QProcess::execute(QString::fromStdString(deletecommand));
@@ -375,7 +375,8 @@ public:
         requests_buffer.push_back(
             make_pair(2004, r));
         views_is.close();
-
+        string deletecommand2 = "rm " + newViewsName; // delete extracted views
+        QProcess::execute(QString::fromStdString(deletecommand2));
       } else {
         cout << "couldn't open views file! " << endl;
       }

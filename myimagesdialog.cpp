@@ -25,7 +25,8 @@ MyImagesDialog::~MyImagesDialog() { delete ui; }
 void MyImagesDialog::on_push_request_clicked() {}
 
 void MyImagesDialog::on_push_view_clicked() {
-  if (ui->listWidget->currentRow() >= 0) {
+    if (ui->listWidget->currentRow() >= 0) {
+        if(ui->line_views->text() != ""){
     editmyimageDialog secd(this, peer, ui->listWidget->currentItem()->text());
     secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
                         Qt::CustomizeWindowHint);
@@ -33,9 +34,15 @@ void MyImagesDialog::on_push_view_clicked() {
     secd.exec();
 
     ui->lbl_result->setVisible(false);
-  } else {
-    ui->lbl_result->setVisible(true);
-    ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-    ui->lbl_result->setText("Please, select an image!");
+  } else{
+      ui->lbl_result->setVisible(true);
+      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_result->setText("Please, enter the amount of views you want!");
   }
+
+} else {
+ui->lbl_result->setVisible(true);
+ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+ui->lbl_result->setText("Please, select an image!");
+}
 }

@@ -119,22 +119,34 @@ void SharedImagesDialog::on_push_refresh_clicked() {
 
 void SharedImagesDialog::on_push_request_clicked()
 {
-    int i = 0;
-    string imagename, ownername, fullname;
-    int noViews = ui->line_reqviews->text().toInt();
-    for (auto const &x : peer->sharedimgs) {
-        if(i == ui->listWidget->currentRow()){
-            fullname = x.first;
-            for (int j = fullname.length() - 1; j > 0; j--) {
-              if (fullname[j] == '_') {
-                ownername = fullname.substr(0, j);
-                imagename = fullname.substr(j + 1, fullname.length() - 1);
-                break;
-              }
-            }
+    if (ui->listWidget->currentRow() >= 0) {
+        if(ui->line_views->text() != ""){
+        int i = 0;
+        string imagename, ownername, fullname;
+        int noViews = ui->line_views->text().toInt();
+        for (auto const &x : peer->sharedimgs) {
+            if(i == ui->listWidget->currentRow()){
+                fullname = x.first;
+                for (int j = fullname.length() - 1; j > 0; j--) {
+                  if (fullname[j] == '_') {
+                    ownername = fullname.substr(0, j);
+                    imagename = fullname.substr(j + 1, fullname.length() - 1);
+                    break;
+                  }
+                }
 
+            }
+          i++;
         }
-      i++;
+        peer->update_views_request_by_viewer(ownername, imagename, noViews);
+        } else{
+            ui->lbl_result->setVisible(true);
+            ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+            ui->lbl_result->setText("Please, enter the amount of views you want!");
+        }
+    } else {
+      ui->lbl_result->setVisible(true);
+      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_result->setText("Please, select an image!");
     }
-    peer->update_views_request_by_viewer(ownername, imagename, noViews);
 }

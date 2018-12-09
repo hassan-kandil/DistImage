@@ -84,7 +84,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="line_request">
+      <widget class="QLineEdit" name="line_views">
        <property name="text">
         <string/>
        </property>

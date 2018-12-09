@@ -23,8 +23,10 @@ editmyimageDialog::editmyimageDialog(QWidget *parent, Peer *peer,
 editmyimageDialog::~editmyimageDialog() { delete ui; }
 
 void editmyimageDialog::on_push_update_views_clicked() {
-  if (ui->listWidget->currentRow() >= 0) {
-    int noViews = ui->line_reqviews->text().toInt();
+    if (ui->listWidget->currentRow() >= 0) {
+        if(ui->line_views->text() != ""){
+
+    int noViews = ui->line_views->text().toInt();
     if (noViews < 0) {
       ui->lbl_result->setVisible(true);
       ui->lbl_result->setText("Please, add the number of views >= 0");
@@ -40,11 +42,17 @@ void editmyimageDialog::on_push_update_views_clicked() {
       ui->lbl_result->setStyleSheet("QLabel { color : green; }");
       ui->lbl_result->setText("Views updated!");
     }
-  } else {
-    ui->lbl_result->setVisible(true);
-    ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-    ui->lbl_result->setText("Please, select a user!");
-  }
+        } else{
+            ui->lbl_result->setVisible(true);
+            ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+            ui->lbl_result->setText("Please, enter the amount of views you want!");
+        }
+
+    } else {
+      ui->lbl_result->setVisible(true);
+      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_result->setText("Please, select an image!");
+    }
 }
 
 void editmyimageDialog::on_push_refresh_clicked()

@@ -37,7 +37,7 @@ public:
     QSpacerItem *horizontalSpacer_2;
     QPushButton *push_update_views;
     QSpacerItem *horizontalSpacer_5;
-    QLineEdit *line_reqviews;
+    QLineEdit *line_views;
     QSpacerItem *horizontalSpacer_6;
     QPushButton *push_view;
     QSpacerItem *horizontalSpacer_7;
@@ -105,10 +105,10 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer_5);
 
-        line_reqviews = new QLineEdit(editmyimageDialog);
-        line_reqviews->setObjectName(QStringLiteral("line_reqviews"));
+        line_views = new QLineEdit(editmyimageDialog);
+        line_views->setObjectName(QStringLiteral("line_views"));
 
-        horizontalLayout->addWidget(line_reqviews);
+        horizontalLayout->addWidget(line_views);
 
         horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 

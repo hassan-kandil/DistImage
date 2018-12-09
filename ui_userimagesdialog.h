@@ -35,7 +35,7 @@ public:
     QSpacerItem *horizontalSpacer_2;
     QPushButton *push_request;
     QSpacerItem *horizontalSpacer_3;
-    QLineEdit *line_request;
+    QLineEdit *line_views;
     QSpacerItem *horizontalSpacer_4;
     QPushButton *push_view;
     QSpacerItem *horizontalSpacer_6;
@@ -94,10 +94,10 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer_3);
 
-        line_request = new QLineEdit(userimagesdialog);
-        line_request->setObjectName(QStringLiteral("line_request"));
+        line_views = new QLineEdit(userimagesdialog);
+        line_views->setObjectName(QStringLiteral("line_views"));
 
-        horizontalLayout->addWidget(line_request);
+        horizontalLayout->addWidget(line_views);
 
         horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -167,7 +167,7 @@ public:
         lbl_us->setText(QApplication::translate("userimagesdialog", "User", nullptr));
         push_back->setText(QApplication::translate("userimagesdialog", "Back", nullptr));
         push_request->setText(QApplication::translate("userimagesdialog", "Request", nullptr));
-        line_request->setText(QString());
+        line_views->setText(QString());
         push_view->setText(QApplication::translate("userimagesdialog", "View", nullptr));
         lbl_rem->setText(QApplication::translate("userimagesdialog", "0", nullptr));
         lbl_result->setText(QApplication::translate("userimagesdialog", "Request Done", nullptr));

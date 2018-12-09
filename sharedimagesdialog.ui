@@ -104,7 +104,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="line_reqviews"/>
+      <widget class="QLineEdit" name="line_views"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_6">
