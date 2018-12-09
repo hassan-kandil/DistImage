@@ -1204,7 +1204,6 @@ public:
 
     Message image_request(Request, msg_char, strlen(msg_char), 2002,
                           ++requestID, 0, 0, 0);
-    //  char * marshalled_message = image_request.marshal();
 
     char marshalled_message[BUFFER_SIZE];
 
@@ -1212,13 +1211,26 @@ public:
     int n = x.length();
     strncpy(marshalled_message, x.c_str(), n + 1);
 
+    // Timeout Tolerance
+    int npoll = 0, no_tries = 0;
+    struct pollfd ss;
+    ss.fd = sc->s;
+    ss.events = POLLIN;
 
+    while(no_tries <= timeout_loop && (npoll == 0 || npoll == -1)){ // while timeout, resend
+        if ((n = sendto(sc->s, marshalled_message,
+                        strlen((const char *)marshalled_message), 0,
+                        (struct sockaddr *)&ownerSocket,
+                        sizeof(struct sockaddr_in))) < 0){
+            return 50; // send failed
+        }
+        npoll = poll(&ss, 1, timeout_time_ms);
+        no_tries++;
+    }
 
-    if ((n = sendto(sc->s, marshalled_message,
-                    strlen((const char *)marshalled_message), 0,
-                    (struct sockaddr *)&ownerSocket,
-                    sizeof(struct sockaddr_in))) < 0)
-      perror("Send failed\n");
+       if (npoll == 0 || npoll == -1) {
+         return 100;
+       } else {
 
     memset(little_buffer, 0, sizeof(little_buffer));
 
@@ -1257,6 +1269,7 @@ public:
             return 2;
       }
     }
+       }
   }
 
   void send_image(string viewerName, string selectedImage, int nViews) {

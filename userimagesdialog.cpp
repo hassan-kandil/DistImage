@@ -56,6 +56,16 @@ void userimagesdialog::on_push_request_clicked() {
                 ui->lbl_result->setText(
                     QString("Check your internet connection!"));
                 ui->lbl_result->setVisible(true);
+              } else if (result == 50) { // send failed
+                ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+                ui->lbl_result->setText(
+                    QString("Check your internet connection!"));
+                ui->lbl_result->setVisible(true);
+              } else if (result == 100) { // Peer timeout
+                ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+                ui->lbl_result->setText( this->selectedUser + " is Offline!");
+                //    QString())
+                ui->lbl_result->setVisible(true);
               } else {
                 ui->lbl_result->setStyleSheet("QLabel { color : red; }");
                 ui->lbl_result->setText(QString("Check your internet connection!"));
