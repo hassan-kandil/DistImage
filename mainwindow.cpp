@@ -47,7 +47,6 @@ void MainWindow::on_push_login_clicked() {
       int sign_result = peer->login(username, password);
 
       if (sign_result == 1) { // Login correctly
-        // peer->peerServer = new Server(peer->dos_port);
         peer->username = username;
         peer->password = password;
         ui->lbl_login_wrong->setVisible(true);
@@ -55,13 +54,10 @@ void MainWindow::on_push_login_clicked() {
         ui->lbl_login_wrong->setStyleSheet("QLabel { color : green; }");
         // Open the next window
         SecondDialog secdia(this, peer);
-
         secdia.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
                               Qt::CustomizeWindowHint);
         secdia.setModal(true);
         secdia.exec();
-
-        // this->close();
       } else if (sign_result == 3) {
         ui->lbl_login_wrong->setVisible(true);
         ui->lbl_login_wrong->setText(QString("No Special Characters!"));
@@ -125,11 +121,11 @@ void MainWindow::on_push_signup_clicked() {
       ui->lbl_signup_welcome->setStyleSheet("QLabel { color : red; }");
     } else if (sign_result == 7) {
       ui->lbl_signup_welcome->setVisible(true);
-      ui->lbl_signup_welcome->setText(QString("Select error!"));
+      ui->lbl_signup_welcome->setText(QString("Check your internet connection!")); // Select error!
       ui->lbl_signup_welcome->setStyleSheet("QLabel { color : red; }");
     } else if (sign_result == 6) {
       ui->lbl_signup_welcome->setVisible(true);
-      ui->lbl_signup_welcome->setText(QString("Signup Send Failed!"));
+      ui->lbl_signup_welcome->setText(QString("Check your internet connection!")); // Signup Send Failed!
       ui->lbl_signup_welcome->setStyleSheet("QLabel { color : red; }");
     } else { // Timeout
       ui->lbl_signup_welcome->setVisible(true);

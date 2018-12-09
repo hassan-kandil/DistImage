@@ -37,7 +37,7 @@ else if(resultUsers == 2){
 else if(resultUsers == 0){
   ui->lbl_result->setVisible(true);
   ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-  ui->lbl_result->setText("Getusers send failed!");
+  ui->lbl_result->setText("Check your internet connection!"); // Getusers send failed!
 }
 else{
   ui->lbl_result->setVisible(true);
@@ -100,7 +100,7 @@ else if(resultUsers == 2){
 else if(resultUsers == 0){
   ui->lbl_result->setVisible(true);
   ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-  ui->lbl_result->setText("Getusers send failed!");
+  ui->lbl_result->setText("Check your internet connection!"); // Getusers send failed!
 }
 else{
   ui->lbl_result->setVisible(true);

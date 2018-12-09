@@ -39,7 +39,6 @@ void editmyimageDialog::on_push_update_views_clicked() {
       vector<pair<string, int>> selectedViewers =
           peer->myimages[imagename.toStdString()];
       string viewer = selectedViewers[ui->listWidget->currentRow()].first;
-      //cout << imagename.toStdString() << viewer << noViews << endl;
       int resultUsers = peer->update_views_by_owner(viewer, imagename.toStdString(), noViews);
     if(resultUsers == 1){
       ui->lbl_result->setVisible(true);
@@ -54,17 +53,17 @@ void editmyimageDialog::on_push_update_views_clicked() {
     else if(resultUsers == 10){
       ui->lbl_result->setVisible(true);
       ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-      ui->lbl_result->setText("Getusers send failed!");
+      ui->lbl_result->setText("Check your internet connection!"); // send failed
     }
     else if(resultUsers == 0){
       ui->lbl_result->setVisible(true);
       ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-      ui->lbl_result->setText("update_views_by_owner at viewer failed!");
+      ui->lbl_result->setText("Check your internet connection!"); // update_views_by_owner at viewer failed!
     }
     else{
       ui->lbl_result->setVisible(true);
       ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-      ui->lbl_result->setText("Check your internet connection!");
+      ui->lbl_result->setText("Check your internet connection!"); // something wrong
     }
     }
         } else{

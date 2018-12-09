@@ -969,14 +969,15 @@ public:
             // if not resend the request
             int i = notify_views_by_viewer(owner, selectedImage, NewNoViews);
           }
-
-          cout << "msg_received_length " << msg_view_request_reply << endl;
-          if (msg_view_request_reply[0] == '1')
-            return 1;
-          else if (msg_view_request_reply[0] == '0')
-            return 0;
-          else
-            return 2;
+          else{
+              cout << "msg_received_length " << msg_view_request_reply << endl;
+              if (msg_view_request_reply[0] == '1')
+                return 1;
+              else if (msg_view_request_reply[0] == '0')
+                return 0;
+              else
+                return 2;
+          }
         }
     }
     else if(resultUsers == 2){
@@ -1060,15 +1061,18 @@ public:
         // if not resend the request
         int i = update_views_by_owner(viewer, selectedImage, NewNoViews);
       }
+      else{
+          cout << "msg_received_length " << msg_view_request_reply << endl;
+          if (msg_view_request_reply[0] == '1') {
+            update_my_img(selectedImage, viewer, NewNoViews);
+            return 1;
+          } else if (msg_view_request_reply[0] == '0')
+            return 0;
+          else
+            return 2;
+      }
 
-      cout << "msg_received_length " << msg_view_request_reply << endl;
-      if (msg_view_request_reply[0] == '1') {
-        update_my_img(selectedImage, viewer, NewNoViews);
-        return 1;
-      } else if (msg_view_request_reply[0] == '0')
-        return 0;
-      else
-        return 2;
+
     }
           }
         else if(resultUsers == 2){
@@ -1152,15 +1156,18 @@ public:
         // if not resend the request
         int i = update_views_request_by_viewer(owner, selectedImage, NewNoViews);
       }
+      else{
+          cout << "msg_received_length " << msg_view_request_reply << endl;
+          if (msg_view_request_reply[0] == '1') {
+            update_my_img(selectedImage, owner, NewNoViews);
+            return 1;
+          } else if (msg_view_request_reply[0] == '0')
+            return 0;
+          else
+            return 2;
+      }
 
-      cout << "msg_received_length " << msg_view_request_reply << endl;
-      if (msg_view_request_reply[0] == '1') {
-        update_my_img(selectedImage, owner, NewNoViews);
-        return 1;
-      } else if (msg_view_request_reply[0] == '0')
-        return 0;
-      else
-        return 2;
+
     }
     }
   else if(resultUsers == 2){
@@ -1205,6 +1212,8 @@ public:
     int n = x.length();
     strncpy(marshalled_message, x.c_str(), n + 1);
 
+
+
     if ((n = sendto(sc->s, marshalled_message,
                     strlen((const char *)marshalled_message), 0,
                     (struct sockaddr *)&ownerSocket,
@@ -1238,14 +1247,15 @@ public:
         // if not resend the request
         int i = request_image(selectedUser, selectedImage, views);
       }
-
-      cout << "msg_received_length " << msg_view_request_reply << endl;
-      if (msg_view_request_reply[0] == '1')
-        return 1;
-      else if (msg_view_request_reply[0] == '0')
-        return 0;
-      else
-        return 2;
+      else{
+          cout << "msg_received_length " << msg_view_request_reply << endl;
+          if (msg_view_request_reply[0] == '1')
+            return 1;
+          else if (msg_view_request_reply[0] == '0')
+            return 0;
+          else
+            return 2;
+      }
     }
   }
 

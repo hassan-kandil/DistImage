@@ -36,7 +36,7 @@ NotificationDialog::NotificationDialog(QWidget *parent, Peer *peer)
     else if(resultUsers == 0){
       ui->lbl_result->setVisible(true);
       ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-      ui->lbl_result->setText("Getusers send failed!");
+      ui->lbl_result->setText("Check your internet connection!"); // Getusers send failed!
     }
     else{
       ui->lbl_result->setVisible(true);
@@ -72,11 +72,9 @@ void NotificationDialog::on_push_approve_clicked() {
               std::thread SendImageThread(&Peer::send_image, peer, usname, imname,
                                           noViews);
               SendImageThread.detach();
-              //  peer->send_image(usname, imname, noViews);
               ui->lbl_result->setVisible(true);
               ui->lbl_result->setText("Approved!");
               ui->lbl_result->setStyleSheet("QLabel { color : green; }");
-
 
             }
         }
@@ -106,12 +104,12 @@ void NotificationDialog::on_push_approve_clicked() {
               else if(resultUsers == 10){
                 ui->lbl_result->setVisible(true);
                 ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-                ui->lbl_result->setText("Getusers send failed!");
+                ui->lbl_result->setText("Check your internet connection!"); // Getusers send failed!
               }
               else if(resultUsers == 0){
                 ui->lbl_result->setVisible(true);
                 ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-                ui->lbl_result->setText("update_views_by_owner at viewer failed!");
+                ui->lbl_result->setText("Check your internet connection!"); // update_views_by_owner at viewer failed!
               }
               else{
                 ui->lbl_result->setVisible(true);

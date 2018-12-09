@@ -73,12 +73,12 @@ void SharedImagesDialog::on_push_view_clicked() {
       else if(resultUsers == 10){
         ui->lbl_result->setVisible(true);
         ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-        ui->lbl_result->setText("Getusers send failed!");
+        ui->lbl_result->setText("Check your internet connection!"); // Getusers send failed!
       }
       else if(resultUsers == 0){
         ui->lbl_result->setVisible(true);
         ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-        ui->lbl_result->setText("notify_views_by_viewer at viewer failed!");
+        ui->lbl_result->setText("Check your internet connection!"); // notify_views_by_viewer at viewer failed!
       }
       else{
         ui->lbl_result->setVisible(true);
@@ -167,7 +167,7 @@ void SharedImagesDialog::on_push_request_clicked()
           ui->lbl_result->setVisible(true);
         } else if (result == 3) {
           ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-          ui->lbl_result->setText(QString("Request send failed!"));
+          ui->lbl_result->setText(QString("Check your internet connection!")); // Request send failed!
           ui->lbl_result->setVisible(true);
         } else if (result == 0) {
           ui->lbl_result->setStyleSheet("QLabel { color : red; }");
@@ -188,7 +188,7 @@ void SharedImagesDialog::on_push_request_clicked()
         else if(result == 10){
           ui->lbl_result->setVisible(true);
           ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-          ui->lbl_result->setText("Getusers send failed!");
+          ui->lbl_result->setText("Check your internet connection!"); // Getusers send failed!
         }
         else {
           ui->lbl_result->setStyleSheet("QLabel { color : red; }");

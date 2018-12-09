@@ -44,7 +44,7 @@ void userimagesdialog::on_push_request_clicked() {
                 ui->lbl_result->setVisible(true);
               } else if (result == 3) {
                 ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-                ui->lbl_result->setText(QString("Request send failed!"));
+                ui->lbl_result->setText(QString("Check your internet connection!")); // Request send failed!
                 ui->lbl_result->setVisible(true);
               } else if (result == 0) {
                 ui->lbl_result->setStyleSheet("QLabel { color : red; }");
