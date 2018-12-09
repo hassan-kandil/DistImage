@@ -7,6 +7,7 @@ editmyimageDialog::editmyimageDialog(QWidget *parent, Peer *peer,
     : QDialog(parent), ui(new Ui::editmyimageDialog), peer(peer),
       imagename(imagename) {
   ui->setupUi(this);
+  ui->line_views->setValidator(new QIntValidator); // only numbers
   QPixmap pm(imagename);
   ui->lbl_image->setPixmap(
       pm.scaled(200, 200, Qt::IgnoreAspectRatio, Qt::FastTransformation));

@@ -85,6 +85,14 @@ void SecondDialog::on_push_upload_clicked() {
     ui->lbl_upload_successful->setVisible(true);
     ui->lbl_upload_successful->setText(QString("Image uploaded before!"));
     ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+  } else if (upload_stat == 2) {
+    ui->lbl_upload_successful->setVisible(true);
+    ui->lbl_upload_successful->setText(QString("DoS Offline!"));
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+  } else if (upload_stat == 30) {
+    ui->lbl_upload_successful->setVisible(true);
+    ui->lbl_upload_successful->setText(QString("Send to failed!"));
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
   } else {
     ui->lbl_upload_successful->setVisible(true);
     ui->lbl_upload_successful->setText(QString("Something Wrong here!"));

@@ -24,6 +24,7 @@ SharedImagesDialog::SharedImagesDialog(QWidget *parent, Peer *peer)
         QString::fromStdString("Owner: " + ownername + ". Img: " + imagename +
                                ". Views Left: " + std::to_string(x.second)));
   }
+  ui->line_views->setValidator(new QIntValidator); // only numbers
 }
 
 SharedImagesDialog::~SharedImagesDialog() { delete ui; }

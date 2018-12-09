@@ -324,6 +324,7 @@ public:
         line_signup_pass = new QLineEdit(centralWidget);
         line_signup_pass->setObjectName(QStringLiteral("line_signup_pass"));
         line_signup_pass->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
+        line_signup_pass->setEchoMode(QLineEdit::Password);
 
         verticalLayout_2->addWidget(line_signup_pass);
 

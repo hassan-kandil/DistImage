@@ -4,6 +4,7 @@
 NotificationDialog::NotificationDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::NotificationDialog), peer(peer) {
   ui->setupUi(this);
+  ui->line_views->setValidator(new QIntValidator); // only numbers
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
   ui->lbl_time->setStyleSheet("QLabel { color : white; }");
@@ -79,8 +80,10 @@ void NotificationDialog::on_push_approve_clicked() {
 
             }
         }
-        else if (opcode == 2003){ // req = " approved you to view ";
-            ui->push_approve->setText("Ok");
+        else if (opcode == 2004){ // req = " approved you to view ";
+            ui->lbl_result->setVisible(true);
+            ui->lbl_result->setText("You were approved! Nothing to approve!");
+            ui->lbl_result->setStyleSheet("QLabel { color : red; }");
         }
         else if (opcode == 2007){ // req = " want to update his number of views to ";
             if (noViews < 0) {

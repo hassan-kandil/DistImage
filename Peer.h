@@ -849,7 +849,7 @@ public:
                           strlen((const char *)marshalled_message), 0,
                           (struct sockaddr *)&(this->dosSocket),
                           sizeof(struct sockaddr_in))) < 0){
-              return 6; // send failed
+              return 30; // send failed
           }
           npoll = poll(&ss, 1, timeout_time_ms);
           no_tries++;
