@@ -83,7 +83,7 @@ void SharedImagesDialog::on_push_view_clicked() {
       else{
         ui->lbl_result->setVisible(true);
         ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-        ui->lbl_result->setText("Something wrong getusers!");
+        ui->lbl_result->setText("Check your internet connection!");
       }
     } else {
       ui->lbl_result->setVisible(true);
@@ -177,7 +177,7 @@ void SharedImagesDialog::on_push_request_clicked()
         } else if (result == 2) {
           ui->lbl_result->setStyleSheet("QLabel { color : red; }");
           ui->lbl_result->setText(
-              QString("Something went wrong at peer->request_image!"));
+              QString("Check your internet connection!"));
           ui->lbl_result->setVisible(true);
         }
         else if(result == 12){
@@ -192,7 +192,7 @@ void SharedImagesDialog::on_push_request_clicked()
         }
         else {
           ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-          ui->lbl_result->setText(QString("Something went wrong here!"));
+          ui->lbl_result->setText(QString("Check your internet connection!"));
           ui->lbl_result->setVisible(true);
         }
         } else{

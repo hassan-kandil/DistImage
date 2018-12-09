@@ -82,9 +82,9 @@ void MainWindow::on_push_login_clicked() {
         ui->lbl_login_wrong->setVisible(true);
         ui->lbl_login_wrong->setText(QString("DoS Offline!"));
         ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
-      } else { // Timeout
+      } else {
         ui->lbl_login_wrong->setVisible(true);
-        ui->lbl_login_wrong->setText(QString("Unexpected behaviour!"));
+        ui->lbl_login_wrong->setText(QString("Check your internet connection!"));
         ui->lbl_login_wrong->setStyleSheet("QLabel { color : red; }");
       }
     }

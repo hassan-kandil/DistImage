@@ -42,7 +42,7 @@ else if(resultUsers == 0){
 else{
   ui->lbl_result->setVisible(true);
   ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-  ui->lbl_result->setText("Something wrong getusers!");
+  ui->lbl_result->setText("Check your internet connection!");
 }
 }
 
@@ -105,6 +105,6 @@ else if(resultUsers == 0){
 else{
   ui->lbl_result->setVisible(true);
   ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-  ui->lbl_result->setText("Something wrong getusers!");
+  ui->lbl_result->setText("Check your internet connection!");
 }
 }

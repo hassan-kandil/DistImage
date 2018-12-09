@@ -95,7 +95,7 @@ void SecondDialog::on_push_upload_clicked() {
     ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
   } else {
     ui->lbl_upload_successful->setVisible(true);
-    ui->lbl_upload_successful->setText(QString("Something Wrong here!"));
+    ui->lbl_upload_successful->setText(QString("Check your internet connection!"));
     ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
   }
 }

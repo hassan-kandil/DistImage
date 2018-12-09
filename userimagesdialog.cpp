@@ -54,11 +54,11 @@ void userimagesdialog::on_push_request_clicked() {
               } else if (result == 2) {
                 ui->lbl_result->setStyleSheet("QLabel { color : red; }");
                 ui->lbl_result->setText(
-                    QString("Something went wrong at peer->request_image!"));
+                    QString("Check your internet connection!"));
                 ui->lbl_result->setVisible(true);
               } else {
                 ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-                ui->lbl_result->setText(QString("Something went wrong here!"));
+                ui->lbl_result->setText(QString("Check your internet connection!"));
                 ui->lbl_result->setVisible(true);
               }
           }

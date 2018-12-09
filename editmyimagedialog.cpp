@@ -64,7 +64,7 @@ void editmyimageDialog::on_push_update_views_clicked() {
     else{
       ui->lbl_result->setVisible(true);
       ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-      ui->lbl_result->setText("Something wrong getusers!");
+      ui->lbl_result->setText("Check your internet connection!");
     }
     }
         } else{

@@ -21,7 +21,7 @@ NotificationDialog::NotificationDialog(QWidget *parent, Peer *peer)
     else if (peer->requests_buffer[i].first == 2007)
       req = " want to update his number of views to ";
     else
-      req = " something wrong here ";
+      req = " Check your internet connection ";
     ui->listWidget->addItem(
         QString::fromStdString(peer->requests_buffer[i].second.name + req +
                                peer->requests_buffer[i].second.imagename + " "+to_string(peer->requests_buffer[i].second.views)+ " times"));
@@ -41,7 +41,7 @@ NotificationDialog::NotificationDialog(QWidget *parent, Peer *peer)
     else{
       ui->lbl_result->setVisible(true);
       ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-      ui->lbl_result->setText("Something wrong getusers!");
+      ui->lbl_result->setText("Check your internet connection!");
     }
 }
 
@@ -116,13 +116,13 @@ void NotificationDialog::on_push_approve_clicked() {
               else{
                 ui->lbl_result->setVisible(true);
                 ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-                ui->lbl_result->setText("Something wrong getusers!");
+                ui->lbl_result->setText("Check your internet connection!");
               }
             }
         }
-        else{ // req = " something wrong here ";
+        else{
             ui->lbl_result->setVisible(true);
-            ui->lbl_result->setText("Something wrong here!");
+            ui->lbl_result->setText("Check your internet connection!");
             ui->lbl_result->setStyleSheet("QLabel { color : red; }");
         }
 
@@ -140,7 +140,7 @@ void NotificationDialog::on_push_approve_clicked() {
           else if (peer->requests_buffer[i].first == 2007)
             req = " want to update his number of views to ";
           else
-            req = " something wrong here ";
+            req = " Check your internet connection ";
           ui->listWidget->addItem(
               QString::fromStdString(peer->requests_buffer[i].second.name + req +
                                      peer->requests_buffer[i].second.imagename + " "+to_string(peer->requests_buffer[i].second.views)+ "times"));
@@ -173,7 +173,7 @@ void NotificationDialog::on_push_refresh_clicked() { // refill list
     else if (peer->requests_buffer[i].first == 2007)
       req = " want to update his number of views to ";
     else
-      req = " something wrong here ";
+      req = " Check your internet connection ";
     ui->listWidget->addItem(
         QString::fromStdString(peer->requests_buffer[i].second.name + req +
                                peer->requests_buffer[i].second.imagename + " "+to_string(peer->requests_buffer[i].second.views)+ "times"));
@@ -193,7 +193,7 @@ void NotificationDialog::on_push_refresh_clicked() { // refill list
   else{
     ui->lbl_result->setVisible(true);
     ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-    ui->lbl_result->setText("Something wrong getusers!");
+    ui->lbl_result->setText("Check your internet connection!");
   }
 }
 
@@ -214,7 +214,7 @@ void NotificationDialog::on_push_disapprove_clicked() {
       else if (peer->requests_buffer[i].first == 2007)
         req = " want to update his number of views to ";
       else
-        req = " something wrong here ";
+        req = " Check your internet connection ";
       ui->listWidget->addItem(
           QString::fromStdString(peer->requests_buffer[i].second.name + req +
                                  peer->requests_buffer[i].second.imagename + " "+to_string(peer->requests_buffer[i].second.views)+ "times"));
