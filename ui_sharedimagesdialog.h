@@ -34,14 +34,11 @@ public:
     QPushButton *push_back;
     QListWidget *listWidget;
     QHBoxLayout *horizontalLayout;
-    QSpacerItem *horizontalSpacer_2;
     QPushButton *push_request;
     QSpacerItem *horizontalSpacer_5;
     QLineEdit *line_views;
     QSpacerItem *horizontalSpacer_6;
     QPushButton *push_view;
-    QSpacerItem *horizontalSpacer_7;
-    QLabel *lbl_rem;
     QSpacerItem *horizontalSpacer_9;
     QHBoxLayout *horizontalLayout_3;
     QLabel *lbl_result;
@@ -92,10 +89,6 @@ public:
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_2);
-
         push_request = new QPushButton(SharedImagesDialog);
         push_request->setObjectName(QStringLiteral("push_request"));
 
@@ -118,15 +111,6 @@ public:
         push_view->setObjectName(QStringLiteral("push_view"));
 
         horizontalLayout->addWidget(push_view);
-
-        horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_7);
-
-        lbl_rem = new QLabel(SharedImagesDialog);
-        lbl_rem->setObjectName(QStringLiteral("lbl_rem"));
-
-        horizontalLayout->addWidget(lbl_rem);
 
         horizontalSpacer_9 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -180,7 +164,6 @@ public:
         push_back->setText(QApplication::translate("SharedImagesDialog", "Back", nullptr));
         push_request->setText(QApplication::translate("SharedImagesDialog", "Request", nullptr));
         push_view->setText(QApplication::translate("SharedImagesDialog", "View", nullptr));
-        lbl_rem->setText(QApplication::translate("SharedImagesDialog", "0", nullptr));
         lbl_result->setText(QApplication::translate("SharedImagesDialog", "Error", nullptr));
         lbl_time->setText(QApplication::translate("SharedImagesDialog", "Time", nullptr));
     } // retranslateUi

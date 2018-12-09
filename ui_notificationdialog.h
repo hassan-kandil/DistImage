@@ -32,7 +32,6 @@ public:
     QPushButton *push_back;
     QListWidget *listWidget;
     QHBoxLayout *horizontalLayout;
-    QSpacerItem *horizontalSpacer_2;
     QPushButton *push_approve;
     QSpacerItem *horizontalSpacer_6;
     QLineEdit *line_views;
@@ -79,10 +78,6 @@ public:
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_2);
-
         push_approve = new QPushButton(NotificationDialog);
         push_approve->setObjectName(QStringLiteral("push_approve"));
 

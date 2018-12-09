@@ -32,15 +32,10 @@ public:
     QPushButton *push_back;
     QListWidget *listWidget;
     QHBoxLayout *horizontalLayout;
-    QSpacerItem *horizontalSpacer_2;
     QPushButton *push_request;
     QSpacerItem *horizontalSpacer_3;
     QLineEdit *line_views;
     QSpacerItem *horizontalSpacer_4;
-    QPushButton *push_view;
-    QSpacerItem *horizontalSpacer_6;
-    QLabel *lbl_rem;
-    QSpacerItem *horizontalSpacer_5;
     QHBoxLayout *horizontalLayout_3;
     QLabel *lbl_result;
     QSpacerItem *horizontalSpacer_7;
@@ -81,10 +76,6 @@ public:
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_2);
-
         push_request = new QPushButton(userimagesdialog);
         push_request->setObjectName(QStringLiteral("push_request"));
 
@@ -102,24 +93,6 @@ public:
         horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer_4);
-
-        push_view = new QPushButton(userimagesdialog);
-        push_view->setObjectName(QStringLiteral("push_view"));
-
-        horizontalLayout->addWidget(push_view);
-
-        horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_6);
-
-        lbl_rem = new QLabel(userimagesdialog);
-        lbl_rem->setObjectName(QStringLiteral("lbl_rem"));
-
-        horizontalLayout->addWidget(lbl_rem);
-
-        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_5);
 
 
         verticalLayout->addLayout(horizontalLayout);
@@ -152,8 +125,7 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_7);
 
-        QWidget::setTabOrder(listWidget, push_view);
-        QWidget::setTabOrder(push_view, push_back);
+        QWidget::setTabOrder(listWidget, push_back);
 
         retranslateUi(userimagesdialog);
         QObject::connect(push_back, SIGNAL(clicked()), userimagesdialog, SLOT(close()));
@@ -168,8 +140,6 @@ public:
         push_back->setText(QApplication::translate("userimagesdialog", "Back", nullptr));
         push_request->setText(QApplication::translate("userimagesdialog", "Request", nullptr));
         line_views->setText(QString());
-        push_view->setText(QApplication::translate("userimagesdialog", "View", nullptr));
-        lbl_rem->setText(QApplication::translate("userimagesdialog", "0", nullptr));
         lbl_result->setText(QApplication::translate("userimagesdialog", "Request Done", nullptr));
         lbl_time->setText(QApplication::translate("userimagesdialog", "Time", nullptr));
     } // retranslateUi

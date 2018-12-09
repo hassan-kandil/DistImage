@@ -62,7 +62,6 @@ void userimagesdialog::on_push_request_clicked() {
           ui->lbl_result->setStyleSheet("QLabel { color : red; }");
           ui->lbl_result->setText("Please, enter the amount of views you want!");
       }
-
   } else {
     ui->lbl_result->setVisible(true);
     ui->lbl_result->setStyleSheet("QLabel { color : red; }");

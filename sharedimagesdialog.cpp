@@ -138,7 +138,30 @@ void SharedImagesDialog::on_push_request_clicked()
             }
           i++;
         }
-        peer->update_views_request_by_viewer(ownername, imagename, noViews);
+        int result = peer->update_views_request_by_viewer(ownername, imagename, noViews);
+        if (result == 1) {
+          ui->lbl_result->setStyleSheet("QLabel { color : green; }");
+          ui->lbl_result->setText(QString("Request sent!"));
+          ui->lbl_result->setVisible(true);
+        } else if (result == 3) {
+          ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+          ui->lbl_result->setText(QString("Request send failed!"));
+          ui->lbl_result->setVisible(true);
+        } else if (result == 0) {
+          ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+          ui->lbl_result->setText(
+              QString("Request sent before! Wait for owner response!"));
+          ui->lbl_result->setVisible(true);
+        } else if (result == 2) {
+          ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+          ui->lbl_result->setText(
+              QString("Something went wrong at peer->request_image!"));
+          ui->lbl_result->setVisible(true);
+        } else {
+          ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+          ui->lbl_result->setText(QString("Something went wrong here!"));
+          ui->lbl_result->setVisible(true);
+        }
         } else{
             ui->lbl_result->setVisible(true);
             ui->lbl_result->setStyleSheet("QLabel { color : red; }");

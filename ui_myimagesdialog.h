@@ -14,7 +14,6 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
@@ -33,14 +32,8 @@ public:
     QListWidget *listWidget;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer_2;
-    QPushButton *push_request;
-    QSpacerItem *horizontalSpacer_5;
-    QLineEdit *line_views;
-    QSpacerItem *horizontalSpacer_6;
     QPushButton *push_view;
     QSpacerItem *horizontalSpacer_7;
-    QLabel *lbl_rem;
-    QSpacerItem *horizontalSpacer_9;
     QHBoxLayout *horizontalLayout_3;
     QLabel *lbl_result;
     QSpacerItem *horizontalSpacer_3;
@@ -85,24 +78,6 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer_2);
 
-        push_request = new QPushButton(MyImagesDialog);
-        push_request->setObjectName(QStringLiteral("push_request"));
-
-        horizontalLayout->addWidget(push_request);
-
-        horizontalSpacer_5 = new QSpacerItem(18, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_5);
-
-        line_views = new QLineEdit(MyImagesDialog);
-        line_views->setObjectName(QStringLiteral("line_views"));
-
-        horizontalLayout->addWidget(line_views);
-
-        horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_6);
-
         push_view = new QPushButton(MyImagesDialog);
         push_view->setObjectName(QStringLiteral("push_view"));
 
@@ -111,15 +86,6 @@ public:
         horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer_7);
-
-        lbl_rem = new QLabel(MyImagesDialog);
-        lbl_rem->setObjectName(QStringLiteral("lbl_rem"));
-
-        horizontalLayout->addWidget(lbl_rem);
-
-        horizontalSpacer_9 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_9);
 
 
         verticalLayout->addLayout(horizontalLayout);
@@ -152,8 +118,7 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_7);
 
-        QWidget::setTabOrder(listWidget, push_request);
-        QWidget::setTabOrder(push_request, push_back);
+        QWidget::setTabOrder(listWidget, push_back);
 
         retranslateUi(MyImagesDialog);
         QObject::connect(push_back, SIGNAL(clicked()), MyImagesDialog, SLOT(close()));
@@ -166,9 +131,7 @@ public:
         MyImagesDialog->setWindowTitle(QApplication::translate("MyImagesDialog", "DistImage", nullptr));
         lbl_user->setText(QApplication::translate("MyImagesDialog", "User", nullptr));
         push_back->setText(QApplication::translate("MyImagesDialog", "Back", nullptr));
-        push_request->setText(QApplication::translate("MyImagesDialog", "Request", nullptr));
         push_view->setText(QApplication::translate("MyImagesDialog", "Show Viewers", nullptr));
-        lbl_rem->setText(QApplication::translate("MyImagesDialog", "0", nullptr));
         lbl_result->setText(QApplication::translate("MyImagesDialog", "TextLabel", nullptr));
         lbl_time->setText(QApplication::translate("MyImagesDialog", "Time", nullptr));
     } // retranslateUi

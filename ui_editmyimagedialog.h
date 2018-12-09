@@ -25,24 +25,26 @@ QT_BEGIN_NAMESPACE
 class Ui_editmyimageDialog
 {
 public:
-    QVBoxLayout *verticalLayout;
+    QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *push_refresh;
     QSpacerItem *horizontalSpacer_4;
     QLabel *lbl_user;
     QSpacerItem *horizontalSpacer;
     QPushButton *push_back;
+    QVBoxLayout *verticalLayout;
+    QSpacerItem *verticalSpacer;
+    QHBoxLayout *horizontalLayout_5;
+    QSpacerItem *horizontalSpacer_2;
+    QLabel *lbl_image;
+    QSpacerItem *horizontalSpacer_7;
+    QSpacerItem *verticalSpacer_2;
     QListWidget *listWidget;
     QHBoxLayout *horizontalLayout;
-    QSpacerItem *horizontalSpacer_2;
     QPushButton *push_update_views;
     QSpacerItem *horizontalSpacer_5;
     QLineEdit *line_views;
     QSpacerItem *horizontalSpacer_6;
-    QPushButton *push_view;
-    QSpacerItem *horizontalSpacer_7;
-    QLabel *lbl_rem;
-    QSpacerItem *horizontalSpacer_9;
     QHBoxLayout *horizontalLayout_3;
     QLabel *lbl_result;
     QSpacerItem *horizontalSpacer_3;
@@ -55,8 +57,8 @@ public:
         if (editmyimageDialog->objectName().isEmpty())
             editmyimageDialog->setObjectName(QStringLiteral("editmyimageDialog"));
         editmyimageDialog->resize(500, 500);
-        verticalLayout = new QVBoxLayout(editmyimageDialog);
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout_2 = new QVBoxLayout(editmyimageDialog);
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         push_refresh = new QPushButton(editmyimageDialog);
@@ -83,19 +85,46 @@ public:
         horizontalLayout_2->addWidget(push_back);
 
 
-        verticalLayout->addLayout(horizontalLayout_2);
+        verticalLayout_2->addLayout(horizontalLayout_2);
+
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer);
+
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_2);
+
+        lbl_image = new QLabel(editmyimageDialog);
+        lbl_image->setObjectName(QStringLiteral("lbl_image"));
+
+        horizontalLayout_5->addWidget(lbl_image);
+
+        horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_7);
+
+
+        verticalLayout->addLayout(horizontalLayout_5);
+
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_2);
+
+
+        verticalLayout_2->addLayout(verticalLayout);
 
         listWidget = new QListWidget(editmyimageDialog);
         listWidget->setObjectName(QStringLiteral("listWidget"));
 
-        verticalLayout->addWidget(listWidget);
+        verticalLayout_2->addWidget(listWidget);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_2);
-
         push_update_views = new QPushButton(editmyimageDialog);
         push_update_views->setObjectName(QStringLiteral("push_update_views"));
 
@@ -114,26 +143,8 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer_6);
 
-        push_view = new QPushButton(editmyimageDialog);
-        push_view->setObjectName(QStringLiteral("push_view"));
 
-        horizontalLayout->addWidget(push_view);
-
-        horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_7);
-
-        lbl_rem = new QLabel(editmyimageDialog);
-        lbl_rem->setObjectName(QStringLiteral("lbl_rem"));
-
-        horizontalLayout->addWidget(lbl_rem);
-
-        horizontalSpacer_9 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_9);
-
-
-        verticalLayout->addLayout(horizontalLayout);
+        verticalLayout_2->addLayout(horizontalLayout);
 
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
@@ -147,7 +158,7 @@ public:
         horizontalLayout_3->addItem(horizontalSpacer_3);
 
 
-        verticalLayout->addLayout(horizontalLayout_3);
+        verticalLayout_2->addLayout(horizontalLayout_3);
 
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
@@ -161,7 +172,7 @@ public:
         horizontalLayout_4->addItem(horizontalSpacer_8);
 
 
-        verticalLayout->addLayout(horizontalLayout_4);
+        verticalLayout_2->addLayout(horizontalLayout_4);
 
         QWidget::setTabOrder(listWidget, push_update_views);
         QWidget::setTabOrder(push_update_views, push_back);
@@ -178,9 +189,8 @@ public:
         push_refresh->setText(QApplication::translate("editmyimageDialog", "Refresh", nullptr));
         lbl_user->setText(QApplication::translate("editmyimageDialog", " My Image Viewers", nullptr));
         push_back->setText(QApplication::translate("editmyimageDialog", "Back", nullptr));
+        lbl_image->setText(QApplication::translate("editmyimageDialog", "Image", nullptr));
         push_update_views->setText(QApplication::translate("editmyimageDialog", "Update Views", nullptr));
-        push_view->setText(QApplication::translate("editmyimageDialog", "View", nullptr));
-        lbl_rem->setText(QApplication::translate("editmyimageDialog", "0", nullptr));
         lbl_result->setText(QApplication::translate("editmyimageDialog", "Error", nullptr));
         lbl_time->setText(QApplication::translate("editmyimageDialog", "TextLabel", nullptr));
     } // retranslateUi

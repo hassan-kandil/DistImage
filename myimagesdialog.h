@@ -15,7 +15,7 @@ public:
   ~MyImagesDialog();
 
 private slots:
-  void on_push_request_clicked();
+  //void on_push_request_clicked();
 
   void on_push_view_clicked();
 

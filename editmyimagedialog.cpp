@@ -7,6 +7,9 @@ editmyimageDialog::editmyimageDialog(QWidget *parent, Peer *peer,
     : QDialog(parent), ui(new Ui::editmyimageDialog), peer(peer),
       imagename(imagename) {
   ui->setupUi(this);
+  QPixmap pm(imagename);
+  ui->lbl_image->setPixmap(
+      pm.scaled(200, 200, Qt::IgnoreAspectRatio, Qt::FastTransformation));
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
   ui->lbl_time->setStyleSheet("QLabel { color : blue; }");
