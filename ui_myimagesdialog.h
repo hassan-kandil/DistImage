@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'myimagesdialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.11.2
+** Created by: Qt User Interface Compiler version 5.11.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -138,7 +138,7 @@ public:
         MyImagesDialog->setWindowTitle(QApplication::translate("MyImagesDialog", "DistImage", nullptr));
         lbl_user->setText(QApplication::translate("MyImagesDialog", "User", nullptr));
         push_back->setText(QApplication::translate("MyImagesDialog", "Back", nullptr));
-        push_view->setText(QApplication::translate("MyImagesDialog", "Show Viewers", nullptr));
+        push_view->setText(QApplication::translate("MyImagesDialog", "Show Image and its Viewers", nullptr));
         lbl_result->setText(QApplication::translate("MyImagesDialog", "TextLabel", nullptr));
         lbl_time->setText(QApplication::translate("MyImagesDialog", "Time", nullptr));
     } // retranslateUi

@@ -50,8 +50,11 @@ UsersDialog::~UsersDialog() { delete ui; }
 
 void UsersDialog::on_push_view_clicked() {
   if (ui->listWidget->currentRow() >= 0) {
-    if (ui->listWidget->currentItem()->textColor() == Qt::red) {
-      ui->lbl_result->setVisible(true);
+      int resultUsers = peer->getUsers();
+      if(resultUsers == 1){
+    if (peer->users[ui->listWidget->currentItem()->text().toStdString()][0] == "0") { //  ->textColor() == Qt::red
+        ui->listWidget->currentItem()->textColor() = Qt::red; // set red if not already
+        ui->lbl_result->setVisible(true);
       ui->lbl_result->setStyleSheet("QLabel { color : red; }");
     } else {
       ui->lbl_result->setVisible(false);
@@ -62,6 +65,24 @@ void UsersDialog::on_push_view_clicked() {
                              Qt::CustomizeWindowHint);
       secdia->show();
     }
+      }
+      else if(resultUsers == 2){
+        ui->lbl_result->setVisible(true);
+        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+        ui->lbl_result->setText("DoS Offline!");
+      }
+      else if(resultUsers == 0){
+        ui->lbl_result->setVisible(true);
+        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+        ui->lbl_result->setText("Check your internet connection!"); // Getusers send failed!
+      }
+      else{
+        ui->lbl_result->setVisible(true);
+        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+        ui->lbl_result->setText("Check your internet connection!");
+      }
+
+
   } else {
     ui->lbl_result->setVisible(true);
     ui->lbl_result->setStyleSheet("QLabel { color : red; }");

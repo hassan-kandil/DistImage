@@ -83,7 +83,7 @@
         <string notr="true">color: rgb(238, 238, 236)</string>
        </property>
        <property name="text">
-        <string>Show Viewers</string>
+        <string>Show Image and its Viewers</string>
        </property>
       </widget>
      </item>
