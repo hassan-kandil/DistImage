@@ -7,6 +7,7 @@
 #include <QWindow>
 #include <qfiledialog.h>
 #include <thread>
+#include <unistd.h>
 SecondDialog::SecondDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::SecondDialog), peer(peer) {
   ui->setupUi(this);
@@ -27,10 +28,24 @@ SecondDialog::SecondDialog(QWidget *parent, Peer *peer)
 SecondDialog::~SecondDialog() { delete ui; }
 
 void SecondDialog::on_push_logout_clicked() {
-  peer->logout();
+  int result = peer->logout();
+  if (result == 1) { // Signed up correctly
+      ui->lbl_upload_successful->setVisible(true);
+      ui->lbl_upload_successful->setText(QString("Bye!"));
+      ui->lbl_upload_successful->setStyleSheet("QLabel { color : green; }");
+      usleep(2000);
   peer->updatefile();
   peer->update_my_images_file();
   this->close();
+  } else if (result == 6 || result == 0) {
+    ui->lbl_upload_successful->setVisible(true);
+    ui->lbl_upload_successful->setText(QString("Check your internet connection!")); // Signup Send Failed!
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+  } else { // Timeout
+    ui->lbl_upload_successful->setVisible(true);
+    ui->lbl_upload_successful->setText(QString("DoS Offline!"));
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+  }
 }
 
 void SecondDialog::on_push_users_clicked() {
