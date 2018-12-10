@@ -59,7 +59,10 @@ void SharedImagesDialog::on_push_view_clicked() {
       int resultUsers = peer->notify_views_by_viewer(ownername, imagename,
                                    peer->sharedimgs[cover]);
       if(resultUsers == 1){
-      ViewImageDialog secd(this, peer, cover, img);
+          ui->lbl_result->setVisible(true);
+          ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+          ui->lbl_result->setText("Image Loading. Please, wait!");
+          ViewImageDialog secd(this, peer, cover, img);
       secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
                           Qt::CustomizeWindowHint);
       secd.setModal(true);
@@ -87,27 +90,8 @@ void SharedImagesDialog::on_push_view_clicked() {
       }
     } else {
       ui->lbl_result->setVisible(true);
-      ui->lbl_result->setText(QString("You don't have enough views!"));
+      ui->lbl_result->setText(QString("You don't have enough views! Refresh or check notifications."));
       ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-
-      // get any updates before displaying image
-      ui->listWidget->clear();
-      ui->lbl_time->setText(QString::fromStdString("Last Time Refreshed: " +
-                                                   peer->getCurrentTime()));
-      ui->lbl_time->setStyleSheet("QLabel { color : white; }");
-      for (auto const &x : peer->sharedimgs) {
-        fullname = x.first;
-        for (int j = fullname.length() - 1; j > 0; j--) {
-          if (fullname[j] == '_') {
-            ownername = fullname.substr(0, j);
-            imagename = fullname.substr(j + 1, fullname.length() - 1);
-            break;
-          }
-        }
-        ui->listWidget->addItem(QString::fromStdString(
-            "Owner: " + ownername + ". Img: " + imagename +
-            ". Views Left: " + std::to_string(x.second)));
-      }
     }
   } else {
     ui->lbl_result->setVisible(true);
