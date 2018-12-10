@@ -29,6 +29,7 @@ public:
     QPushButton *push_refresh;
     QSpacerItem *horizontalSpacer;
     QPushButton *push_back;
+    QLabel *label;
     QListWidget *listWidget;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer_2;
@@ -70,6 +71,12 @@ public:
 
 
         verticalLayout->addLayout(horizontalLayout_2);
+
+        label = new QLabel(UsersDialog);
+        label->setObjectName(QStringLiteral("label"));
+        label->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
+
+        verticalLayout->addWidget(label);
 
         listWidget = new QListWidget(UsersDialog);
         listWidget->setObjectName(QStringLiteral("listWidget"));
@@ -140,6 +147,7 @@ public:
         UsersDialog->setWindowTitle(QApplication::translate("UsersDialog", "DistImage", nullptr));
         push_refresh->setText(QApplication::translate("UsersDialog", "Refresh", nullptr));
         push_back->setText(QApplication::translate("UsersDialog", "Back", nullptr));
+        label->setText(QApplication::translate("UsersDialog", "All Users:", nullptr));
         push_view->setText(QApplication::translate("UsersDialog", "View Selected User Images", nullptr));
         lbl_result->setText(QApplication::translate("UsersDialog", "Selected User is Offline!", nullptr));
         lbl_time->setText(QApplication::translate("UsersDialog", "Time", nullptr));

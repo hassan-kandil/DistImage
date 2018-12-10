@@ -30,6 +30,7 @@ public:
     QLabel *lbl_us;
     QSpacerItem *horizontalSpacer;
     QPushButton *push_back;
+    QLabel *label;
     QListWidget *listWidget;
     QHBoxLayout *horizontalLayout;
     QPushButton *push_request;
@@ -72,6 +73,12 @@ public:
 
 
         verticalLayout->addLayout(horizontalLayout_2);
+
+        label = new QLabel(userimagesdialog);
+        label->setObjectName(QStringLiteral("label"));
+        label->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
+
+        verticalLayout->addWidget(label);
 
         listWidget = new QListWidget(userimagesdialog);
         listWidget->setObjectName(QStringLiteral("listWidget"));
@@ -146,6 +153,7 @@ public:
         userimagesdialog->setWindowTitle(QApplication::translate("userimagesdialog", "DistImage", nullptr));
         lbl_us->setText(QApplication::translate("userimagesdialog", "User", nullptr));
         push_back->setText(QApplication::translate("userimagesdialog", "Back", nullptr));
+        label->setText(QApplication::translate("userimagesdialog", "Images:", nullptr));
         push_request->setText(QApplication::translate("userimagesdialog", "Request", nullptr));
         line_views->setText(QString());
         lbl_result->setText(QApplication::translate("userimagesdialog", "Request Done", nullptr));

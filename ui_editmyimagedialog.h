@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'editmyimagedialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.11.2
+** Created by: Qt User Interface Compiler version 5.11.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -39,6 +39,7 @@ public:
     QLabel *lbl_image;
     QSpacerItem *horizontalSpacer_7;
     QSpacerItem *verticalSpacer_2;
+    QLabel *label;
     QListWidget *listWidget;
     QHBoxLayout *horizontalLayout;
     QPushButton *push_update_views;
@@ -123,6 +124,12 @@ public:
 
         verticalLayout_2->addLayout(verticalLayout);
 
+        label = new QLabel(editmyimageDialog);
+        label->setObjectName(QStringLiteral("label"));
+        label->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
+
+        verticalLayout_2->addWidget(label);
+
         listWidget = new QListWidget(editmyimageDialog);
         listWidget->setObjectName(QStringLiteral("listWidget"));
 
@@ -198,6 +205,7 @@ public:
         lbl_user->setText(QApplication::translate("editmyimageDialog", " My Image Viewers", nullptr));
         push_back->setText(QApplication::translate("editmyimageDialog", "Back", nullptr));
         lbl_image->setText(QApplication::translate("editmyimageDialog", "Image", nullptr));
+        label->setText(QApplication::translate("editmyimageDialog", "Shared with viewers:", nullptr));
         push_update_views->setText(QApplication::translate("editmyimageDialog", "Update Views", nullptr));
         lbl_result->setText(QApplication::translate("editmyimageDialog", "Error", nullptr));
         lbl_time->setText(QApplication::translate("editmyimageDialog", "TextLabel", nullptr));

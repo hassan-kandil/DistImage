@@ -56,6 +56,16 @@
     </layout>
    </item>
    <item>
+    <widget class="QLabel" name="label">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(238, 238, 236)</string>
+     </property>
+     <property name="text">
+      <string>Notifications:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QListWidget" name="listWidget">
      <property name="autoFillBackground">
       <bool>false</bool>

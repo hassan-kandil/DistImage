@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'notificationdialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.11.2
+** Created by: Qt User Interface Compiler version 5.11.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -30,6 +30,7 @@ public:
     QPushButton *push_refresh;
     QSpacerItem *horizontalSpacer;
     QPushButton *push_back;
+    QLabel *label;
     QListWidget *listWidget;
     QHBoxLayout *horizontalLayout;
     QPushButton *push_approve;
@@ -74,6 +75,12 @@ public:
 
 
         verticalLayout->addLayout(horizontalLayout_2);
+
+        label = new QLabel(NotificationDialog);
+        label->setObjectName(QStringLiteral("label"));
+        label->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
+
+        verticalLayout->addWidget(label);
 
         listWidget = new QListWidget(NotificationDialog);
         listWidget->setObjectName(QStringLiteral("listWidget"));
@@ -161,6 +168,7 @@ public:
         NotificationDialog->setWindowTitle(QApplication::translate("NotificationDialog", "DistImage", nullptr));
         push_refresh->setText(QApplication::translate("NotificationDialog", "Refresh", nullptr));
         push_back->setText(QApplication::translate("NotificationDialog", "Back", nullptr));
+        label->setText(QApplication::translate("NotificationDialog", "Notifications:", nullptr));
         push_approve->setText(QApplication::translate("NotificationDialog", "Approve", nullptr));
         line_views->setText(QString());
         push_disapprove->setText(QApplication::translate("NotificationDialog", "Delete", nullptr));

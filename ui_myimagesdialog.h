@@ -29,6 +29,7 @@ public:
     QLabel *lbl_user;
     QSpacerItem *horizontalSpacer;
     QPushButton *push_back;
+    QLabel *label;
     QListWidget *listWidget;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer_2;
@@ -70,6 +71,12 @@ public:
 
 
         verticalLayout->addLayout(horizontalLayout_2);
+
+        label = new QLabel(MyImagesDialog);
+        label->setObjectName(QStringLiteral("label"));
+        label->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
+
+        verticalLayout->addWidget(label);
 
         listWidget = new QListWidget(MyImagesDialog);
         listWidget->setObjectName(QStringLiteral("listWidget"));
@@ -138,6 +145,7 @@ public:
         MyImagesDialog->setWindowTitle(QApplication::translate("MyImagesDialog", "DistImage", nullptr));
         lbl_user->setText(QApplication::translate("MyImagesDialog", "User", nullptr));
         push_back->setText(QApplication::translate("MyImagesDialog", "Back", nullptr));
+        label->setText(QApplication::translate("MyImagesDialog", "Uploaded Images:", nullptr));
         push_view->setText(QApplication::translate("MyImagesDialog", "Show Image and its Viewers", nullptr));
         lbl_result->setText(QApplication::translate("MyImagesDialog", "TextLabel", nullptr));
         lbl_time->setText(QApplication::translate("MyImagesDialog", "Time", nullptr));

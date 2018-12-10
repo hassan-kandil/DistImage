@@ -146,6 +146,16 @@
     </layout>
    </item>
    <item>
+    <widget class="QLabel" name="label">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(238, 238, 236)</string>
+     </property>
+     <property name="text">
+      <string>Shared with viewers:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QListWidget" name="listWidget"/>
    </item>
    <item>

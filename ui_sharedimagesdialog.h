@@ -28,10 +28,9 @@ public:
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *push_refresh;
-    QSpacerItem *horizontalSpacer_4;
-    QLabel *lbl_user;
     QSpacerItem *horizontalSpacer;
     QPushButton *push_back;
+    QLabel *lbl_user;
     QListWidget *listWidget;
     QHBoxLayout *horizontalLayout;
     QPushButton *push_request;
@@ -64,16 +63,6 @@ public:
 
         horizontalLayout_2->addWidget(push_refresh);
 
-        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_2->addItem(horizontalSpacer_4);
-
-        lbl_user = new QLabel(SharedImagesDialog);
-        lbl_user->setObjectName(QStringLiteral("lbl_user"));
-        lbl_user->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
-
-        horizontalLayout_2->addWidget(lbl_user);
-
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_2->addItem(horizontalSpacer);
@@ -86,6 +75,12 @@ public:
 
 
         verticalLayout->addLayout(horizontalLayout_2);
+
+        lbl_user = new QLabel(SharedImagesDialog);
+        lbl_user->setObjectName(QStringLiteral("lbl_user"));
+        lbl_user->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
+
+        verticalLayout->addWidget(lbl_user);
 
         listWidget = new QListWidget(SharedImagesDialog);
         listWidget->setObjectName(QStringLiteral("listWidget"));
@@ -170,8 +165,8 @@ public:
     {
         SharedImagesDialog->setWindowTitle(QApplication::translate("SharedImagesDialog", "DistImage", nullptr));
         push_refresh->setText(QApplication::translate("SharedImagesDialog", "Refresh", nullptr));
-        lbl_user->setText(QApplication::translate("SharedImagesDialog", "Shared Images", nullptr));
         push_back->setText(QApplication::translate("SharedImagesDialog", "Back", nullptr));
+        lbl_user->setText(QApplication::translate("SharedImagesDialog", "Images Shared with me:", nullptr));
         push_request->setText(QApplication::translate("SharedImagesDialog", "Request More Views", nullptr));
         push_view->setText(QApplication::translate("SharedImagesDialog", "View", nullptr));
         lbl_result->setText(QApplication::translate("SharedImagesDialog", "Error", nullptr));
