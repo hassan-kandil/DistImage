@@ -31,7 +31,12 @@ SharedImagesDialog::SharedImagesDialog(QWidget *parent, Peer *peer)
 SharedImagesDialog::~SharedImagesDialog() { delete ui; }
 
 void SharedImagesDialog::on_push_view_clicked() {
-  if (ui->listWidget->currentRow() >= 0) {
+    // just in case it opens and takes time, or will be replaced
+    ui->lbl_result->setVisible(true);
+    ui->lbl_result->setStyleSheet("QLabel { color : green; }");
+    ui->lbl_result->setText("Image Loading. Please, wait!");
+
+    if (ui->listWidget->currentRow() >= 0) {
     int i = 0;
     int views = 0;
     string imagename, ownername, fullname, img, cover;
@@ -53,16 +58,14 @@ void SharedImagesDialog::on_push_view_clicked() {
         i++;
     }
     if (views > 0) {
-      ui->lbl_result->setVisible(false);
       peer->sharedimgs[cover]--;
       cout << ownername << " " << imagename << " " << peer->sharedimgs[cover]
            << endl;
+
+
       int resultUsers = peer->notify_views_by_viewer(ownername, imagename,
                                    peer->sharedimgs[cover]);
       if(resultUsers == 1){
-          ui->lbl_result->setVisible(true);
-          ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-          ui->lbl_result->setText("Image Loading. Please, wait!");
           ViewImageDialog secd(this, peer, cover, img);
       secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
                           Qt::CustomizeWindowHint);
