@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'sharedimagesdialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.11.2
+** Created by: Qt User Interface Compiler version 5.11.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -172,7 +172,7 @@ public:
         push_refresh->setText(QApplication::translate("SharedImagesDialog", "Refresh", nullptr));
         lbl_user->setText(QApplication::translate("SharedImagesDialog", "Shared Images", nullptr));
         push_back->setText(QApplication::translate("SharedImagesDialog", "Back", nullptr));
-        push_request->setText(QApplication::translate("SharedImagesDialog", "Request", nullptr));
+        push_request->setText(QApplication::translate("SharedImagesDialog", "Request More Views", nullptr));
         push_view->setText(QApplication::translate("SharedImagesDialog", "View", nullptr));
         lbl_result->setText(QApplication::translate("SharedImagesDialog", "Error", nullptr));
         lbl_time->setText(QApplication::translate("SharedImagesDialog", "Time", nullptr));

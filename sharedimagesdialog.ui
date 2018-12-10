@@ -93,7 +93,7 @@
         <string notr="true">color: rgb(238, 238, 236)</string>
        </property>
        <property name="text">
-        <string>Request</string>
+        <string>Request More Views</string>
        </property>
       </widget>
      </item>

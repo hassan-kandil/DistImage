@@ -6,6 +6,12 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), peer(new Peer) {
   ui->setupUi(this);
+  ui->line_dos_ip->setPlaceholderText("0.0.0.0");
+  ui->line_dos_port->setPlaceholderText("0000");
+  ui->line_login_usr->setPlaceholderText("Username");
+  ui->line_login_pass->setPlaceholderText("Password");
+  ui->line_signup_usr->setPlaceholderText("Username");
+  ui->line_signup_pass->setPlaceholderText("Password");
   QPixmap pm("logo.png");
   ui->label->setPixmap(
       pm.scaled(200, 200, Qt::IgnoreAspectRatio, Qt::FastTransformation));

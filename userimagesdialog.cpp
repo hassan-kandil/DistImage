@@ -6,6 +6,7 @@ userimagesdialog::userimagesdialog(QWidget *parent, Peer *peer, QString s)
     : QDialog(parent), ui(new Ui::userimagesdialog), peer(peer),
       selectedUser(s) {
   ui->setupUi(this);
+  ui->line_views->setPlaceholderText("No. of Views");
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
   ui->lbl_time->setStyleSheet("QLabel { color : white; }");

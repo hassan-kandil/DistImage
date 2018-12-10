@@ -6,6 +6,7 @@
 SharedImagesDialog::SharedImagesDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::SharedImagesDialog), peer(peer) {
   ui->setupUi(this);
+  ui->line_views->setPlaceholderText("No. of Views");
   ui->lbl_time->setText(
       QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
   ui->lbl_time->setStyleSheet("QLabel { color : white; }");
