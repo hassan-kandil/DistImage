@@ -18,6 +18,8 @@ SecondDialog::SecondDialog(QWidget *parent, Peer *peer)
           SLOT(close())); // to close all after logout
   ui->lbl_user->setText(QString::fromStdString(peer->username));
   peer->readfile();
+  peer->read_my_images_file();
+
   ui->lbl_upload_successful->setVisible(false);
   cout << "This is user " << peer->username << endl;
   cout << "The thread is starting!! " << endl;
@@ -60,7 +62,6 @@ void SecondDialog::on_push_images_clicked() {
   MyImagesDialog secd(this, peer);
   secd.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint |
                       Qt::CustomizeWindowHint);
-  peer->read_my_images_file();
   secd.setModal(true);
   secd.exec();
 }

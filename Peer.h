@@ -1697,7 +1697,17 @@ public:
         pair<string, int> p;
         p.first = viewer;
         p.second = view;
-        myimages[fullimagename].push_back(p);
+        map<string, vector<pair<string, int>>> ::iterator it;
+             bool ex = false;
+             for ( it = myimages.begin(); it != myimages.end() && !ex; it++ )
+             {
+                 for (int i = 0; i <myimages[fullimagename].size(); i++ )
+                 if (myimages[fullimagename][i].first == viewer &&myimages[fullimagename][i].second == view )
+                     ex = true;
+           }
+             if (!ex)
+                 myimages[fullimagename].push_back(p);
+     //   myimages[fullimagename].push_back(p);
       }
     }
     Myimgsfile.clear();
