@@ -19,7 +19,8 @@ editmyimageDialog::editmyimageDialog(QWidget *parent, Peer *peer,
   vector<pair<string, int>> selectedViewers =
       peer->myimages[imagename.toStdString()];
   for (int i = 0; i < selectedViewers.size(); i++) {
-    ui->listWidget->addItem(QString::fromStdString(
+    if(selectedViewers[i].first != "")
+      ui->listWidget->addItem(QString::fromStdString(
         "Viewer: " + selectedViewers[i].first +
         ". Views Left: " + std::to_string(selectedViewers[i].second)));
   }
