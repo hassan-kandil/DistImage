@@ -1159,7 +1159,7 @@ public:
       else{
           cout << "msg_received_length " << msg_view_request_reply << endl;
           if (msg_view_request_reply[0] == '1') {
-            update_my_img(selectedImage, owner, NewNoViews);
+            //update_my_img(selectedImage, owner, NewNoViews);
             return 1;
           } else if (msg_view_request_reply[0] == '0')
             return 0;
@@ -1639,8 +1639,8 @@ public:
   }
 
   void update_my_images_file() {
-    // call this function when the user is signing out, to update the file
     Myimgsfile.close();
+      // call this function when the user is signing out, to update the file
     Myimgsfile.open("my_images.txt", fstream::out | fstream::in);
 
     for (auto const &x : myimages) {
@@ -1648,6 +1648,7 @@ public:
       for (int i = 0; i < x.second.size(); i++)
         Myimgsfile << x.second[i].first << " " << x.second[i].second << endl;
     }
+    Myimgsfile.close();
   }
 
   void readfile() {
@@ -1670,6 +1671,7 @@ public:
       }
     }
     imgfile.clear();
+
   }
 
   void read_my_images_file() {
