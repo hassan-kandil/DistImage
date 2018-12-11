@@ -1264,6 +1264,14 @@ public:
     pair<string, int> newviewer;
     newviewer.first = viewerName;
     newviewer.second = nViews;
+    map<string, vector<pair<string, int>>>::iterator it_2;
+//    bool found = false;
+//    for (it_2 = myimages.begin(); it_2 != myimages.end() && !found; it_2++) {
+
+//        found =
+
+
+//    }
     myimages[selectedImage].push_back(newviewer);
 
     struct sockaddr_in
@@ -1642,8 +1650,10 @@ public:
       for (auto const &x : myimages) {
         Myimgsfile << x.first << " ";
         for (int i = 0; i < x.second.size(); i++)
-          Myimgsfile << x.second[i].first << " " << x.second[i].second << endl;
+          Myimgsfile << x.second[i].first << " " << x.second[i].second << " ";
+        Myimgsfile << endl;
       }
+
       Myimgsfile.close();
     }
 
@@ -1687,7 +1697,8 @@ public:
           name_len = line.find(" ");
           string fullimagename = line.substr(0, name_len);
           line = line.erase(0, name_len + 1);
-          if (line != "")
+          if(line != "")
+         while (line != "")
           {
               viewer_len = line.find(" ");
               string viewer = line.substr(0, viewer_len);
