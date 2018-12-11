@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'editmyimagedialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.11.3
+** Created by: Qt User Interface Compiler version 5.11.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -132,6 +132,7 @@ public:
 
         listWidget = new QListWidget(editmyimageDialog);
         listWidget->setObjectName(QStringLiteral("listWidget"));
+        listWidget->setStyleSheet(QStringLiteral("color: rgb(238, 238, 236)"));
 
         verticalLayout_2->addWidget(listWidget);
 

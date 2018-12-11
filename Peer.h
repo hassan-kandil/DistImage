@@ -79,13 +79,6 @@ public:
     this->sv = new UDPSocketClient(); // UDPSocketServer(0); // dos_port
     this->sc = new UDPSocketClient();
 
-    imgfile.open("imagefile.txt", fstream::out | fstream::in | fstream::app);
-    Myimgsfile.open("my_images.txt", fstream::out | fstream::in | fstream::app);
-
-    if (imgfile.fail())
-      cout << "imagefile.txt open failed!";
-    if (Myimgsfile.fail())
-      cout << "my_images.txt open failed!";
   }
   ~Peer() {}
 
@@ -1629,102 +1622,105 @@ public:
   }
 
   void updatefile() {
-    // call this function when the user is signing out, to update the file
-    imgfile.close();
-    imgfile.open("imagefile.txt", fstream::out | fstream::in);
-
-    for (auto const &x : sharedimgs) {
-      imgfile << x.first << " " << x.second << endl;
-    }
-  }
-
-  void update_my_images_file() {
-    Myimgsfile.close();
+        imgfile.close();
       // call this function when the user is signing out, to update the file
-    Myimgsfile.open("my_images.txt", fstream::out | fstream::in);
+      string shared_images_filename = this->username + "_sharedimages.txt";
+      imgfile.open(shared_images_filename, fstream::out | fstream::in);
 
-    for (auto const &x : myimages) {
-      Myimgsfile << x.first << " ";
-      for (int i = 0; i < x.second.size(); i++)
-        Myimgsfile << x.second[i].first << " " << x.second[i].second << endl;
-    }
-    Myimgsfile.close();
-  }
-
-  void readfile() {
-    // call this function once, when the user logs in to fill in the map from
-    // what is in the file
-    imgfile.seekp(0);
-    while (!imgfile.eof()) {
-      string line;
-      getline(imgfile, line);
-      if (line != "") {
-        int name_len, owner_len, view_len;
-        name_len = line.find(" ");
-        string fullimagename = line.substr(0, name_len);
-        line = line.erase(0, name_len + 1);
-        view_len = line.find(" ");
-        string views = line.substr(0, view_len);
-        line = line.erase(0, view_len + 1);
-        int view = stoi(views);
-        sharedimgs[fullimagename] = view;
+      for (auto const &x : sharedimgs) {
+        imgfile << x.first << " " << x.second << endl;
       }
+      imgfile.close();
     }
-    imgfile.clear();
 
-  }
+    void update_my_images_file() {
+      // call this function when the user is signing out, to update the file
+        Myimgsfile.close();
+      string filename = this->username + "_images.txt";
+      Myimgsfile.open(filename, fstream::out | fstream::in);
 
-  void read_my_images_file() {
-    // call this function once, when the user logs in to fill in the map from
-    // what is in the file
-    Myimgsfile.seekp(0);
-    while (!Myimgsfile.eof()) {
-      string line;
-      getline(Myimgsfile, line);
-      if (line != "") {
-        int name_len, viewer_len, view_len;
-        name_len = line.find(" ");
-        string fullimagename = line.substr(0, name_len);
-        line = line.erase(0, name_len + 1);
-
-        viewer_len = line.find(" ");
-        string viewer = line.substr(0, viewer_len);
-        line = line.erase(0, viewer_len + 1);
-        view_len = line.find(" ");
-        string views = line.substr(0, view_len);
-        line = line.erase(0, view_len + 1);
-        int view = stoi(views);
-        pair<string, int> p;
-        p.first = viewer;
-        p.second = view;
-        map<string, vector<pair<string, int>>> ::iterator it;
-             bool ex = false;
-             for ( it = myimages.begin(); it != myimages.end() && !ex; it++ )
-             {
-                 for (int i = 0; i <myimages[fullimagename].size(); i++ )
-                 if (myimages[fullimagename][i].first == viewer &&myimages[fullimagename][i].second == view )
-                     ex = true;
-           }
-             if (!ex)
-                 myimages[fullimagename].push_back(p);
-     //   myimages[fullimagename].push_back(p);
+      for (auto const &x : myimages) {
+        Myimgsfile << x.first << " ";
+        for (int i = 0; i < x.second.size(); i++)
+          Myimgsfile << x.second[i].first << " " << x.second[i].second << endl;
       }
+      Myimgsfile.close();
     }
-    Myimgsfile.clear();
-  }
 
-  string getCurrentTime() {
-    time_t rawtime;
-    struct tm *timeinfo;
-    char buffer[80];
+    void readfile() {
+      // call this function once, when the user logs in to fill in the map from
+      // what is in the file
 
-    time(&rawtime);
-    timeinfo = localtime(&rawtime);
+      string shared_images_filename = this->username + "_sharedimages.txt";
+      imgfile.open(shared_images_filename, fstream::out | fstream::in | fstream::app);
+      imgfile.seekp(0);
+      while (!imgfile.eof()) {
+        string line;
+        getline(imgfile, line);
+        if (line != "") {
+          int name_len, owner_len, view_len;
+          name_len = line.find(" ");
+          string fullimagename = line.substr(0, name_len);
+          line = line.erase(0, name_len + 1);
+          view_len = line.find(" ");
+          string views = line.substr(0, view_len);
+          line = line.erase(0, view_len + 1);
+          int view = stoi(views);
+          sharedimgs[fullimagename] = view;
+        }
+      }
+      imgfile.clear();
+    }
 
-    strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
-    std::string str(buffer);
-    return str;
-  }
+    void read_my_images_file() {
+      // call this function once, when the user logs in to fill in the map from
+      // what is in the file
+     string myimages_filename = this->username + "_images.txt";
+      Myimgsfile.open(myimages_filename, fstream::out | fstream::in | fstream::app);
+      Myimgsfile.seekp(0);
+      pair<string, int> p;
+      while (!Myimgsfile.eof()) {
+        string line;
+        getline(Myimgsfile, line);
+        if (line != "") {
+          int name_len, viewer_len, view_len;
+          name_len = line.find(" ");
+          string fullimagename = line.substr(0, name_len);
+          line = line.erase(0, name_len + 1);
+          if (line != "")
+          {
+              viewer_len = line.find(" ");
+              string viewer = line.substr(0, viewer_len);
+              line = line.erase(0, viewer_len + 1);
+              view_len = line.find(" ");
+              string views = line.substr(0, view_len);
+              line = line.erase(0, view_len + 1);
+              int view = stoi(views);
+              p.first = viewer;
+              p.second = view;
+              myimages[fullimagename].push_back(p);
+          }else
+              myimages[fullimagename].push_back(p);
+
+        }
+      }
+      Myimgsfile.clear();
+
+    }
+
+    string getCurrentTime() {
+       time_t rawtime;
+       struct tm *timeinfo;
+       char buffer[80];
+
+       time(&rawtime);
+       timeinfo = localtime(&rawtime);
+
+       strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
+       std::string str(buffer);
+       return str;
+     }
+
 };
 
 #endif

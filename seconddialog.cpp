@@ -19,7 +19,6 @@ SecondDialog::SecondDialog(QWidget *parent, Peer *peer)
   ui->lbl_user->setText(QString::fromStdString(peer->username));
   peer->readfile();
   peer->read_my_images_file();
-
   ui->lbl_upload_successful->setVisible(false);
   cout << "This is user " << peer->username << endl;
   cout << "The thread is starting!! " << endl;
