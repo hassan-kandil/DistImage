@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>InstaDist</string>
+   <string>DistImage</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(46, 52, 54)
