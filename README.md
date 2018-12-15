@@ -52,9 +52,9 @@ g++ DoS.h UDPSocketServer.h MainDoS.cpp Message.h -o dos
 ./dos
 ```
 
-7- Enter DoS port
+9- Enter DoS port
 
-8- Open Several Peers and Enjoy!
+10- Open Several Peers and Enjoy!
 
 ## Running the tests
 
