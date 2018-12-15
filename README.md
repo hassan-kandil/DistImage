@@ -72,9 +72,9 @@ Run the DoS and Peers on different machines and close the obstructing firewalls
 
 * **Ahmed Refaay** - *Final Version* - [Refaay](https://github.com/refaay)
 
-* **Lotfy Hussein**
-
 * **Hassan Kandil**
+
+* **Lotfy Hussein**
 
 ## License
 
