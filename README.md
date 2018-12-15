@@ -8,80 +8,80 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Install Qt
+
+Install Steghide for steganography image encryption
 
 ```
-Give examples
+sudo apt-get install steghide
+```
+Install Qt needed library
+
+```
+sudo apt-get install libgl1-mesa-dev
+
 ```
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+1- In a new folder, pull this project
 
-Say what the step will be
+2- Open Qt -> Open Project -> choose .pro file
+
+3- Under the Projects tab -> unmark "Shadow Build"
+
+4- Run Qt Project
+
+5- Open terminal in project folder
+
+6- Change to dos directory
 
 ```
-Give the example
+cd dos/
 ```
 
-And repeat
+7- Compile Directory of Service code
 
 ```
-until finished
+g++ DoS.h UDPSocketServer.h MainDoS.cpp Message.h -o dos
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+8- Run Directory of Service
+
+```
+./dos
+```
+
+7- Enter DoS port
+
+8- Open Several Peers and Enjoy!
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
+Tests are included in Report.pdf
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+Run the DoS and Peers on different machines and close the obstructing firewalls
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+* [Qt](https://www.qt.io/download) - The C++ GUI framework used
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Ahmed Refaay** - *Final Version* - [Refaay](https://github.com/refaay)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Lotfy Hussein**
+
+* **Hassan Kandil**
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is owned by the authors
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Distributed Systems Course Project Description
+* Dr. Amr El Kadi
+* TA Eng. Amr Saeed
