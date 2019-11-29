@@ -905,7 +905,7 @@ public:
         cout << images[1] << endl;
         string temp_ip = images[1];
         cout << images[2] << endl;
-        int remote_peer_port = std::stoi(images[2], nullptr, 0); // Refaay
+        int remote_peer_port = std::stoi(images[2], nullptr, 0);
         cout << "Remote IP " << temp_ip << ", port " << remote_peer_port << endl;
         char remote_peer_address[1024];
         char little_buffer[100];
@@ -997,7 +997,7 @@ public:
 
     string temp_ip = images[1];
     cout << images[2] << endl;
-    int remote_peer_port = std::stoi(images[2], nullptr, 0); // Refaay
+    int remote_peer_port = std::stoi(images[2], nullptr, 0);
     cout << "Remote IP " << temp_ip << ", port " << remote_peer_port << endl;
     char remote_peer_address[1024];
     char little_buffer[100];
@@ -1092,7 +1092,7 @@ public:
 
     string temp_ip = images[1];
     cout << images[2] << endl;
-    int remote_peer_port = std::stoi(images[2], nullptr, 0); // Refaay
+    int remote_peer_port = std::stoi(images[2], nullptr, 0);
     cout << "Remote IP " << temp_ip << ", port " << remote_peer_port << endl;
     char remote_peer_address[1024];
     char little_buffer[100];
@@ -1182,7 +1182,7 @@ public:
 
     string temp_ip = images[1];
     cout << images[1] << endl;
-    int remote_peer_port = std::stoi(images[2], nullptr, 0); // Refaay
+    int remote_peer_port = std::stoi(images[2], nullptr, 0);
     cout << "Remote IP " << temp_ip << ", port " << remote_peer_port << endl;
     char remote_peer_address[1024];
     char little_buffer[100];
@@ -1281,7 +1281,7 @@ public:
     string remote_peer_ip = images[1]; // retriveing the ip of the receiver
     int remote_peer_port =
         std::stoi(images[2], nullptr,
-                  0); // Refaay //Retreiving the port no of the receiver
+                  0);  //Retreiving the port no of the receiver
     cout << "Remote IP " << remote_peer_ip << ", port " << remote_peer_port
          << endl;
 
