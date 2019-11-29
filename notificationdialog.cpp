@@ -197,7 +197,7 @@ void NotificationDialog::on_push_refresh_clicked() { // refill list
 
 void NotificationDialog::on_push_disapprove_clicked() {
   if (ui->listWidget->currentRow() >= 0) {
-    // Refaay: should reply with request disapproved
+    // should reply with request disapproved
 
     peer->requests_buffer.erase(peer->requests_buffer.begin() +
                                 ui->listWidget->currentRow());
