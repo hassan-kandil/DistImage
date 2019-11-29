@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
   ui->line_login_pass->setPlaceholderText("Password");
   ui->line_signup_usr->setPlaceholderText("Username");
   ui->line_signup_pass->setPlaceholderText("Password");
-  QPixmap pm("logo.png");
+  QPixmap pm("cover.png");
   ui->label->setPixmap(
       pm.scaled(200, 200, Qt::IgnoreAspectRatio, Qt::FastTransformation));
   ui->lbl_time->setText(

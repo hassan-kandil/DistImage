@@ -14,7 +14,7 @@
    <string>DistImage</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(46, 52, 54)
+   <string notr="true">background-color: rgb(0,0,0)
 </string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
