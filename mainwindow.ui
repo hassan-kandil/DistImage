@@ -14,7 +14,7 @@
    <string>DistImage</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(0,0,0)
+   <string notr="true">background-color: rgb(0,0,50)
 </string>
   </property>
   <widget class="QWidget" name="centralWidget">
