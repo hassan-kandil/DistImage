@@ -201,7 +201,7 @@ public:
       cout << "imfirstfrag length " << fraglength << endl;
       // this->sendReply(reinterpret_cast<char*>(this->Serverbuffer));
 
-      // Hassan Changes
+      //  Changes
 
       current_received += r;
       unsigned char little_buffer[20000];
@@ -954,7 +954,7 @@ public:
           string msg_view_request_reply =
               reply_view_request.getUnmarshalledMessage();
 
-          // Hassan's resend if lost
+          // 's resend if lost
           int rpc_id_new = reply_view_request.getRPCId();
 
           if (rpc_id_new != requestID) // check if the request matches the reply
@@ -1046,7 +1046,7 @@ public:
       string msg_view_request_reply =
           reply_update_request.getUnmarshalledMessage();
 
-      // Hassan's resend if lost
+      // 's resend if lost
       int rpc_id_new = reply_update_request.getRPCId();
 
       if (rpc_id_new != requestID) // check if the request matches the reply
@@ -1141,7 +1141,7 @@ public:
       string msg_view_request_reply =
           reply_update_request.getUnmarshalledMessage();
 
-      // Hassan's resend if lost
+      // 's resend if lost
       int rpc_id_new = reply_update_request.getRPCId();
 
       if (rpc_id_new != requestID) // check if the request matches the reply
@@ -1232,7 +1232,7 @@ public:
       string msg_view_request_reply =
           reply_view_request.getUnmarshalledMessage();
 
-      // Hassan's resend if lost
+      //  resend if lost
       int rpc_id_new = reply_view_request.getRPCId();
 
       if (rpc_id_new != requestID) // check if the request matches the reply
