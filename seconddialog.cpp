@@ -30,7 +30,7 @@ SecondDialog::~SecondDialog() { delete ui; }
 
 void SecondDialog::on_push_logout_clicked() {
   int result = peer->logout();
-  if (result == 1) { // Signed up correctly
+  if (result == 1) { // Logged out correctly
       ui->lbl_upload_successful->setVisible(true);
       ui->lbl_upload_successful->setText(QString("Bye!"));
       ui->lbl_upload_successful->setStyleSheet("QLabel { color : green; }");

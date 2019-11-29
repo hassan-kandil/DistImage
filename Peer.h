@@ -707,7 +707,7 @@ public:
           no_tries++;
       }
          if (npoll == 0 || npoll == -1) {
-           return 2;
+           return 2; // timeout happened
          } else {
       unsigned char little_buffer[10];
       memset(little_buffer, 0, sizeof(little_buffer));

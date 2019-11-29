@@ -77,7 +77,7 @@ void editmyimageDialog::on_push_update_views_clicked() {
     } else {
       ui->lbl_result->setVisible(true);
       ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-      ui->lbl_result->setText("Please, select an image!");
+      ui->lbl_result->setText("Please, select a viewer!");
     }
 }
 

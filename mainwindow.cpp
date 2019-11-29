@@ -112,6 +112,14 @@ void MainWindow::on_push_signup_clicked() {
 
     string username = ui->line_signup_usr->text().toStdString();
     string password = ui->line_signup_pass->text().toStdString();
+
+    if (username == "" || password == "") {
+          ui->lbl_signup_welcome->setVisible(true);
+          ui->lbl_signup_welcome->setText(QString("Fill all info!"));
+          ui->lbl_signup_welcome->setStyleSheet("QLabel { color : red; }");
+        }
+        else{
+
     int sign_result = peer->sign_up(username, password);
     if (sign_result == 1) { // Signed up correctly
       ui->lbl_signup_welcome->setVisible(true);
@@ -138,5 +146,6 @@ void MainWindow::on_push_signup_clicked() {
       ui->lbl_signup_welcome->setText(QString("DoS Offline!"));
       ui->lbl_signup_welcome->setStyleSheet("QLabel { color : red; }");
     }
+  }
   }
 }
