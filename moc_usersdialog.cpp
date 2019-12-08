@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'usersdialog.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.5)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'usersdialog.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.11.2. It"
+#error "This file was generated using the moc from 5.9.5. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -80,7 +80,7 @@ void UsersDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
     Q_UNUSED(_a);
 }
 
-QT_INIT_METAOBJECT const QMetaObject UsersDialog::staticMetaObject = {
+const QMetaObject UsersDialog::staticMetaObject = {
     { &QDialog::staticMetaObject, qt_meta_stringdata_UsersDialog.data,
       qt_meta_data_UsersDialog,  qt_static_metacall, nullptr, nullptr}
 };

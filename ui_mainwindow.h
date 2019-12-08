@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.11.2
+** Created by: Qt User Interface Compiler version 5.9.5
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,8 +10,11 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
@@ -87,7 +90,7 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(587, 500);
-        MainWindow->setStyleSheet(QLatin1String("background-color: rgb(46, 52, 54)\n"
+        MainWindow->setStyleSheet(QLatin1String("background-color: rgb(0,0,50)\n"
 ""));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
@@ -393,23 +396,23 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "InstaDist", nullptr));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "DistImage", Q_NULLPTR));
         label->setText(QString());
-        lbl_dos_info->setText(QApplication::translate("MainWindow", "Directory of Service Connection Info", nullptr));
-        lbl_dos_ip->setText(QApplication::translate("MainWindow", "IP Address", nullptr));
-        lbl_dos_port->setText(QApplication::translate("MainWindow", "Port Number", nullptr));
-        lbl_dos_error->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" color:#ef2929;\">Please, fill in all info!</span></p></body></html>", nullptr));
-        lbl_login_already->setText(QApplication::translate("MainWindow", "Already a Member? Log In!", nullptr));
-        lbl_login_usr->setText(QApplication::translate("MainWindow", "UserName", nullptr));
-        lbl_login_pass->setText(QApplication::translate("MainWindow", "Password", nullptr));
-        push_login->setText(QApplication::translate("MainWindow", "Login", nullptr));
-        lbl_login_wrong->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" color:#ef2929;\">Wrong Username or Password!</span></p></body></html>", nullptr));
-        lbl_login_not_on_our_system->setText(QApplication::translate("MainWindow", "Not On Our System Yet? Sign Up!", nullptr));
-        lbl_signup_usr->setText(QApplication::translate("MainWindow", "UserName", nullptr));
-        lbl_signup_pass->setText(QApplication::translate("MainWindow", "Password", nullptr));
-        push_signup->setText(QApplication::translate("MainWindow", "Sign Up", nullptr));
-        lbl_signup_welcome->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" color:#4e9a06;\">Signed Up. Welcome!</span></p></body></html>", nullptr));
-        lbl_time->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
+        lbl_dos_info->setText(QApplication::translate("MainWindow", "Directory of Service Connection Info", Q_NULLPTR));
+        lbl_dos_ip->setText(QApplication::translate("MainWindow", "IP Address", Q_NULLPTR));
+        lbl_dos_port->setText(QApplication::translate("MainWindow", "Port Number", Q_NULLPTR));
+        lbl_dos_error->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" color:#ef2929;\">Please, fill in all info!</span></p></body></html>", Q_NULLPTR));
+        lbl_login_already->setText(QApplication::translate("MainWindow", "Already a Member? Log In!", Q_NULLPTR));
+        lbl_login_usr->setText(QApplication::translate("MainWindow", "UserName", Q_NULLPTR));
+        lbl_login_pass->setText(QApplication::translate("MainWindow", "Password", Q_NULLPTR));
+        push_login->setText(QApplication::translate("MainWindow", "Login", Q_NULLPTR));
+        lbl_login_wrong->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" color:#ef2929;\">Wrong Username or Password!</span></p></body></html>", Q_NULLPTR));
+        lbl_login_not_on_our_system->setText(QApplication::translate("MainWindow", "Not On Our System Yet? Sign Up!", Q_NULLPTR));
+        lbl_signup_usr->setText(QApplication::translate("MainWindow", "UserName", Q_NULLPTR));
+        lbl_signup_pass->setText(QApplication::translate("MainWindow", "Password", Q_NULLPTR));
+        push_signup->setText(QApplication::translate("MainWindow", "Sign Up", Q_NULLPTR));
+        lbl_signup_welcome->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" color:#4e9a06;\">Signed Up. Welcome!</span></p></body></html>", Q_NULLPTR));
+        lbl_time->setText(QApplication::translate("MainWindow", "TextLabel", Q_NULLPTR));
     } // retranslateUi
 
 };

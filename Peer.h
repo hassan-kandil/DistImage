@@ -83,7 +83,7 @@ public:
   ~Peer() {}
 
   void listenPeer() {
-    cout << "Ana Henaaaa Thread ba listen!! " << endl;
+    cout << "Thread listening " << endl;
     while (getRequest()) {
     }
   }

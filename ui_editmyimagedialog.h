@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'editmyimagedialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.11.2
+** Created by: Qt User Interface Compiler version 5.9.5
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,9 +10,12 @@
 #define UI_EDITMYIMAGEDIALOG_H
 
 #include <QtCore/QVariant>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
@@ -58,7 +61,7 @@ public:
         if (editmyimageDialog->objectName().isEmpty())
             editmyimageDialog->setObjectName(QStringLiteral("editmyimageDialog"));
         editmyimageDialog->resize(500, 500);
-        editmyimageDialog->setStyleSheet(QLatin1String("background-color: rgb(46, 52, 54)\n"
+        editmyimageDialog->setStyleSheet(QLatin1String("background-color: rgb(0,0,0)\n"
 ""));
         verticalLayout_2 = new QVBoxLayout(editmyimageDialog);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
@@ -201,15 +204,15 @@ public:
 
     void retranslateUi(QDialog *editmyimageDialog)
     {
-        editmyimageDialog->setWindowTitle(QApplication::translate("editmyimageDialog", "DistImage", nullptr));
-        push_refresh->setText(QApplication::translate("editmyimageDialog", "Refresh", nullptr));
-        lbl_user->setText(QApplication::translate("editmyimageDialog", " My Image Viewers", nullptr));
-        push_back->setText(QApplication::translate("editmyimageDialog", "Back", nullptr));
-        lbl_image->setText(QApplication::translate("editmyimageDialog", "Image", nullptr));
-        label->setText(QApplication::translate("editmyimageDialog", "Shared with viewers:", nullptr));
-        push_update_views->setText(QApplication::translate("editmyimageDialog", "Update Views", nullptr));
-        lbl_result->setText(QApplication::translate("editmyimageDialog", "Error", nullptr));
-        lbl_time->setText(QApplication::translate("editmyimageDialog", "TextLabel", nullptr));
+        editmyimageDialog->setWindowTitle(QApplication::translate("editmyimageDialog", "DistImage", Q_NULLPTR));
+        push_refresh->setText(QApplication::translate("editmyimageDialog", "Refresh", Q_NULLPTR));
+        lbl_user->setText(QApplication::translate("editmyimageDialog", " My Image Viewers", Q_NULLPTR));
+        push_back->setText(QApplication::translate("editmyimageDialog", "Back", Q_NULLPTR));
+        lbl_image->setText(QApplication::translate("editmyimageDialog", "Image", Q_NULLPTR));
+        label->setText(QApplication::translate("editmyimageDialog", "Viewers:", Q_NULLPTR));
+        push_update_views->setText(QApplication::translate("editmyimageDialog", "Top Up Views", Q_NULLPTR));
+        lbl_result->setText(QApplication::translate("editmyimageDialog", "Error", Q_NULLPTR));
+        lbl_time->setText(QApplication::translate("editmyimageDialog", "TextLabel", Q_NULLPTR));
     } // retranslateUi
 
 };

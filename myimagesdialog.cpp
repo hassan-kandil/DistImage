@@ -8,8 +8,8 @@ MyImagesDialog::MyImagesDialog(QWidget *parent, Peer *peer)
   ui->lbl_result->setVisible(false);
   ui->lbl_user->setText(QString::fromStdString(peer->username));
   ui->lbl_time->setText(
-      QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : white; }");
+      QString::fromStdString("Refreshed at " + peer->getCurrentTime()));
+  ui->lbl_time->setStyleSheet("QLabel { color : yellow; }");
 
   map<string, vector<pair<string, int>>> my_images_copy = peer->myimages;
 
@@ -35,7 +35,7 @@ void MyImagesDialog::on_push_view_clicked() {
     ui->lbl_result->setVisible(false);
 } else {
 ui->lbl_result->setVisible(true);
-ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-ui->lbl_result->setText("Please, select an image!");
+ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+ui->lbl_result->setText("Choose Image");
 }
 }

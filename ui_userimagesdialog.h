@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'userimagesdialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.11.2
+** Created by: Qt User Interface Compiler version 5.9.5
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,9 +10,12 @@
 #define UI_USERIMAGESDIALOG_H
 
 #include <QtCore/QVariant>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
@@ -49,7 +52,7 @@ public:
         if (userimagesdialog->objectName().isEmpty())
             userimagesdialog->setObjectName(QStringLiteral("userimagesdialog"));
         userimagesdialog->resize(500, 500);
-        userimagesdialog->setStyleSheet(QLatin1String("background-color: rgb(46, 52, 54)\n"
+        userimagesdialog->setStyleSheet(QLatin1String("background-color: rgb(0,0,0)\n"
 ""));
         verticalLayout = new QVBoxLayout(userimagesdialog);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
@@ -150,14 +153,14 @@ public:
 
     void retranslateUi(QDialog *userimagesdialog)
     {
-        userimagesdialog->setWindowTitle(QApplication::translate("userimagesdialog", "DistImage", nullptr));
-        lbl_us->setText(QApplication::translate("userimagesdialog", "User", nullptr));
-        push_back->setText(QApplication::translate("userimagesdialog", "Back", nullptr));
-        label->setText(QApplication::translate("userimagesdialog", "Images:", nullptr));
-        push_request->setText(QApplication::translate("userimagesdialog", "Request", nullptr));
+        userimagesdialog->setWindowTitle(QApplication::translate("userimagesdialog", "DistImage", Q_NULLPTR));
+        lbl_us->setText(QApplication::translate("userimagesdialog", "User", Q_NULLPTR));
+        push_back->setText(QApplication::translate("userimagesdialog", "Back", Q_NULLPTR));
+        label->setText(QApplication::translate("userimagesdialog", "Images:", Q_NULLPTR));
+        push_request->setText(QApplication::translate("userimagesdialog", "Request", Q_NULLPTR));
         line_views->setText(QString());
-        lbl_result->setText(QApplication::translate("userimagesdialog", "Request Done", nullptr));
-        lbl_time->setText(QApplication::translate("userimagesdialog", "Time", nullptr));
+        lbl_result->setText(QApplication::translate("userimagesdialog", "Request Done", Q_NULLPTR));
+        lbl_time->setText(QApplication::translate("userimagesdialog", "Time", Q_NULLPTR));
     } // retranslateUi
 
 };

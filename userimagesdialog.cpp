@@ -6,11 +6,11 @@ userimagesdialog::userimagesdialog(QWidget *parent, Peer *peer, QString s)
     : QDialog(parent), ui(new Ui::userimagesdialog), peer(peer),
       selectedUser(s) {
   ui->setupUi(this);
-  ui->line_views->setPlaceholderText("No. of Views");
+  ui->line_views->setPlaceholderText("Views");
   ui->lbl_time->setText(
-      QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : white; }");
-  ui->line_views->setPlaceholderText("No. of Views");
+      QString::fromStdString("Refreshed at " + peer->getCurrentTime()));
+  ui->lbl_time->setStyleSheet("QLabel { color : yellow; }");
+  ui->line_views->setPlaceholderText("Views");
   ui->lbl_result->setVisible(false);
   ui->lbl_us->setText(selectedUser);
   vector<string> images;
@@ -40,43 +40,43 @@ void userimagesdialog::on_push_request_clicked() {
               int result = peer->request_image(selectedUser.toUtf8().constData(),
                                                s.toUtf8().constData(), ui->line_views->text().toInt());
               if (result == 1) {
-                ui->lbl_result->setStyleSheet("QLabel { color : green; }");
-                ui->lbl_result->setText(QString("Request sent!"));
+                ui->lbl_result->setStyleSheet("QLabel { color : yellow; }");
+                ui->lbl_result->setText(QString("Request sent"));
                 ui->lbl_result->setVisible(true);
               } else if (result == 3) {
-                ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-                ui->lbl_result->setText(QString("Check your internet connection!")); // Request send failed!
+                ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+                ui->lbl_result->setText(QString("Request Sending Failed")); // Request send failed!
                 ui->lbl_result->setVisible(true);
               } else if (result == 0) {
-                ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+                ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
                 ui->lbl_result->setText(
-                    QString("Request sent before! Wait for owner response!"));
+                    QString("Request already Sent,  Wait for user reply .. "));
                 ui->lbl_result->setVisible(true);
               } else if (result == 2) {
-                ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+                ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
                 ui->lbl_result->setText(
-                    QString("Check your internet connection!"));
+                    QString("Problem with internet connection!"));
                 ui->lbl_result->setVisible(true);
               } else {
-                ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-                ui->lbl_result->setText(QString("Check your internet connection!"));
+                ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+                ui->lbl_result->setText(QString("Problem with internet connection!"));
                 ui->lbl_result->setVisible(true);
               }
           }
           else{
               ui->lbl_result->setVisible(true);
-              ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-              ui->lbl_result->setText("Image shared with you before! Request more views from Shared Images!");
+              ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+              ui->lbl_result->setText("Image already shared with you, request to top up your views.");
           }
       } else{
           ui->lbl_result->setVisible(true);
-          ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-          ui->lbl_result->setText("Please, enter the amount of views you want!");
+          ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+          ui->lbl_result->setText("Specify Amount of Desired Views");
       }
   } else {
     ui->lbl_result->setVisible(true);
-    ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-    ui->lbl_result->setText("Please, select an image!");
+    ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+    ui->lbl_result->setText("Choose an image!");
   }
 }
 

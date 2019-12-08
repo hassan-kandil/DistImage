@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'usersdialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.11.2
+** Created by: Qt User Interface Compiler version 5.9.5
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,9 +10,12 @@
 #define UI_USERSDIALOG_H
 
 #include <QtCore/QVariant>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QPushButton>
@@ -47,7 +50,7 @@ public:
         if (UsersDialog->objectName().isEmpty())
             UsersDialog->setObjectName(QStringLiteral("UsersDialog"));
         UsersDialog->resize(500, 500);
-        UsersDialog->setStyleSheet(QLatin1String("background-color: rgb(46, 52, 54)\n"
+        UsersDialog->setStyleSheet(QLatin1String("background-color: rgb(0,0,0)\n"
 ""));
         verticalLayout = new QVBoxLayout(UsersDialog);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
@@ -144,13 +147,13 @@ public:
 
     void retranslateUi(QDialog *UsersDialog)
     {
-        UsersDialog->setWindowTitle(QApplication::translate("UsersDialog", "DistImage", nullptr));
-        push_refresh->setText(QApplication::translate("UsersDialog", "Refresh", nullptr));
-        push_back->setText(QApplication::translate("UsersDialog", "Back", nullptr));
-        label->setText(QApplication::translate("UsersDialog", "All Users:", nullptr));
-        push_view->setText(QApplication::translate("UsersDialog", "View Selected User Images", nullptr));
-        lbl_result->setText(QApplication::translate("UsersDialog", "Selected User is Offline!", nullptr));
-        lbl_time->setText(QApplication::translate("UsersDialog", "Time", nullptr));
+        UsersDialog->setWindowTitle(QApplication::translate("UsersDialog", "DistImage", Q_NULLPTR));
+        push_refresh->setText(QApplication::translate("UsersDialog", "Refresh", Q_NULLPTR));
+        push_back->setText(QApplication::translate("UsersDialog", "Back", Q_NULLPTR));
+        label->setText(QApplication::translate("UsersDialog", "All Users:", Q_NULLPTR));
+        push_view->setText(QApplication::translate("UsersDialog", "View Selected User Images", Q_NULLPTR));
+        lbl_result->setText(QApplication::translate("UsersDialog", "Selected User is Offline!", Q_NULLPTR));
+        lbl_time->setText(QApplication::translate("UsersDialog", "Time", Q_NULLPTR));
     } // retranslateUi
 
 };

@@ -12,16 +12,16 @@ SecondDialog::SecondDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::SecondDialog), peer(peer) {
   ui->setupUi(this);
   ui->lbl_time->setText(
-      QString::fromStdString("Login Time: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : white; }");
+      QString::fromStdString("Logged in at " + peer->getCurrentTime()));
+  ui->lbl_time->setStyleSheet("QLabel { color : yellow; }");
   connect(this, SIGNAL(destroyed()), this->parent(),
           SLOT(close())); // to close all after logout
   ui->lbl_user->setText(QString::fromStdString(peer->username));
   peer->readfile();
   peer->read_my_images_file();
   ui->lbl_upload_successful->setVisible(false);
-  cout << "This is user " << peer->username << endl;
-  cout << "The thread is starting!! " << endl;
+  cout << "Username: " << peer->username << " Logged in " << endl;
+  cout << "Thread Started" << endl;
   std::thread listenThread(&Peer::listenPeer, peer);
   listenThread.detach();
 }
@@ -30,22 +30,22 @@ SecondDialog::~SecondDialog() { delete ui; }
 
 void SecondDialog::on_push_logout_clicked() {
   int result = peer->logout();
-  if (result == 1) { // Logged out correctly
+  if (result == 1) { // Logged out success
       ui->lbl_upload_successful->setVisible(true);
-      ui->lbl_upload_successful->setText(QString("Bye!"));
-      ui->lbl_upload_successful->setStyleSheet("QLabel { color : green; }");
+      ui->lbl_upload_successful->setText(QString("Logged Out"));
+      ui->lbl_upload_successful->setStyleSheet("QLabel { color : yellow; }");
       usleep(2000);
   peer->updatefile();
   peer->update_my_images_file();
   this->close();
   } else if (result == 6 || result == 0) {
     ui->lbl_upload_successful->setVisible(true);
-    ui->lbl_upload_successful->setText(QString("Check your internet connection!")); // Signup Send Failed!
-    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_upload_successful->setText(QString("Problem with Internet Connection")); // Signup Send Failed!
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : magenta; }");
   } else { // Timeout
     ui->lbl_upload_successful->setVisible(true);
-    ui->lbl_upload_successful->setText(QString("DoS Offline!"));
-    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_upload_successful->setText(QString("Server Unreachable"));
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : magenta; }");
   }
 }
 
@@ -81,37 +81,37 @@ void SecondDialog::on_push_upload_clicked() {
 
   if (upload_stat == 1) { // Successful
     ui->lbl_upload_successful->setVisible(true);
-    ui->lbl_upload_successful->setText(QString("Uploaded Successfully!"));
-    ui->lbl_upload_successful->setStyleSheet("QLabel { color : green; }");
+    ui->lbl_upload_successful->setText(QString("Image Uploaded"));
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : yellow; }");
   } else if (upload_stat == 0) {
     ui->lbl_upload_successful->setVisible(true);
-    ui->lbl_upload_successful->setText(QString("Username not found!"));
-    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_upload_successful->setText(QString("Incorrect Username"));
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : magenta; }");
   } else if (upload_stat == 6) {
     ui->lbl_upload_successful->setVisible(true);
     ui->lbl_upload_successful->setText(QString("Please, choose a file!"));
-    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : magenta; }");
   } else if (upload_stat == 3) {
     ui->lbl_upload_successful->setVisible(true);
     ui->lbl_upload_successful->setText(
-        QString("No special Chars allowed in image name! Only 1 dot."));
-    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+        QString("Special Characters Prohibited in Image Name"));
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : magenta; }");
   } else if (upload_stat == 9) {
     ui->lbl_upload_successful->setVisible(true);
-    ui->lbl_upload_successful->setText(QString("Image uploaded before!"));
-    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_upload_successful->setText(QString("Image already Uploaded"));
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : magenta; }");
   } else if (upload_stat == 2) {
     ui->lbl_upload_successful->setVisible(true);
-    ui->lbl_upload_successful->setText(QString("DoS Offline!"));
-    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_upload_successful->setText(QString("Server Unreachable"));
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : magenta; }");
   } else if (upload_stat == 30) {
     ui->lbl_upload_successful->setVisible(true);
-    ui->lbl_upload_successful->setText(QString("Check your internet connection!")); // Send to failed!
-    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_upload_successful->setText(QString("Sending Failed")); // Send to failed!
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : magenta; }");
   } else {
     ui->lbl_upload_successful->setVisible(true);
-    ui->lbl_upload_successful->setText(QString("Check your internet connection!"));
-    ui->lbl_upload_successful->setStyleSheet("QLabel { color : red; }");
+    ui->lbl_upload_successful->setText(QString("Problem with internet connection!"));
+    ui->lbl_upload_successful->setStyleSheet("QLabel { color : magenta; }");
   }
 }
 

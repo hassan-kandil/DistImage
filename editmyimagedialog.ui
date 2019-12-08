@@ -151,7 +151,7 @@
       <string notr="true">color: rgb(238, 238, 236)</string>
      </property>
      <property name="text">
-      <string>Shared with viewers:</string>
+      <string>Viewers:</string>
      </property>
     </widget>
    </item>
@@ -170,7 +170,7 @@
         <string notr="true">color: rgb(238, 238, 236)</string>
        </property>
        <property name="text">
-        <string>Update Views</string>
+        <string>Top Up Views</string>
        </property>
       </widget>
      </item>

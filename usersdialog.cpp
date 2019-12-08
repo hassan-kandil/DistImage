@@ -8,8 +8,8 @@ UsersDialog::UsersDialog(QWidget *parent, Peer *peer)
     : QDialog(parent), ui(new Ui::UsersDialog), peer(peer) {
   ui->setupUi(this);
   ui->lbl_time->setText(
-      QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
-  //ui->lbl_time->setStyleSheet("QLabel { color : white; }");
+      QString::fromStdString("Refreshed at " + peer->getCurrentTime()));
+  //ui->lbl_time->setStyleSheet("QLabel { color : yellow; }");
   ui->lbl_result->setVisible(false);
 
   int resultUsers = peer->getUsers();
@@ -31,18 +31,18 @@ UsersDialog::UsersDialog(QWidget *parent, Peer *peer)
 }
 else if(resultUsers == 2){
   ui->lbl_result->setVisible(true);
-  ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-  ui->lbl_result->setText("DoS Offline!");
+  ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+  ui->lbl_result->setText("Server Unreachable");
 }
 else if(resultUsers == 0){
   ui->lbl_result->setVisible(true);
-  ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-  ui->lbl_result->setText("Check your internet connection!"); // Getusers send failed!
+  ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+  ui->lbl_result->setText("Sending Failed"); // Getusers send failed!
 }
 else{
   ui->lbl_result->setVisible(true);
-  ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-  ui->lbl_result->setText("Check your internet connection!");
+  ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+  ui->lbl_result->setText("Problem with internet connection!");
 }
 }
 
@@ -52,10 +52,10 @@ void UsersDialog::on_push_view_clicked() {
   if (ui->listWidget->currentRow() >= 0) {
       int resultUsers = peer->getUsers();
       if(resultUsers == 1){
-    if (peer->users[ui->listWidget->currentItem()->text().toStdString()][0] == "0") { //  ->textColor() == Qt::red
-        ui->listWidget->currentItem()->textColor() = Qt::red; // set red if not already
+    if (peer->users[ui->listWidget->currentItem()->text().toStdString()][0] == "0") { //  ->textColor() == Qt::magenta
+        ui->listWidget->currentItem()->textColor() = Qt::magenta; // set magenta if not already
         ui->lbl_result->setVisible(true);
-      ui->lbl_result->setStyleSheet("QLabel { color : red; }");
+      ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
     } else {
       ui->lbl_result->setVisible(false);
       const QString &s = ui->listWidget->currentItem()->text();
@@ -68,25 +68,25 @@ void UsersDialog::on_push_view_clicked() {
       }
       else if(resultUsers == 2){
         ui->lbl_result->setVisible(true);
-        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-        ui->lbl_result->setText("DoS Offline!");
+        ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+        ui->lbl_result->setText("Server Unreachable");
       }
       else if(resultUsers == 0){
         ui->lbl_result->setVisible(true);
-        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-        ui->lbl_result->setText("Check your internet connection!"); // Getusers send failed!
+        ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+        ui->lbl_result->setText("Sending Failed"); // Getusers send failed!
       }
       else{
         ui->lbl_result->setVisible(true);
-        ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-        ui->lbl_result->setText("Check your internet connection!");
+        ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+        ui->lbl_result->setText("Problem with internet connection");
       }
 
 
   } else {
     ui->lbl_result->setVisible(true);
-    ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-    ui->lbl_result->setText("Please, select a user!");
+    ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+    ui->lbl_result->setText("Choose a user");
   }
 }
 
@@ -94,8 +94,8 @@ void UsersDialog::on_push_refresh_clicked() {
   ui->listWidget->clear();
   ui->lbl_result->setVisible(false);
   ui->lbl_time->setText(
-      QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : white; }");
+      QString::fromStdString("Refreshed at " + peer->getCurrentTime()));
+  ui->lbl_time->setStyleSheet("QLabel { color : yellow; }");
   int resultUsers = peer->getUsers();
   if(resultUsers == 1){
   int i = 0;
@@ -115,17 +115,17 @@ void UsersDialog::on_push_refresh_clicked() {
 }
 else if(resultUsers == 2){
   ui->lbl_result->setVisible(true);
-  ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-  ui->lbl_result->setText("DoS Offline!");
+  ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+  ui->lbl_result->setText("Server Unreachable");
 }
 else if(resultUsers == 0){
   ui->lbl_result->setVisible(true);
-  ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-  ui->lbl_result->setText("Check your internet connection!"); // Getusers send failed!
+  ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+  ui->lbl_result->setText("Sending Failed"); // Getusers send failed!
 }
 else{
   ui->lbl_result->setVisible(true);
-  ui->lbl_result->setStyleSheet("QLabel { color : red; }");
-  ui->lbl_result->setText("Check your internet connection!");
+  ui->lbl_result->setStyleSheet("QLabel { color : magenta; }");
+  ui->lbl_result->setText("Problem with internet connection!");
 }
 }

@@ -7,8 +7,8 @@ ViewImageDialog::ViewImageDialog(QWidget *parent, Peer *peer, string cover,
     : QDialog(parent), ui(new Ui::ViewImageDialog), peer(peer) {
   ui->setupUi(this);
   ui->lbl_time->setText(
-      QString::fromStdString("Last Time Refreshed: " + peer->getCurrentTime()));
-  ui->lbl_time->setStyleSheet("QLabel { color : white; }");
+      QString::fromStdString("Refreshed at " + peer->getCurrentTime()));
+  ui->lbl_time->setStyleSheet("QLabel { color : yellow; }");
   ui->lbl_result->setVisible(false);
   connect(this, SIGNAL(destroyed()), this->parent(),
           SLOT(on_push_refresh_clicked())); // to close all after logout

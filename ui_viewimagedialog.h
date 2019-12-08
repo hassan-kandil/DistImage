@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'viewimagedialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.11.3
+** Created by: Qt User Interface Compiler version 5.9.5
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,9 +10,12 @@
 #define UI_VIEWIMAGEDIALOG_H
 
 #include <QtCore/QVariant>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
@@ -46,7 +49,7 @@ public:
         if (ViewImageDialog->objectName().isEmpty())
             ViewImageDialog->setObjectName(QStringLiteral("ViewImageDialog"));
         ViewImageDialog->resize(500, 500);
-        ViewImageDialog->setStyleSheet(QLatin1String("background-color: rgb(46, 52, 54)\n"
+        ViewImageDialog->setStyleSheet(QLatin1String("background-color: rgb(0,0,0)\n"
 ""));
         verticalLayout_2 = new QVBoxLayout(ViewImageDialog);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
@@ -134,11 +137,11 @@ public:
 
     void retranslateUi(QDialog *ViewImageDialog)
     {
-        ViewImageDialog->setWindowTitle(QApplication::translate("ViewImageDialog", "DistImage", nullptr));
-        push_back->setText(QApplication::translate("ViewImageDialog", "Back", nullptr));
-        lbl_image->setText(QApplication::translate("ViewImageDialog", "Image", nullptr));
-        lbl_result->setText(QApplication::translate("ViewImageDialog", "Image Error!", nullptr));
-        lbl_time->setText(QApplication::translate("ViewImageDialog", "Time", nullptr));
+        ViewImageDialog->setWindowTitle(QApplication::translate("ViewImageDialog", "DistImage", Q_NULLPTR));
+        push_back->setText(QApplication::translate("ViewImageDialog", "Back", Q_NULLPTR));
+        lbl_image->setText(QApplication::translate("ViewImageDialog", "Image", Q_NULLPTR));
+        lbl_result->setText(QApplication::translate("ViewImageDialog", "Image Error!", Q_NULLPTR));
+        lbl_time->setText(QApplication::translate("ViewImageDialog", "Time", Q_NULLPTR));
     } // retranslateUi
 
 };
